@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 # Create your models here.
 class Centro(models.Model):
@@ -27,19 +29,19 @@ class NivelPrivacidad(models.Model):
     descripcion = models.CharField(max_length=255)
     def __str__(self):
         return self.nombre
-class User(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    centro = models.ForeignKey(Centro, on_delete=models.CASCADE) 
-    privacidad = models.ForeignKey(NivelPrivacidad, on_delete=models.CASCADE)
+class User(AbstractUser):
+    email = models.CharField(max_length=200)
+    centro = models.ForeignKey(Centro, on_delete=models.CASCADE, null=True) 
+    privacidad = models.ForeignKey(NivelPrivacidad, on_delete=models.CASCADE, null=True)
     def __str__(self):
-        return self.user.get_username()
+        return self.username
 
 class Entrega(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
     estado = models.BooleanField()
     cualificacion = models.IntegerField(default=0)
-    archivo = models.FileField(upload_to="./entregas/")
+    archivo = models.FileField(upload_to="./archivos/entregas/")
     fecha_entrega = models.DateTimeField()
     comentario_profesor = models.CharField(max_length=255)
     comentario_alumno = models.CharField(max_length=255)
@@ -47,8 +49,16 @@ class Entrega(models.Model):
         return self.ejercicio.nombre
 
 class Suscripcion(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=200)
     def __str__(self):
         return self.tipo
+
+class Recurso(models.Model):
+    titulo = models.CharField(max_length=200)
+    texto = models.CharField(max_length=255, blank=True)
+    archivo = models.FileField(upload_to="./archivos/recursos/", blank=True)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)                                            
+    def __str__(self):
+        return self.titulo
