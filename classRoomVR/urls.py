@@ -19,4 +19,5 @@ from django.urls import include,path
 urlpatterns = [
     path('moodle/',include('ietimoodle.urls')),
     path('admin/', admin.site.urls),
+    path('auth', include('ietimoodle.urls')),
 ]
