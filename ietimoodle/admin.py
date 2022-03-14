@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     fieldsets = (
-      (None, {'fields': ('correo', 'password', )}),
+      (None, {'fields': ('username','correo', 'password', )}),
       (_('Información Personal'), {'fields': ('first_name', 'last_name')}),
       (_('Permisos'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                      'groups', 'user_permissions')}),
@@ -18,11 +18,11 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
       (None, {
           'classes': ('wide', ),
-          'fields': ('nombre','correo', 'password1', 'password2'),
+          'fields': ('username','correo', 'password1', 'password2'),
       }),
     )
-    list_display = ['correo', 'first_name', 'last_name', 'is_staff']
-    search_fields = ('correo', 'first_name', 'last_name')
+    list_display = ['username','correo', 'first_name', 'last_name', 'is_staff']
+    search_fields = ('username','correo', 'first_name', 'last_name')
     ordering = ('correo', )
 
 admin.site.register(Centro) 
