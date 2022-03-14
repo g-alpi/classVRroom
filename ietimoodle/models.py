@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-
 # Create your models here.
 class Centro(models.Model):
     nombre = models.CharField(max_length=200)
