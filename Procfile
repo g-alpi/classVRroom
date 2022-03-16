@@ -1,1 +1,1 @@
-web: gunicorn classRoomVR.wsgi
+web: gunicorn classRoomVR/manage.py runserver
