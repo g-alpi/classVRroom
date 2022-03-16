@@ -29,13 +29,13 @@ class NivelPrivacidad(models.Model):
     def __str__(self):
         return self.nombre
         
+        
 class User(AbstractUser):
-  nombre = models.CharField(max_length = 50, unique=True)
   correo = models.EmailField(max_length=254, unique = True)
   centro = models.ForeignKey(Centro, on_delete=models.CASCADE, null=True, blank=True)
   privacidad = models.ForeignKey(NivelPrivacidad, on_delete=models.CASCADE, null=True, blank=True)
-  USERNAME_FIELD = 'nombre'
-  REQUIRED_FIELDS = ['username','first_name', 'last_name']
+
+  REQUIRED_FIELDS = ['first_name', 'last_name']
   def __str__(self):
       return "{}".format(self.username)
 
