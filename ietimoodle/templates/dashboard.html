@@ -2,11 +2,13 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Index</title>
+        <title>Dashboard</title>
         <style>body {background-color: #dee1ff};</style>
     </head>
     <body>
-        <img src="imgs/logo.png">
-        <a href="login.html">Log in</a>
+        <h2>Cursos de {{user}}:</h2>
+        {% for s in suscripciones %}
+            {{s.curso}} -> {{s.tipo}}
+        {% endfor %}
     </body>
 </html>

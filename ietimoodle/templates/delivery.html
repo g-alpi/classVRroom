@@ -1,0 +1,62 @@
+
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MoodleVR</title>
+        <style>th {border: 1px solid}</style>
+    </head>
+    <body>
+        <h1>Este será el índice</h1>
+     
+        <a href="{{prevAlumn}}">Anterior alumno</a>
+        <a href="{{nextAlumn}}">Siguiente alumno</a>
+        {% block content %}
+        <h2>{{exercise}} de {{alumn}}</h2>
+        <table style="border: 1px solid">
+            <tr>
+                <th>Alumno:</th>
+                <th>{{delivery.user}}</th>
+            </tr>
+            <tr>
+                <th>Ejercicio:</th>
+                <th>{{delivery.ejercicio}}</th>
+            </tr>
+            <tr>
+                <th>Estado:</th>
+                <th>
+                    {% if delivery.estado == True %}
+                        <input type="checkbox" checked>
+                    {% else %}
+                        <input type="checkbox">
+                    {% endif %}
+                </th>
+            </tr>
+            <tr>
+                <th>Cualificación:</th>
+                <th>
+                    <input type="number" placeholder="{{delivery.cualificacion}}">
+                </th>
+            </tr>
+            <tr>
+                <th>Archivo:</th>
+                <th>{{delivery.archivo}}</th>
+            </tr>
+            <tr>
+                <th>Fecha de Entrega:</th>
+                <th>{{delivery.fecha_entrega}}</th>
+            </tr>
+            <tr>
+                <th>Comentario Profesor:</th>
+                <th>
+                    <input type="text" placeholder="{{delivery.comentario_profesor}}">
+                </th>
+            </tr>
+            <tr>
+                <th>Comentario Alumno:</th>
+                <th>{{delivery.comentario_alumno}}</th>
+            </tr>
+        </table>
+        {% endblock %}
+    </body>
+<html>

@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render,  get_object_or_404
 
 # Create your views here.
@@ -5,7 +6,19 @@ from django.http import HttpResponse
 
 from .models import *
 
-def index(request, exerciseid, alumnid):
+def index(request):
+    return render(request, 'index.html')
+
+def dashboard(request, userid):
+    suscripciones=Suscripcion.objects.filter(user=userid)
+    user= get_object_or_404(User, pk=userid)
+    content={
+        'user': user,
+        'suscripciones': suscripciones,
+    }
+    return render(request, 'dashboard.html', content)
+
+def delivery(request, exerciseid, alumnid):
     alumn= get_object_or_404(User, pk=alumnid)
     exercise=get_object_or_404(Ejercicio, pk=exerciseid)
     delivery=Entrega.objects.filter(ejercicio=exercise.pk, user=alumn)[0]
@@ -18,4 +31,4 @@ def index(request, exerciseid, alumnid):
         'nextAlumn': nextAlumn,
         'prevAlumn': prevAlumn,
     }
-    return render(request, 'index.html', content)
+    return render(request, 'delivery.html', content)
