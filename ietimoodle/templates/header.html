@@ -1,0 +1,25 @@
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <header class="pt-5 pb-0 pr-10 pl-10 flex justify-between">
+        <div>
+        <img class="w-20" src="{% static 'logo.png' %}" alt="WLYLogo">
+        {% if title == "Home" %}
+        <a class="underline text-[#461f87]" href="">Home</a>
+        {% elif title == "Dashboard" %}
+        <a class="underline text-[#461f87]" href="">Cursos</a>
+        {% elif title == "Delivery" %}
+        <a class="underline text-[#461f87]" href="">Cursos</a> / <a class="underline text-[#461f87]" href="">Curso actual</a>
+        {% endif %}
+        </div>
+        <div>
+            <p class="text-right">{{user.username}}</p>
+            <a class="underline text-[#461f87]" href="logout.html"><p class="text-right">Logout</p></a>
+        </div>
+    </header>

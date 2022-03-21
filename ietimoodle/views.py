@@ -6,8 +6,8 @@ from django.http import HttpResponse
 
 from .models import *
 
-def index(request):
-    return render(request, 'index.html')
+def home(request):
+    return render(request, 'home.html')
 
 def dashboard(request, userid):
     suscripciones=Suscripcion.objects.filter(user=userid)
@@ -17,6 +17,9 @@ def dashboard(request, userid):
         'suscripciones': suscripciones,
     }
     return render(request, 'dashboard.html', content)
+
+def curso(request, cursoid):
+    return render(request, 'curso.html')
 
 def delivery(request, exerciseid, alumnid):
     alumn= get_object_or_404(User, pk=alumnid)
