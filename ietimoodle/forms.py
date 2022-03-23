@@ -15,4 +15,6 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, Authenti
 #         fields = ('username', 'email')
         
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='Email')
+    username = forms.CharField(label='Email', widget=forms.TextInput(attrs={'class': 'formField'}))
+    password = forms.CharField(label='Contraseña', widget=forms.TextInput(attrs={'class': 'formField'}))
+# myfield = forms.CharField(widget=forms.TextInput(attrs={'class': 'myfieldclass'}))

@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% block title %}Inicia Sesión{% endblock %}
+    {% include "header.html" with title="Log In" %}
+    {% load static %}
+    <img class="m-auto" src="{% static 'logo.png' %}" alt="WLYLogo">
+    <div class="text-center">
+        {% block content %}
+            <form class="text-center" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="p-2"></div>
+                <input class="rounded-lg p-1 bg-[#461f87] text-[#ededed]" type="submit" name="submit" value="Log In">
+            </form>
 
-    {% block content %}
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" name="submit">
-        </form>
-
-    {% endblock content %}
-</body>
+        {% endblock content %}
+    </div>    
+    </body>
 </html>

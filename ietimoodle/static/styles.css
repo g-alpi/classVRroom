@@ -1,3 +1,7 @@
 body {
-    background-color: #dee1ff
+    background-color: #dee1ff;
+    font-family: 'Assitant';
+}
+button {
+    font-family: 'Roboto';
 }
