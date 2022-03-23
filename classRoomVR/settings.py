@@ -128,3 +128,10 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_heroku.settings(locals())
+
+LOGIN_URL= "/login/"
+LOGIN_REDIRECT_URL = '/'
+
+AUTH_AUTHENTICATION_TYPE='email'
+AUTHENTICATION_BACKENDS = ['ietimoodle.backends.EmailBackend'] # new
+
