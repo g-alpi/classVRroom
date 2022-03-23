@@ -20,18 +20,15 @@ def home(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("")
+    return render(request, "logout.html")
 
 @login_required
 def dashboard(request):
-    if request.user.is_authenticated:
-        user=request.user.pk
-    else:
-        print("User is not logged in :(")
     suscripciones=Suscripcion.objects.filter(user=request.user.pk)
+    cursos=Curso.objects.all
     content={
-        'user': user,
         'suscripciones': suscripciones,
+        'cursos':cursos,
     }
     return render(request, 'dashboard.html', content)
 

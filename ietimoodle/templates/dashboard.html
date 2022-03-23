@@ -1,10 +1,15 @@
 <html>
     {% include "header.html" with title="Dashboard" %}
-        <h2 class="pl-20 text-4xl">Cursos de {{user}}:</h2>
+        <h2 class="pl-20 text-4xl">Cursos de {{user.username}}:</h2>
         <div class="p-20 pt-5">
         {% for s in suscripciones %}
             <div class="border-solid rounded border-black">
                 <a class="text-3xl underline text-[#461f87]" href="curso/{{s.curso.pk}}">{{s.curso}}</a> 
+                {% for i in cursos %}
+                    {% ifequal i.nombre|stringformat:"s" s.curso|stringformat:"s" %}
+                    <p class="italic">{{ i.descripcion }}</p>
+                    {% endifequal %}
+                {% endfor %}
                 <p class="text-lg">Rol asignado: {{s.tipo}}</p>
             </div>
         {% endfor %}

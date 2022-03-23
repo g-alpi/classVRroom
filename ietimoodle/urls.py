@@ -3,6 +3,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from . import views
 
+app_name='moodle'
 
 urlpatterns = [
     path('', views.home, name='home'),
