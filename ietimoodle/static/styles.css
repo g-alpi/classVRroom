@@ -1,7 +1,7 @@
 body {
     background-color: #dee1ff;
-    font-family: 'Assitant';
+    font-family: 'Assistant', sans-serif;
 }
-button {
-    font-family: 'Roboto';
+button,input[type='submit'] {
+    font-family: 'Roboto', sans-serif;
 }
