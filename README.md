@@ -28,7 +28,10 @@ Descargar repositorio github:
 
 
 Entrar en el entorno virtual de Python:
-    - source /env/bin/activate4
+    - source /env/bin/activate
+    
+Instalamos las dependencias:
+    - pip install -r requirements.txt
 
 Poblar la base de datos:
 
