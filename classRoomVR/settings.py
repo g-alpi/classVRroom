@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import django_heroku
+import os
 
 from pathlib import Path
 
@@ -127,3 +128,10 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_heroku.settings(locals())
+
+LOGIN_URL= "/login/"
+LOGIN_REDIRECT_URL = '/'
+
+AUTH_AUTHENTICATION_TYPE='email'
+AUTHENTICATION_BACKENDS = ['ietimoodle.backends.EmailBackend'] # new
+

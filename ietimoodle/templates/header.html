@@ -1,0 +1,46 @@
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-84RC3PPX48"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-84RC3PPX48');
+    </script>
+    <meta name="google-site-verification" content="QlJijYk74BBBPfM_iigsTVLrtRkGftCMeYdJtPrAypU" />
+
+    <title>{{title}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <!-- import fuente Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <!-- import funete Assistant -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@500&family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <header class="pt-5 pb-0 pr-10 pl-10 flex justify-between">
+        <div>
+        <img class="w-20" src="{% static 'logo.png' %}" alt="WLYLogo">
+        {% if title == "Home" %}
+        <a class="underline text-[#461f87]" href="">Home</a>
+        {% elif title == "Dashboard" %}
+        <a class="underline text-[#461f87]" href="..">Home</a> / <a class="underline text-[#461f87]" href="">Cursos</a>
+        {% elif title == "Delivery" %}
+        <a class="underline text-[#461f87]" href="">Cursos</a> / <a class="underline text-[#461f87]" href="">Curso actual</a>
+        {% endif %}
+        </div>
+        <div>
+            <p class="text-right">{{user.username}}</p>
+            {% if request.user.is_authenticated %}
+                <a class="underline text-[#461f87]" href="{% url 'moodle:logout' %}"><p class="text-right">Logout</p></a>
+            {% endif %}
+        </div>
+    </header>
