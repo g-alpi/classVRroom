@@ -33,8 +33,33 @@ def dashboard(request):
     return render(request, 'dashboard.html', content)
 
 @login_required
-def curso(request, cursoid):
-    return render(request, 'curso.html')
+def grade(request, cursoid):
+    recursos = Recurso.objects.filter(curso=cursoid)
+    ejercicios = Ejercicio.objects.filter(curso=cursoid)
+    print(cursoid, ", ", request.user.pk)
+    role= Suscripcion.objects.filter(curso=cursoid, user=request.user.pk)[0]
+    print(role)
+    content= {
+        'resources': recursos,
+        'exercises': ejercicios,
+        'role': role,
+        'grade': get_object_or_404(Curso, pk=cursoid),
+    }
+    return render(request, 'grade.html', content)
+
+@login_required
+def resource(request, resourceid):
+    content= {
+
+    }
+    return render(request, 'resource.html', content)
+
+@login_required
+def exercise(request, exerciseid):
+    content= {
+
+    }
+    return render(request, 'exercise.html', content)
 
 @login_required
 def delivery(request, exerciseid, alumnid):

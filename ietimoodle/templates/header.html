@@ -10,8 +10,11 @@
         gtag('config', 'G-84RC3PPX48');
     </script>
     <meta name="google-site-verification" content="QlJijYk74BBBPfM_iigsTVLrtRkGftCMeYdJtPrAypU" />
-
-    <title>{{title}}</title>
+    {% if title == "Curso" %}
+        <title>{{curso}}</title>
+    {% else %}
+        <title>{{title}}</title>
+    {% endif %}
     <script src="https://cdn.tailwindcss.com"></script>
     {% load static %}
     <!-- import fuente Roboto -->
@@ -32,9 +35,16 @@
         {% if title == "Home" %}
         <a class="underline text-[#461f87]" href="">Home</a>
         {% elif title == "Dashboard" %}
-        <a class="underline text-[#461f87]" href="..">Home</a> / <a class="underline text-[#461f87]" href="">Cursos</a>
+        <a class="underline text-[#461f87]" href="..">Home</a> / 
+        <a class="underline text-[#461f87]" href="">Cursos</a>
         {% elif title == "Delivery" %}
-        <a class="underline text-[#461f87]" href="">Cursos</a> / <a class="underline text-[#461f87]" href="">Curso actual</a>
+        <a class="underline text-[#461f87]" href="">Cursos</a> / 
+        <a class="underline text-[#461f87]" href="">Curso actual</a>
+        {% elif title == "Curso" %}
+        
+        <a class="underline text-[#461f87]" href="../..">Home</a> / 
+        <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> / 
+        <a class="underline text-[#461f87]" href="">{{curso}}</a>
         {% endif %}
         </div>
         <div>
