@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+import json
 # Create your models here.
 class Centro(models.Model):
     nombre = models.CharField(max_length=200)
@@ -15,6 +16,9 @@ class Curso(models.Model):
     centro = models.ForeignKey(Centro, on_delete=models.CASCADE)
     def __str__(self):
         return self.nombre
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
+
 class Ejercicio(models.Model):
     nombre = models.CharField(max_length=200)
     ponderacion = models.IntegerField(default=0)

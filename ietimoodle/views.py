@@ -8,6 +8,10 @@ from django.contrib.auth import views as auth_views
 from django.http import HttpResponse
 from .forms import LoginForm
 from .models import *
+from .serializers import * 
+from rest_framework import viewsets
+from django.contrib.auth.models import Permission
+from rest_framework import permissions
 
 
 
@@ -51,3 +55,4 @@ def delivery(request, exerciseid, alumnid):
         'prevAlumn': prevAlumn,
     }
     return render(request, 'delivery.html', content)
+
