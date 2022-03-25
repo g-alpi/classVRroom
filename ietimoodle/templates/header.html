@@ -12,6 +12,8 @@
     <meta name="google-site-verification" content="QlJijYk74BBBPfM_iigsTVLrtRkGftCMeYdJtPrAypU" />
     {% if title == "Curso" %}
         <title>{{curso}}</title>
+    {% elif title == "Resource" %}
+        <title>{{resource}}</title>
     {% else %}
         <title>{{title}}</title>
     {% endif %}
@@ -41,7 +43,6 @@
         <a class="underline text-[#461f87]" href="">Cursos</a> / 
         <a class="underline text-[#461f87]" href="">Curso actual</a>
         {% elif title == "Curso" %}
-        
         <a class="underline text-[#461f87]" href="../..">Home</a> / 
         <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> / 
         <a class="underline text-[#461f87]" href="">{{curso}}</a>

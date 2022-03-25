@@ -24,12 +24,16 @@
                         <p class="pl-10 italic flex"><img class="max-w-[18px] max-h-[18px]" src="{% static 'warning.png' %}" alt="Warning">Ejercicio oculto para el alumnado</p>
                     {% endif %}
                     <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
-                        <a class="text-2xl underline text-[#461f87]" href="../exercise/{{e.pk}}">{{e}}</a>
+                        {% if role.tipo == "profesor" %}
+                            <a class="text-2xl underline text-[#461f87]" href="../exercise/{{e.pk}}">{{e}}</a>
+                        {% else %}
+                            <a class="text-2xl underline text-[#461f87]" href="../exercise/{{e.pk}}">{{e}}</a>
+                        {% endif %}
                         <p class="pl-10 italic">Ponderación: {{e.ponderacion}}</p>
                     </div>
                 {% endif %}
             {% endfor %}
         {% endif %}
     </div>
-    <br>
+    </body>
 </html>

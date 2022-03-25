@@ -5,9 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from .forms import LoginForm
 from .models import *
+import os, mimetypes
 
 
 
@@ -23,6 +24,22 @@ def logout_view(request):
     return render(request, "logout.html")
 
 @login_required
+def download(request, element, filename=''):
+    if filename != '':
+        try:
+            BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            filepath = BASE_DIR + '/archivos/' + element + '/' + filename
+            path = open(filepath, 'rb')
+            mime_type, _ = mimetypes.guess_type(filepath)
+            response = HttpResponse(path, content_type=mime_type)
+            response['Content-Disposition'] = "attachment; filename=%s" % filename
+            return response
+        except FileNotFoundError:
+            return HttpResponseNotFound('Error 404 File not found')
+    else:
+        return render(request, 'file.html')
+
+@login_required
 def dashboard(request):
     suscripciones=Suscripcion.objects.filter(user=request.user.pk)
     cursos=Curso.objects.all
@@ -36,7 +53,6 @@ def dashboard(request):
 def grade(request, cursoid):
     recursos = Recurso.objects.filter(curso=cursoid)
     ejercicios = Ejercicio.objects.filter(curso=cursoid)
-    print(cursoid, ", ", request.user.pk)
     role= Suscripcion.objects.filter(curso=cursoid, user=request.user.pk)[0]
     print(role)
     content= {
@@ -49,15 +65,27 @@ def grade(request, cursoid):
 
 @login_required
 def resource(request, resourceid):
+    resource=get_object_or_404(Recurso, pk=resourceid)
+    curso=get_object_or_404(Curso, pk=resource.curso.pk)
     content= {
-
+        'resource': resource,
+        'curso': curso
     }
     return render(request, 'resource.html', content)
 
 @login_required
 def exercise(request, exerciseid):
-    content= {
+    exercise=get_object_or_404(Ejercicio, pk=exerciseid)
+    curso=get_object_or_404(Curso, pk=exercise.curso.pk)
+    user=get_object_or_404(User, pk=request.user.pk)
+    print(user)
 
+    entrega=Entrega.objects.filter(ejercicio=exerciseid, user=user.pk)
+    print(entrega)
+    content= {
+        'exercise': exercise,
+        'curso': curso,
+        'entrega': entrega
     }
     return render(request, 'exercise.html', content)
 
