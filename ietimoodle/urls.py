@@ -14,18 +14,19 @@ from .serializers import *
 from django.core import serializers
 import json 
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication, BasicAuthentication])
-
 def login(request):
     correo=(request.GET['email'])
     password=(request.GET['password'])
     for user in User.objects.all():
         if (correo == user.correo):
-            print("el usuarios es este: ",user)
-            
-    return JsonResponse({correo:password})
+            print(user.id)
+            print(user)
+            token = Token.objects.delete(user=user)
+            print(token.key)
+        return JsonResponse({"user":user.id})
 
 def get_courses(request):
     cursos = (Curso.objects.all())
