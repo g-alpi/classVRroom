@@ -13,24 +13,64 @@ from .models import *
 from .serializers import *
 from django.core import serializers
 import json 
+from rest_framework import status
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+
+def login(request):
+    correo=(request.GET['email'])
+    password=(request.GET['password'])
+    for user in User.objects.all():
+        if (correo == user.correo):
+            print("el usuarios es este: ",user)
+            
+    return JsonResponse({correo:password})
 
 def get_courses(request):
-    # campos = Curso.objects.first()._meta.fields
-    # print(campos)
-    # for campo in campos:
-    #     print(campo)
-    
-    curso = (Curso.objects.first())
-    curso = json.dumps(curso.toJson(),indent=4)
-    print(curso)
-    # for e in cursos:
-    #     print(e)
-    # "curso = curso.nombre"
-    return JsonResponse({
-        "course_list":curso,
-        })
+    cursos = (Curso.objects.all())
+    allcursos = []
+    for curso in cursos:
+        profesores = []
+        alumnos = []
+        suscripciones = Suscripcion.objects.filter(curso=curso.id)
+        print("personas en el cursito")
+        print(suscripciones)
+        for sus in suscripciones:
+            if (sus.tipo == 'profesor'):
+                user = User.objects.get(username=sus.user)
+                print(user.first_name)
+                print(user.last_name)
+                profesores.append({"first_name":user.first_name,"last_name":user.last_name})
+                print(profesores)
+            else:
+                user = User.objects.get(username=sus.user)
+                alumnos.append({"first_name":user.first_name,"last_name":user.last_name})
+
+        respuesta = {
+            "courseID":curso.id,
+            "institutionID":curso.centro.id,
+            "title":curso.nombre,
+            "description":curso.descripcion,
+            "subscribers":{
+                "teachers":[
+                    profesores
+                ],
+                "alumns":[
+                    alumnos
+                ]
+            }
+        }
+        allcursos.append(respuesta)
+        if(status.HTTP_200_OK):
+            _status = "OK"
+        else:
+            _status = "ERROR"
+    return JsonResponse({"status":_status,"message":"message","course_list":allcursos}, safe=False,status=status.HTTP_200_OK)
  
 urlpatterns = [
+    path('api/login',login),
+
     path('api/get_courses',get_courses)
 ]
 

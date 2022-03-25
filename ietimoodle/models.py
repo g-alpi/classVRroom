@@ -51,8 +51,8 @@ class Entrega(models.Model):
     cualificacion = models.IntegerField(default=0)
     archivo = models.FileField(upload_to="./archivos/entregas/")
     fecha_entrega = models.DateTimeField()
-    comentario_profesor = models.CharField(max_length=255)
-    comentario_alumno = models.CharField(max_length=255)
+    comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
+    comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
     def __str__(self):
         return self.ejercicio.nombre
 
