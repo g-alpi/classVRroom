@@ -11,6 +11,8 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('dashboard/curso/<int:cursoid>', views.curso, name='curso'),
     path('<int:exerciseid>/<int:alumnid>', views.delivery, name='delivery'),
+    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>',views.actualizar, name="actualizar"),
+    # path('ejercicio/<int:ejercicioId>/<int:alumnid>', views.ejercicio, name='ejercicio'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -3,6 +3,8 @@ from django.shortcuts import render,  get_object_or_404, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 from django.http import HttpResponse
@@ -40,9 +42,20 @@ def curso(request, cursoid):
 def delivery(request, exerciseid, alumnid):
     alumn= get_object_or_404(User, pk=alumnid)
     exercise=get_object_or_404(Ejercicio, pk=exerciseid)
-    delivery=Entrega.objects.filter(ejercicio=exercise.pk, user=alumn)[0]
-    nextAlumn=alumnid+1
-    prevAlumn=alumnid-1
+    delivery=Entrega.objects.filter(ejercicio=exercise, user=alumn)[0]
+    alumnos= Entrega.objects.filter(ejercicio=exercise)
+    alumnosID=[]
+    for i in alumnos :
+        alumnosID.append(i.user.pk)
+
+    if alumnosID.index(alumnid) == len(alumnosID)-1:
+        nextAlumn = alumnosID[0]
+    else:
+        nextAlumn = alumnosID[alumnosID.index(alumnid) + 1]
+
+    prevAlumn = alumnosID[alumnosID.index(alumnid) - 1]
+    
+    
     content = {
         'alumn': alumn,
         'exercise': exercise,
@@ -51,3 +64,11 @@ def delivery(request, exerciseid, alumnid):
         'prevAlumn': prevAlumn,
     }
     return render(request, 'delivery.html', content)
+
+@csrf_exempt
+def actualizar(request, entrega, nota, comentarioProfesor):
+	delivery = get_object_or_404(Entrega, pk=entrega)
+	delivery.nota = nota
+	delivery.comentario_profesor = comentarioProfesor
+	delivery.save()
+
