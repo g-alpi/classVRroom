@@ -29,7 +29,6 @@ class NivelPrivacidad(models.Model):
     def __str__(self):
         return self.nombre
         
-        
 class User(AbstractUser):
   correo = models.EmailField(max_length=254, unique = True)
   centro = models.ForeignKey(Centro, on_delete=models.CASCADE, null=True, blank=True)
@@ -44,11 +43,11 @@ class Entrega(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
     estado = models.BooleanField()
-    cualificacion = models.IntegerField(default=0)
-    archivo = models.FileField(upload_to="./archivos/entregas/")
+    cualificacion = models.IntegerField(default=0, null=True, blank=True)
+    archivo = models.FileField(upload_to="./archivos/entregas/", null=True, blank=True)
     fecha_entrega = models.DateTimeField()
-    comentario_profesor = models.CharField(max_length=255)
-    comentario_alumno = models.CharField(max_length=255)
+    comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
+    comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
     def __str__(self):
         return self.ejercicio.nombre
 
