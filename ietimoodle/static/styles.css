@@ -2,6 +2,7 @@ body {
     background-color: #dee1ff;
     font-family: 'Assistant', sans-serif !important;
 }
+
 button,input[type='submit'] {
     font-family: 'Roboto', sans-serif !important;
     border-radius:10px !important;
@@ -10,7 +11,6 @@ button,input[type='submit'] {
 }
 button *,button,input[type='submit'] {
     color: white !important;
-
 }
 
 /* alertas */
@@ -45,4 +45,5 @@ button *,button,input[type='submit'] {
 
 .closebtn:hover {
     color: black;
+
 }

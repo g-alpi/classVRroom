@@ -1,11 +1,11 @@
 <html>
-    {% include "header.html" with title="Curso" curso=curso %}
+    {% include "header.html" with title="Curso" curso=grade %}
     <h2 class="pt-5 pl-20 text-4xl">Recursos de {{grade}}</h2>
     <div id="recursos" class="pl-20 pr-20 pt-5">
         {% for r in resources %}
             <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
                 <a class="text-2xl underline text-[#461f87]" href="../resource/{{r.pk}}">{{r}}</a>
-                <p class="pl-10 italic">Resumen: {{r.texto}}</p>
+                <p class="pl-10 italic">Vista general: {{r.texto}}</p>
                 {% if r.archivo %}
                     <p class="pl-10 italic underline">1 fichero adjunto</p>
                 {% else %}
@@ -25,7 +25,7 @@
                     {% endif %}
                     <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
                         {% if role.tipo == "profesor" %}
-                            <a class="text-2xl underline text-[#461f87]" href="../exercise/{{e.pk}}">{{e}}</a>
+                            <a class="text-2xl underline text-[#461f87]" href="../{{e.pk}}/{{firstal.pk}}">{{e}}</a>
                         {% else %}
                             <a class="text-2xl underline text-[#461f87]" href="../exercise/{{e.pk}}">{{e}}</a>
                         {% endif %}

@@ -69,12 +69,15 @@ def grade(request, cursoid):
     recursos = Recurso.objects.filter(curso=cursoid)
     ejercicios = Ejercicio.objects.filter(curso=cursoid)
     role= Suscripcion.objects.filter(curso=cursoid, user=request.user.pk)[0]
+    suscripciones=Suscripcion.objects.filter(curso=cursoid)[0]
+    firstAlId=get_object_or_404(User, pk=suscripciones.user.pk)
     print(role)
     content= {
         'resources': recursos,
         'exercises': ejercicios,
         'role': role,
         'grade': get_object_or_404(Curso, pk=cursoid),
+        'firstal': firstAlId
     }
     return render(request, 'grade.html', content)
 
@@ -110,6 +113,8 @@ def delivery(request, exerciseid, alumnid):
     exercise=get_object_or_404(Ejercicio, pk=exerciseid)
     delivery=Entrega.objects.filter(ejercicio=exercise, user=alumn)[0]
     alumnos= Entrega.objects.filter(ejercicio=exercise)
+    curso=get_object_or_404(Curso, pk=exercise.curso.pk)
+
     alumnosID=[]
     for i in alumnos :
         alumnosID.append(i.user.pk)
@@ -128,6 +133,7 @@ def delivery(request, exerciseid, alumnid):
         'delivery': delivery,
         'nextAlumn': nextAlumn,
         'prevAlumn': prevAlumn,
+        'curso': curso
     }
     return render(request, 'delivery.html', content)
 
@@ -137,5 +143,4 @@ def actualizar(request, entrega, nota, comentarioProfesor):
 	delivery.cualificacion = nota
 	delivery.comentario_profesor = comentarioProfesor
 	delivery.save()
-
 
