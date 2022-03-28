@@ -4,4 +4,11 @@ body {
 }
 button,input[type='submit'] {
     font-family: 'Roboto', sans-serif !important;
+    border-radius:10px !important;
+    background-color: #461f87 !important;
+
+}
+button *,input[type='submit'] {
+    color: white !important;
+
 }

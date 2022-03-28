@@ -1,21 +1,20 @@
 
 <html>
     {% include "header.html" with title="Delivery" %}
-        <h1>Este será el índice</h1>
-        <a href="{{prevAlumn}}">Anterior alumno</a>
-        <a href="{{nextAlumn}}">Siguiente alumno</a>
+        <button class="p-1 m-1"><a href="{{prevAlumn}}">Anterior alumno</a></button>
+        <button class="p-1 m-1" ><a href="{{nextAlumn}}">Siguiente alumno</a></button>
         {% block content %}
-        <h2>{{exercise}} de {{alumn}}</h2>
-            <table style="border: 1px solid">
-                <tr>
+        <h2 class="text-3xl">{{exercise}} de {{alumn}}</h2>
+            <table style="border: 1px ; border-radius: 10px;">
+                <tr class="p-{5px}">
                     <th>Alumno:</th>
                     <th>{{delivery.user}}</th>
                 </tr>
-                <tr>
+                <tr class="p-{5px}">
                     <th>Ejercicio:</th>
                     <th>{{delivery.ejercicio}}</th>
                 </tr>
-                <tr>
+                <tr class="p-{5px}">
                     <th>Estado:</th>
                     <th>
                         {% if delivery.estado == True %}
@@ -25,32 +24,32 @@
                         {% endif %}
                     </th>
                 </tr>
-                <tr>
+                <tr class="p-{5px}">
                     <th>Cualificación:</th>
                     <th>
-                        <input type="number" value="{{delivery.cualificacion}}" id="nota">
+                        <input type="number" value="{{delivery.cualificacion}}" id="nota" class="text-center">
                     </th>
                 </tr>
-                <tr>
+                <tr class="p-{5px}">
                     <th>Archivo:</th>
-                    <th>{{delivery.archivo}}</th>
+                    <th><a href="../../{{delivery.archivo}}" class="underline decoration-blue-500 flex justify-center"> <img src="https://cdn-icons-png.flaticon.com/512/0/532.png" alt="foto-descarga" class="w-5"></a></th>
                 </tr>
-                <tr>
+                <tr class="p-{5px}">
                     <th>Fecha de Entrega:</th>
                     <th>{{delivery.fecha_entrega}}</th>
                 </tr>
-                <tr>
+                <tr class="p-{5px}">
                     <th>Comentario Profesor:</th>
                     <th>
-                        <input type="text" value="{{delivery.comentario_profesor}}" id="comentarioProfesor">
+                        <input type="text" value="{{delivery.comentario_profesor}}" id="comentarioProfesor" class="text-center">
                     </th>
                 </tr>
-                <tr>
+                <tr class="p-{5px}">
                     <th>Comentario Alumno:</th>
                     <th>{{delivery.comentario_alumno}}</th>
                 </tr>
             </table>
-            <input class="border-black border-2" type="submit" name="" id="enviar">
+            <input type="submit" name="" id="enviar" class="p-1 m-1">
 
 
 
