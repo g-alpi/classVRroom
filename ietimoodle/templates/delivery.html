@@ -27,7 +27,7 @@
                 <tr class="p-{5px}">
                     <th>Cualificación:</th>
                     <th>
-                        <input type="number" value="{{delivery.cualificacion}}" id="nota" class="text-center">
+                        <input type="number" value="{{delivery.cualificacion}}" id="nota" class="text-center" min="0" max="10">
                     </th>
                 </tr>
                 <tr class="p-{5px}">
@@ -49,7 +49,7 @@
                     <th>{{delivery.comentario_alumno}}</th>
                 </tr>
             </table>
-            <input type="submit" name="" id="enviar" class="p-1 m-1">
+            <button  name="" id="enviar" class="p-1 m-1">Enviar</button>
 
 
 
@@ -68,8 +68,39 @@
                         url: window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor,
                         method : 'POST',
                     })
+
+                    if ($('#nota').val()=="{{delivery.cualificacion}}" && $('#comentarioProfesor').val()=="{{delivery.comentario_profesor}}") {
+                        $("table").before('<div class="alert warning"> <span class="closebtn">&times;</span>No se ha actualizado la información, modifica los campos y vuelve a enviar</div>');
+                    }
+                    else{
+                        $("table").before('<div class="alert success"> <span class="closebtn">&times;</span>La información se ha actualizado correctamente</div>');
+                    }
+                    eliminarAlerta();
+                    
+
+                    
                 })
+                $("#nota").change(function (e) { 
+                    e.preventDefault();
+                    let nota = $("#nota").val();
+                    if (nota<0 || nota>10) {
+                    }
+                });
             });
+            
+            function eliminarAlerta() {
+                var close = document.getElementsByClassName("closebtn");
+                var i;
+
+                for (i = 0; i < close.length; i++) {
+                close[i].onclick = function(){
+                    var div = this.parentElement;
+                    div.style.opacity = "0";
+                    setTimeout(function(){ div.style.display = "none"; }, 600);
+                }
+                }
+            };
+
         </script>
         {% endblock %}
     </body>

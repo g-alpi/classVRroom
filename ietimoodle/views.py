@@ -9,13 +9,26 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 from django.http import HttpResponse, HttpResponseNotFound
 from .forms import LoginForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.utils.translation import gettext_lazy as _
+from django.http import JsonResponse
+
 from .models import *
 import os, mimetypes
 
+class MyAuthForm(AuthenticationForm):
+    error_messages = {
+        'invalid_login': _(
+            "Asegurate de introducir el correo y la contraseña correctamente."
+            " Ten en cuenta las máyusculas."
+        ),
+        'inactive': _("El ususario no esta activo"),
+    }
 
 
 class LoginView(auth_views.LoginView):
     form_class = LoginForm
+    authentication_form = MyAuthForm
     template_name = 'registration/login.html'
 
 def home(request):
