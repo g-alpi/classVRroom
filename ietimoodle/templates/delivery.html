@@ -63,8 +63,9 @@
                     let nota = $('#nota').val();
                     let comentarioProfesor = $('#comentarioProfesor').val();
                     let entrega = "{{ delivery.pk}}" ;
+                    console.log(window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor);
                     $.ajax({
-                        url: window.location.origin+":8080/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor,
+                        url: window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor,
                         method : 'POST',
                     })
                 })
