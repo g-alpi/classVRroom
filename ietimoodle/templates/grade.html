@@ -25,7 +25,7 @@
                     {% endif %}
                     <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
                         {% if role.tipo == "profesor" %}
-                            <a class="text-2xl underline text-[#461f87]" href="../exercise/{{e.pk}}">{{e}}</a>
+                            <a class="text-2xl underline text-[#461f87]" href="../{{e.pk}}/{{firstal.pk}}">{{e}}</a>
                         {% else %}
                             <a class="text-2xl underline text-[#461f87]" href="../exercise/{{e.pk}}">{{e}}</a>
                         {% endif %}

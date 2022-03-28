@@ -14,6 +14,7 @@ urlpatterns = [
     path('resource/<int:resourceid>', views.resource, name='resource'),
     path('exercise/<int:exerciseid>', views.exercise, name='exercise'),
     path('<int:exerciseid>/<int:alumnid>', views.delivery, name='delivery'),
+    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>',views.actualizar, name="actualizar"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
