@@ -1,5 +1,5 @@
 <html>
-    {% include "header.html" with title="Resource" resource=resource.titulo %}
+    {% include "header.html" with title="Resource" resource=resource.titulo cursoid=curso.pk %}
     <h2 class="pt-5 pl-20 text-4xl">{{curso.nombre}} / {{resource.titulo}}</h2>
     <div id="resource" class="pl-20 pr-20 pt-5 ">
         <div id="description" class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
