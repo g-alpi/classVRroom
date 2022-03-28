@@ -23,7 +23,8 @@ urlpatterns = [
     path('api/login',login),
     path('api/logout',logout),
     path('api/get_courses',get_courses),
-    path('api/get_course_details',get_course_details)
+    path('api/get_course_details',get_course_details),
+    path('api/pin_request',pin_request)
 
 ]
 

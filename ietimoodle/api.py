@@ -4,7 +4,8 @@ from rest_framework.authtoken.models import Token
 from .models import *
 from django.http import JsonResponse
 from django.contrib.auth.hashers import check_password
-
+from rest_framework.authentication import TokenAuthentication, BasicAuthentication
+import random 
 
 def verifyToken(token):
     verifica = False
@@ -58,7 +59,7 @@ def logout(request):
     else:        
         _status = "ERROR"
         _message = "session_token is required"
-
+   
     return JsonResponse({'status': _status, "message":_message})
     
 
@@ -154,3 +155,34 @@ def get_course_details(request):
           
     return JsonResponse({"status":_status,"message":_message,"course":_course}, safe=False,status=status.HTTP_200_OK)
  
+@api_view(['GET'])
+def pin_request(request):
+    token = (request.GET['token'])
+    task = (request.GET['task'])
+    verifica = verifyToken(token)
+    pinexiste = True
+    if (verifica):
+        for entrega in Entrega.objects.all():
+            if (task == str(entrega.id)):
+                if (entrega.pin==None):
+                    while (pinexiste==True):
+                        print("girando")
+                        pinexiste = False
+                        newpin = random.randint(0,9999)
+                        for entr in Entrega.objects.all():
+                            if(newpin == entr.pin):
+                                pinexiste = True
+                        if (pinexiste == False):
+                            break
+                    pin = newpin
+                    entrega.pin = newpin
+                    entrega.save()
+                else:
+                    pin = entrega.pin
+        entrega = Entrega.objects.filter(id=task).first()
+        _status = "OK"
+        _message = "token va bien"
+    else:
+        _status = "ERRROR" 
+        _message = "invalid token"   
+    return JsonResponse({"status":_status,"message":_message,"PIN":entrega.pin})

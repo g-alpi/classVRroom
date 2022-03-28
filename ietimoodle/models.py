@@ -53,6 +53,7 @@ class Entrega(models.Model):
     fecha_entrega = models.DateTimeField()
     comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
     comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
+    pin = models.IntegerField(null=True, blank=True)
     def __str__(self):
         return self.ejercicio.nombre
 
