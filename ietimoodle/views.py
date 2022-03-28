@@ -123,6 +123,21 @@ def delivery(request, exerciseid, alumnid):
     }
     return render(request, 'delivery.html', content)
 
+@login_required
+def fastcorrection(request, exerciseid):
+    exercise=get_object_or_404(Ejercicio, pk=exerciseid)
+    deliveries=Entrega.objects.filter(ejercicio=exercise)
+    alumnos= Entrega.objects.filter(ejercicio=exercise)
+    curso=get_object_or_404(Curso, pk=exercise.curso.pk)
+    
+    content = {
+        'alumnos': alumnos,
+        'exercise': exercise,
+        'deliveries': deliveries,
+        'curso': curso
+    }
+    return render(request, 'fastcorrection.html', content)
+
 @csrf_exempt
 def actualizar(request, entrega, nota, comentarioProfesor):
 	delivery = get_object_or_404(Entrega, pk=entrega)

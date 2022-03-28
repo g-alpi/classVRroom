@@ -2,7 +2,10 @@
     {% include "header.html" with title="Delivery" exercise=exercise.nombre cursoid=curso.pk %}
         {% block content %}
         <div class="pt-5 pl-20 pr-20 flex justify-between">
-            <h2 class="text-4xl">{{exercise}} de {{alumn}}</h2>
+            <div class="flex">
+                <h2 class="text-4xl">{{exercise}} de {{alumn}}</h2>
+                <button class="p-1 m-1 ml-10"><a href="../fc/{{exercise.pk}}">Cualificación rápida</a></button>
+            </div>
             <div id="buttons flex align-center">
                 <button class="p-1 m-1"><a href="{{prevAlumn}}">Anterior alumno</a></button>
                 <button class="p-1 m-1" ><a href="{{nextAlumn}}">Siguiente alumno</a></button>
@@ -37,7 +40,7 @@
                     </tr>
                     <tr class="bg-[#e2daf0]">
                         <td><p class="font-bold">Archivo:</p></td>
-                        <td><a href="../../{{delivery.archivo}}" class="underline text-[#461f87] flex italic">Descargar archivo entregado</a></td>
+                        <td><a href="../{{delivery.archivo}}" class="underline text-[#461f87] italic">Descargar archivo entregado</a></td>
                     </tr>
                     <tr>
                         <td><p class="font-bold">Fecha de Entrega:</p></td>

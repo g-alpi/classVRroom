@@ -1,0 +1,51 @@
+<html>
+    {% include "header.html" with title="Fast Correction" exercise=exercise.nombre cursoid=curso.pk %}
+        {% block content %}
+        <h2 class="pt-5 pl-20 text-4xl">{{exercise.nombre}}</h2>
+
+        <div id="table" class="pl-20 pr-20 pt-5 ">
+            <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
+                <table id="fctable" style="border: 1px ; border-radius: 10px;" class="min-w-full">
+                    <tr class="font-bold text-center">
+                        <td>Alumno</td>
+                        <td>Cualificación</td>
+                        <td>Fecha de Entrega</td>
+                        <td>Comentario Alumno</td>
+                        <td>Archivo</td>
+                        <td>Comentario Profesor</td>
+                        <td>Actualizar</td>
+                    </tr>
+                    {% if deliveries %}
+                    {% for d in deliveries %}
+                        <tr class="text-center">
+                            <td>{{d.user}}</td>
+                            {% if d.cualificacion %}
+                                <td><input type="number" value="{{d.cualificacion}}" id="nota" class="text-center"></td>
+                            {% else %}
+                                {% load static %}
+                                <td class="flex justify-center items-center pt-1"><input type="number" value="{{d.cualificacion}}" id="nota" class="text-center"><img class="max-w-[18px] max-h-[18px] ml-3" src="{% static 'warning.png' %}" alt="Warning"></td>
+                            {% endif %}
+                            <td>{{d.fecha_entrega}}</td>
+                            {% if d.comentario_alumno %}
+                                <td>{{d.comentario_alumno}}</td>
+                            {% else %}
+                                <td class="italic">Sin comentario</td>
+                            {% endif %}
+                            <td><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Descargar</a></td>
+                            {% if d.comentario_profesor %}
+                                <td><input type="text" value="{{d.comentario_profesor}}" id="comentarioProfesor" class="text-center"></td>
+                            {% else %}
+                                <td class="italic">Sin comentario</td>
+                            {% endif %}
+                            <td><button name="" id="enviar" class="p-1 m-1 text-sm">Actualizar</button></td>
+                        </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr><td>No hay entregas</td></tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+        {% endblock %}
+    </body>
+<html>
