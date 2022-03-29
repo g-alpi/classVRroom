@@ -15,7 +15,9 @@ urlpatterns = [
     path('exercise/<int:exerciseid>', views.exercise, name='exercise'),
     path('fc/<int:exerciseid>', views.fastcorrection, name='fastcorrection'),
     path('<int:exerciseid>/<int:alumnid>', views.delivery, name='delivery'),
-    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>/<int:estadoEntrega>',views.actualizar, name="actualizar"),
+    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>/<int:estadoEntrega>',views.actualizarEjercicioIndiviual, name="actualizar"),
+    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>/',views.actualizar, name="actualizar"),
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()

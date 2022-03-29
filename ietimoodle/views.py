@@ -163,7 +163,7 @@ def fastcorrection(request, exerciseid):
     return render(request, 'fastcorrection.html', content)
 
 @csrf_exempt
-def actualizar(request, entrega, nota, comentarioProfesor,estadoEntrega):
+def actualizarEjercicioIndiviual(request, entrega, nota, comentarioProfesor,estadoEntrega):
 	if estadoEntrega==1:
 		estadoEntrega=True
 	else:
@@ -174,3 +174,9 @@ def actualizar(request, entrega, nota, comentarioProfesor,estadoEntrega):
 	delivery.comentario_profesor = comentarioProfesor
 	delivery.save()
 
+@csrf_exempt
+def actualizar(request, entrega, nota, comentarioProfesor):
+	delivery = get_object_or_404(Entrega, pk=entrega)
+	delivery.cualificacion = nota
+	delivery.comentario_profesor = comentarioProfesor
+	delivery.save()

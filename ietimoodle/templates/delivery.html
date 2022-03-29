@@ -50,7 +50,7 @@
                         <tr class="bg-[#e2daf0]">
                             <td><p class="font-bold">Comentario Profesor:</p></td>
                             <td>
-                                <input type="text" value="{{delivery.comentario_profesor}}" id="comentarioProfesor" class="text-center">
+                                <textarea name="comentarioProfesor" id="comentarioProfesor" cols="30" rows="5">{{delivery.comentario_profesor}}</textarea>
                             </td>
                         </tr>
                         <tr>
@@ -77,7 +77,6 @@
 
         <script type="text/javascript">
             $(document).ready(function() {
-                console.log("cargado")
                 $('#enviar').on('click',function(){
 
                     let entregado="{{delivery.estado}}";

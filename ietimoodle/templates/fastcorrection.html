@@ -20,10 +20,10 @@
                                 <tr class="text-center">
                                     <td>{{d.user}}</td>
                                     {% if d.cualificacion %}
-                                        <td><input type="number" value="{{d.cualificacion}}" id="nota" class="text-center"></td>
+                                        <td class="{{d.pk}}"><input type="number" value="{{d.cualificacion}}" class="nota" class="text-center"></td>
                                     {% else %}
                                         {% load static %}
-                                        <td class="flex justify-center items-center pt-1"><input type="number" value="{{d.cualificacion}}" id="nota" class="text-center"><img class="max-w-[18px] max-h-[18px] ml-3" src="{% static 'warning.png' %}" alt="Warning"></td>
+                                        <td class="flex justify-center items-center pt-1"><input type="number" value="{{d.cualificacion}}" class="nota" class="text-center"><img class="max-w-[18px] max-h-[18px] ml-3" src="{% static 'warning.png' %}" alt="Warning"></td>
                                     {% endif %}
                                     <td>{{d.fecha_entrega}}</td>
                                     {% if d.comentario_alumno %}
@@ -33,11 +33,11 @@
                                     {% endif %}
                                     <td><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Descargar</a></td>
                                     {% if d.comentario_profesor %}
-                                        <td><input type="text" value="{{d.comentario_profesor}}" id="comentarioProfesor" class="text-center"></td>
+                                        <td class="{{d.pk}}"><input type="text" value="{{d.comentario_profesor}}" class="comentarioProfesor" class="text-center"></td>
                                     {% else %}
-                                        <td><input type="text" value="N/A" id="comentarioProfesor" class="text-center"></td>
+                                        <td><input type="text" value="N/A" class="comentarioProfesor" class="text-center"></td>
                                     {% endif %}
-                                    <td><button name="" id="enviar" class="p-1 m-1 text-sm">Actualizar</button></td>
+                                    <td><button name="" id="{{d.pk}}" class="p-1 m-1 text-sm actualizar">Actualizar</button></td>
                                 </tr>
                     {% endfor %}
                     {% for a in alumnos %}
@@ -57,8 +57,41 @@
                     <tr><td>No hay entregas</td></tr>
                     {% endif %}
                 </table>
+                <button id="enviar"> esto es un boton de pruebas</button>
+                
             </div>
         </div>
+        <script>
+            $(document).ready(function() {
+                $('.actualizar').each(function() {
+                    $(this).on('click', function () {
+                        let nota = $("."+this.id+' .nota').val();
+                        let comentarioProfesor = $("."+this.id+' .comentarioProfesor').val();
+                        let entrega =  this.id;
+                        console.log(window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor);
+                        $.ajax({
+                            url: window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor,
+                            method : 'POST',
+                        })
+
+                        if (nota=="gola" && comentarioProfesor=="cosa") {
+                            $("table").before('<div class="alert warning"> <span class="closebtn">&times;</span>No se ha actualizado la información, modifica los campos y vuelve a enviar</div>');
+                            
+                        }
+                        else{
+                            $("table").before('<div class="alert success"> <span class="closebtn">&times;</span>La información se ha actualizado correctamente</div>');
+                        }
+                        eliminarAlerta();
+                        setTimeout(function(){ location.reload()}, 1000);
+
+                        
+                    })
+                    
+                });
+
+                    });
+            
+        </script>
         {% endblock %}
     </body>
 <html>
