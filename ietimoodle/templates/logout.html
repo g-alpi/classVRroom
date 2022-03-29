@@ -1,7 +1,9 @@
 <html>
     {% include "header.html" with title="Logout" %}
     <div class="p-20 max-w-2xl max-h-2xl flex flex-col items-center align-center m-auto">
-        <p>Log out successfully</p>
+        
+        
+        <div class="alert success"> <span class="closebtn">&times;</span>Log out successfully</div>
         {% load static %}
         <img src="{% static 'logo.png' %}" alt="WLYLogo">
         <div>

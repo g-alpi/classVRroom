@@ -23,9 +23,9 @@
                         <td><p class="font-bold">Estado:</p></td>
                         <td>
                             {% if delivery.estado == True %}
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="entregado" checked>
                             {% else %}
-                                <input type="checkbox">
+                                <input type="checkbox" id="entregado">
                             {% endif %}
                         </td>
                     </tr>
@@ -54,59 +54,51 @@
                         <td><p>{{delivery.comentario_alumno}}</p></td>
                     </tr>
                 </table>
-                <button  name="" id="enviar" class="p-1 m-1">Actualizar</button>
+                <!-- <form action="">
+                    <input  type="submit" id="enviar" class="p-1 m-1" value="Actualizar">
+                </form> -->
+                <button id="enviar" class="p-1 m-1">Actualizar</button>
+                
             </div>
         </div>
 
-
-
-        <script
-		src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous"></script>
         <script type="text/javascript">
             $(document).ready(function() {
+                console.log("cargado")
                 $('#enviar').on('click',function(){
+
+                    let entregado="{{delivery.estado}}";
+                    let banderaEntrega=1
+                    if ($('#entregado').is(':checked')!=true){
+                        banderaEntrega=2
+                    }
+                    
                     let nota = $('#nota').val();
                     let comentarioProfesor = $('#comentarioProfesor').val();
                     let entrega = "{{ delivery.pk}}" ;
                     console.log(window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor);
                     $.ajax({
-                        url: window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor,
+                        url: window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor+"/"+banderaEntrega,
                         method : 'POST',
                     })
 
-                    if ($('#nota').val()=="{{delivery.cualificacion}}" && $('#comentarioProfesor').val()=="{{delivery.comentario_profesor}}") {
+                    if ($('#nota').val()=="{{delivery.cualificacion}}" && $('#comentarioProfesor').val()=="{{delivery.comentario_profesor}}" 
+                        && String($('#entregado').is(':checked'))==entregado.toLowerCase()) 
+                        {
                         $("table").before('<div class="alert warning"> <span class="closebtn">&times;</span>No se ha actualizado la información, modifica los campos y vuelve a enviar</div>');
+                        
                     }
                     else{
                         $("table").before('<div class="alert success"> <span class="closebtn">&times;</span>La información se ha actualizado correctamente</div>');
                     }
                     eliminarAlerta();
-                    
+                    setTimeout(function(){ location.reload()}, 1000);
 
                     
                 })
-                $("#nota").change(function (e) { 
-                    e.preventDefault();
-                    let nota = $("#nota").val();
-                    if (nota<0 || nota>10) {
-                    }
-                });
+                
             });
             
-            function eliminarAlerta() {
-                var close = document.getElementsByClassName("closebtn");
-                var i;
-
-                for (i = 0; i < close.length; i++) {
-                close[i].onclick = function(){
-                    var div = this.parentElement;
-                    div.style.opacity = "0";
-                    setTimeout(function(){ div.style.display = "none"; }, 600);
-                }
-                }
-            };
         </script>
         {% endblock %}
     </body>
