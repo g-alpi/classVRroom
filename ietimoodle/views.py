@@ -58,7 +58,6 @@ def grade(request, cursoid):
     role= Suscripcion.objects.filter(curso=cursoid, user=request.user.pk)[0]
     suscripciones=Suscripcion.objects.filter(curso=cursoid)[0]
     firstAlId=get_object_or_404(User, pk=suscripciones.user.pk)
-    print(role)
     content= {
         'resources': recursos,
         'exercises': ejercicios,
@@ -67,6 +66,23 @@ def grade(request, cursoid):
         'firstal': firstAlId
     }
     return render(request, 'grade.html', content)
+
+@login_required
+def qualifications(request, cursoid):
+    alumn=get_object_or_404(User, pk=request.user.pk)
+    ejercicios = Ejercicio.objects.filter(curso=cursoid)
+    deliveries=Entrega.objects.filter(user=alumn.pk, curso=cursoid)
+    deliveriesRealizadas=[]
+    for d in deliveries:
+        deliveriesRealizadas.append(d.ejercicio.pk)
+    content= {
+        'grade': get_object_or_404(Curso, pk=cursoid),
+        'alumn': alumn,
+        'exercises': ejercicios,
+        'deliveries': deliveries,
+        'deliveriesRealizadas': deliveriesRealizadas
+    }
+    return render(request, 'qualifications.html', content)
 
 @login_required
 def resource(request, resourceid):

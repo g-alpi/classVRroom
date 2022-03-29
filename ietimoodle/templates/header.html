@@ -62,6 +62,11 @@
         <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> /
         <a class="underline text-[#461f87]" href="../grade/{{cursoid}}">{{curso}}</a> / 
         <a class="underline text-[#461f87]" href="">{{exercise}}</a>
+        {% elif title == "Qualifications" %}
+        <a class="underline text-[#461f87]" href="..">Home</a> / 
+        <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> /
+        <a class="underline text-[#461f87]" href="../grade/{{curso.pk}}">{{curso.nombre}}</a> / 
+        <a class="underline text-[#461f87]" href="">Cualificaciones de {{curso.nombre}}</a>
         {% endif %}
         </div>
         <div>
