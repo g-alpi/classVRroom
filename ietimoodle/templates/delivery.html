@@ -1,67 +1,79 @@
 <html>
     {% include "header.html" with title="Delivery" exercise=exercise.nombre cursoid=curso.pk %}
         {% block content %}
-        <div class="pt-5 pl-20 pr-20 flex justify-between">
-            <h2 class="text-4xl">{{exercise}} de {{alumn}}</h2>
-            <div id="buttons flex align-center">
-                <button class="p-1 m-1"><a href="{{prevAlumn}}">Anterior alumno</a></button>
-                <button class="p-1 m-1" ><a href="{{nextAlumn}}">Siguiente alumno</a></button>
+        {% if delivery %}
+            <div class="pt-5 pl-20 pr-20 flex justify-between">
+                <div class="flex">
+                    <h2 class="text-4xl">{{exercise}} de {{alumn}}</h2>
+                    <button class="p-1 m-1 ml-10"><a href="../fc/{{exercise.pk}}">Cualificación rápida</a></button>
+                </div>
+                <div id="buttons flex align-center">
+                    <button class="p-1 m-1"><a href="{{prevAlumn}}">Anterior alumno</a></button>
+                    <button class="p-1 m-1" ><a href="{{nextAlumn}}">Siguiente alumno</a></button>
+                </div>
             </div>
-        </div>
-        <div class="pl-20 pr-20 pt-5 ">
-            <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
-                <table style="border: 1px ; border-radius: 10px;">
-                    <tr class="bg-[#e2daf0]">
-                        <td class="min-w-[200px]"><p class="font-bold">Alumno:</p></td>
-                        <td class="min-w-full"><p>{{delivery.user}}</p></td>
-                    </tr>
-                    <tr>
-                        <td><p class="font-bold">Ejercicio:</p></td>
-                        <td><p>{{delivery.ejercicio}}</p></td>
-                    </tr>
-                    <tr class="bg-[#e2daf0]">
-                        <td><p class="font-bold">Estado:</p></td>
-                        <td>
-                            {% if delivery.estado == True %}
-                                <input type="checkbox" id="entregado" checked>
-                            {% else %}
-                                <input type="checkbox" id="entregado">
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><p class="font-bold">Cualificación:</p></td>
-                        <td>
-                            <input type="number" value="{{delivery.cualificacion}}" id="nota" class="text-center">
-                        </td>
-                    </tr>
-                    <tr class="bg-[#e2daf0]">
-                        <td><p class="font-bold">Archivo:</p></td>
-                        <td><a href="../../{{delivery.archivo}}" class="underline text-[#461f87] flex italic">Descargar archivo entregado</a></td>
-                    </tr>
-                    <tr>
-                        <td><p class="font-bold">Fecha de Entrega:</p></td>
-                        <td><p>{{delivery.fecha_entrega}}</p></td>
-                    </tr>
-                    <tr class="bg-[#e2daf0]">
-                        <td><p class="font-bold">Comentario Profesor:</p></td>
-                        <td>
-                            <!-- <input type="text" value="{{delivery.comentario_profesor}}" id="comentarioProfesor" class="text-center"> -->
-                            <textarea name="comentarioProfesor" cols="25" rows="5" id="comentarioProfesor">{{delivery.comentario_profesor}}</textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><p class="font-bold">Comentario Alumno:</p></td>
-                        <td><p>{{delivery.comentario_alumno}}</p></td>
-                    </tr>
-                </table>
-                <!-- <form action="">
-                    <input  type="submit" id="enviar" class="p-1 m-1" value="Actualizar">
-                </form> -->
-                <button id="enviar" class="p-1 m-1">Actualizar</button>
-                
+            <div class="pl-20 pr-20 pt-5 ">
+                <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
+                    <table style="border: 1px ; border-radius: 10px;">
+                        <tr class="bg-[#e2daf0]">
+                            <td class="min-w-[200px]"><p class="font-bold">Alumno:</p></td>
+                            <td class="min-w-full"><p>{{delivery.user}}</p></td>
+                        </tr>
+                        <tr>
+                            <td><p class="font-bold">Ejercicio:</p></td>
+                            <td><p>{{delivery.ejercicio}}</p></td>
+                        </tr>
+                        <tr class="bg-[#e2daf0]">
+                            <td><p class="font-bold">Estado:</p></td>
+                            <td>
+                                {% if delivery.estado == True %}
+                                    <input type="checkbox" checked>
+                                {% else %}
+                                    <input type="checkbox">
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><p class="font-bold">Cualificación:</p></td>
+                            <td>
+                                <input type="number" value="{{delivery.cualificacion}}" id="nota" class="text-center">
+                            </td>
+                        </tr>
+                        <tr class="bg-[#e2daf0]">
+                            <td><p class="font-bold">Archivo:</p></td>
+                            <td><a href="../{{delivery.archivo}}" class="underline text-[#461f87] italic">Descargar archivo entregado</a></td>
+                        </tr>
+                        <tr>
+                            <td><p class="font-bold">Fecha de Entrega:</p></td>
+                            <td><p>{{delivery.fecha_entrega}}</p></td>
+                        </tr>
+                        <tr class="bg-[#e2daf0]">
+                            <td><p class="font-bold">Comentario Profesor:</p></td>
+                            <td>
+                                <input type="text" value="{{delivery.comentario_profesor}}" id="comentarioProfesor" class="text-center">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><p class="font-bold">Comentario Alumno:</p></td>
+                            <td><p>{{delivery.comentario_alumno}}</p></td>
+                        </tr>
+                    </table>
+                    <button  name="" id="enviar" class="p-1 m-1">Actualizar</button>
+                </div>
             </div>
-        </div>
+        {% else %}
+            <div class="pt-5 pl-20 pr-20">
+                <h2 class="text-4xl">{{exercise}}</h2>
+            </div>
+
+            <div class="pl-20 pr-20 pt-5 ">
+                <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3 flex">
+                    {% load static %}
+                    <img class="max-w-[30px] max-h-[30px] ml-3 mr-8" src="{% static 'warning.png' %}" alt="Warning"><p class="text-xl">No hay entregas realizadas en este ejercicio</p>
+                </div>
+            </div>
+        {% endif %}
+
 
         <script type="text/javascript">
             $(document).ready(function() {

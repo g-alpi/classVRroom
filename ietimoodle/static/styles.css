@@ -47,3 +47,7 @@ button *,button,input[type='submit'] {
     color: black;
 
 }
+
+#fctable tr:nth-child(odd) {
+    background-color: #e2daf0;
+}

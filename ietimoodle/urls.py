@@ -13,6 +13,7 @@ urlpatterns = [
     path('grade/<int:cursoid>', views.grade, name='grade'),
     path('resource/<int:resourceid>', views.resource, name='resource'),
     path('exercise/<int:exerciseid>', views.exercise, name='exercise'),
+    path('fc/<int:exerciseid>', views.fastcorrection, name='fastcorrection'),
     path('<int:exerciseid>/<int:alumnid>', views.delivery, name='delivery'),
     path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>/<int:estadoEntrega>',views.actualizar, name="actualizar"),
 ]

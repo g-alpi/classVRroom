@@ -16,6 +16,8 @@
         <title>{{resource}}</title>
     {% elif title == "Exercise" %}
         <title>{{exercise}}</title>
+    {% elif title == "Delivery" %}
+        <title>{{exercise}}</title>
     {% else %}
         <title>{{title}}</title>
     {% endif %}
@@ -41,13 +43,13 @@
 <body>
     <header class="pt-5 pb-0 pr-10 pl-10 flex justify-between">
         <div>
-        <img class="w-20" src="{% static 'logo.png' %}" alt="WLYLogo">
+        <a href=".."><img class="w-20" src="{% static 'logo.png' %}" alt="WLYLogo"></a>
         {% if title == "Home" %}
         <a class="underline text-[#461f87]" href="">Home</a>
         {% elif title == "Dashboard" %}
         <a class="underline text-[#461f87]" href="..">Home</a> / 
         <a class="underline text-[#461f87]" href="">Cursos</a>
-        {% elif title == "Delivery" %}
+        {% elif title == "Delivery" or title == "Fast Correction" %}
         <a class="underline text-[#461f87]" href="..">Home</a> / 
         <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> /
         <a class="underline text-[#461f87]" href="../grade/{{cursoid}}">{{curso}}</a> / 

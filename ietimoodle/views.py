@@ -109,33 +109,58 @@ def exercise(request, exerciseid):
 
 @login_required
 def delivery(request, exerciseid, alumnid):
-	alumn= get_object_or_404(User, pk=alumnid)
-	exercise=get_object_or_404(Ejercicio, pk=exerciseid)
-	delivery=Entrega.objects.filter(ejercicio=exercise, user=alumn)[0]
-	alumnos= Entrega.objects.filter(ejercicio=exercise)
-	curso=get_object_or_404(Curso, pk=exercise.curso.pk)
+    alumn= get_object_or_404(User, pk=alumnid)
+    exercise=get_object_or_404(Ejercicio, pk=exerciseid)
+    try:
+        alumnos= Entrega.objects.filter(ejercicio=exercise)
+        curso=get_object_or_404(Curso, pk=exercise.curso.pk)
+        delivery=Entrega.objects.filter(ejercicio=exercise, user=alumn)[0]
+        alumnosID=[]
+        for i in alumnos :
+            alumnosID.append(i.user.pk)
 
-	alumnosID=[]
-	for i in alumnos :
-		alumnosID.append(i.user.pk)
+        if alumnosID.index(alumnid) == len(alumnosID)-1:
+            nextAlumn = alumnosID[0]
+        else:
+            nextAlumn = alumnosID[alumnosID.index(alumnid) + 1]
 
-	if alumnosID.index(alumnid) == len(alumnosID)-1:
-		nextAlumn = alumnosID[0]
-	else:
-		nextAlumn = alumnosID[alumnosID.index(alumnid) + 1]
+        prevAlumn = alumnosID[alumnosID.index(alumnid) - 1]
+    except:
+        delivery=""
+        prevAlumn=""
+        nextAlumn=""
+    
+    
+    content = {
+        'alumn': alumn,
+        'exercise': exercise,
+        'delivery': delivery,
+        'nextAlumn': nextAlumn,
+        'prevAlumn': prevAlumn,
+        'curso': curso
+    }
+    return render(request, 'delivery.html', content)
 
-	prevAlumn = alumnosID[alumnosID.index(alumnid) - 1]
-	
-	
-	content = {
-		'alumn': alumn,
-		'exercise': exercise,
-		'delivery': delivery,
-		'nextAlumn': nextAlumn,
-		'prevAlumn': prevAlumn,
-		'curso': curso
-	}
-	return render(request, 'delivery.html', content)
+
+@login_required
+def fastcorrection(request, exerciseid):
+    exercise=get_object_or_404(Ejercicio, pk=exerciseid)
+    curso=get_object_or_404(Curso, nombre=exercise.curso)
+    deliveries=Entrega.objects.filter(ejercicio=exercise)
+    alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
+    curso=get_object_or_404(Curso, pk=exercise.curso.pk)
+    alumnosEntregado=[]
+    for d in deliveries:
+        alumnosEntregado.append(d.user.pk)
+    
+    content = {
+        'alumnos': alumnos,
+        'exercise': exercise,
+        'deliveries': deliveries,
+        'alumnosEntregado': alumnosEntregado,
+        'curso': curso
+    }
+    return render(request, 'fastcorrection.html', content)
 
 @csrf_exempt
 def actualizar(request, entrega, nota, comentarioProfesor,estadoEntrega):
