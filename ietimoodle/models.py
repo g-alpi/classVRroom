@@ -49,7 +49,7 @@ class Entrega(models.Model):
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
     cualificado = models.BooleanField()
     cualificacion = models.IntegerField(default=0)
-    archivo = models.FileField(upload_to="./archivos/entregas/")
+    archivo = models.FileField(upload_to="./archivos/entregas/",blank=True)
     fecha_entrega = models.DateTimeField()
     comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
     comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
