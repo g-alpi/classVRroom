@@ -48,7 +48,7 @@ class Entrega(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
-    estado = models.BooleanField()
+    cualificado = models.BooleanField()
     cualificacion = models.IntegerField(default=0)
     archivo = models.FileField(upload_to="./archivos/entregas/")
     fecha_entrega = models.DateTimeField()

@@ -220,6 +220,7 @@ def start_vr_exercise(request):
 #Send values as request HEADER
 @api_view(['POST'])
 def finish_vr_exercise(request):
+    _status="ERROR"
     try :
             pin = (request.headers['pin'])
     except: 
@@ -251,11 +252,10 @@ def finish_vr_exercise(request):
     elif(performancedata == "null"):
         _message = "Missing performancedata"
     else:
+        _status = "OK"
         _message = "Exercise data succesfully stored"
 
-    if(status.HTTP_200_OK):
-        _status = "OK"
-    else:
+    if not (status.HTTP_200_OK):
         _status = "ERROR"
         _message = "failed request"
     
