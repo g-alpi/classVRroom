@@ -14,7 +14,12 @@ from django.utils.translation import gettext_lazy as _
 from django.http import JsonResponse
 
 from .models import *
+from .serializers import * 
+from rest_framework import viewsets
+from django.contrib.auth.models import Permission
+from rest_framework import permissions
 import os, mimetypes
+
 
 class MyAuthForm(AuthenticationForm):
 	error_messages = {
@@ -178,7 +183,7 @@ def fastcorrection(request, exerciseid):
 	return render(request, 'fastcorrection.html', content)
 
 @csrf_exempt
-def actualizar(request, entrega, nota, comentarioProfesor,estadoEntrega):
+def actualizarEjercicioIndiviual(request, entrega, nota, comentarioProfesor,estadoEntrega):
 	if estadoEntrega==1:
 		estadoEntrega=True
 	else:
@@ -189,3 +194,9 @@ def actualizar(request, entrega, nota, comentarioProfesor,estadoEntrega):
 	delivery.comentario_profesor = comentarioProfesor
 	delivery.save()
 
+@csrf_exempt
+def actualizar(request, entrega, nota, comentarioProfesor):
+	delivery = get_object_or_404(Entrega, pk=entrega)
+	delivery.cualificacion = nota
+	delivery.comentario_profesor = comentarioProfesor
+	delivery.save()

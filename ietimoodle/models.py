@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+import json
 # Create your models here.
 class Centro(models.Model):
     nombre = models.CharField(max_length=200)
@@ -15,11 +16,15 @@ class Curso(models.Model):
     centro = models.ForeignKey(Centro, on_delete=models.CASCADE)
     def __str__(self):
         return self.nombre
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
+
 class Ejercicio(models.Model):
     nombre = models.CharField(max_length=200)
     ponderacion = models.IntegerField(default=0)
     visibilidad = models.BooleanField(default=False)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    minVersion = models.CharField(max_length=200, null=True, blank=True)
     def __str__(self):
         return self.nombre
 
@@ -42,12 +47,14 @@ class Entrega(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
-    estado = models.BooleanField()
-    cualificacion = models.IntegerField(default=0, null=True, blank=True)
-    archivo = models.FileField(upload_to="./archivos/entregas/", null=True, blank=True)
+    cualificado = models.BooleanField()
+    cualificacion = models.IntegerField(default=0)
+    archivo = models.FileField(upload_to="./archivos/entregas/")
     fecha_entrega = models.DateTimeField()
     comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
     comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
+    pin = models.IntegerField(null=True, blank=True)
+
     def __str__(self):
         return self.ejercicio.nombre
 

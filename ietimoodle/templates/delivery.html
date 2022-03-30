@@ -13,19 +13,19 @@
                 </div>
             </div>
             <div class="pl-20 pr-20 pt-5 ">
-                <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
-                    <table style="border: 1px ; border-radius: 10px;">
+                <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-[10%] mb-3 w-[80%] ">
+                    <table style="border: 1px ; border-radius: 10px;" class="w-[100%] text-xl">
                         <tr class="bg-[#e2daf0]">
                             <td class="min-w-[200px]"><p class="font-bold">Alumno:</p></td>
-                            <td class="min-w-full"><p>{{delivery.user}}</p></td>
+                            <td class="min-w-full px-[10%]"><p>{{delivery.user}}</p></td>
                         </tr>
                         <tr>
                             <td><p class="font-bold">Ejercicio:</p></td>
-                            <td><p>{{delivery.ejercicio}}</p></td>
+                            <td class=" px-[10%]"><p>{{delivery.ejercicio}}</p></td>
                         </tr>
                         <tr class="bg-[#e2daf0]">
-                            <td><p class="font-bold">Estado:</p></td>
-                            <td>
+                            <td><p class="font-bold">Estado cualificacion:</p></td>
+                            <td class=" px-[10%]">
                                 {% if delivery.estado == True %}
                                     <input type="checkbox" checked>
                                 {% else %}
@@ -35,17 +35,17 @@
                         </tr>
                         <tr>
                             <td><p class="font-bold">Cualificación:</p></td>
-                            <td>
+                            <td class=" px-[10%]">
                                 <input type="number" value="{{delivery.cualificacion}}" id="nota" class="text-center">
                             </td>
                         </tr>
                         <tr class="bg-[#e2daf0]">
                             <td><p class="font-bold">Archivo:</p></td>
-                            <td><a href="../{{delivery.archivo}}" class="underline text-[#461f87] italic">Descargar archivo entregado</a></td>
+                            <td class=" px-[10%]"><a href="../{{delivery.archivo}}" class="underline text-[#461f87] italic">Descargar archivo entregado</a></td>
                         </tr>
                         <tr>
                             <td><p class="font-bold">Fecha de Entrega:</p></td>
-                            <td><p>{{delivery.fecha_entrega}}</p></td>
+                            <td class=" px-[10%]"><p>{{delivery.fecha_entrega}}</p></td>
                         </tr>
                         <tr class="bg-[#e2daf0]">
                             <td><p class="font-bold">Comentario Profesor:</p></td>
@@ -65,10 +65,11 @@
                                 <td><p>{{delivery.comentario_alumno}}</p></td>
                             {% else %}
                                 <td><p class="italic">Sin comentario</p></td>
-                            {% endif %}
-                            
+                            {% endif %}                       
                         </tr>
                     </table>
+                </div>
+                <div class="flex justify-end mr-[10%]">
                     <button  name="" id="enviar" class="p-1 m-1">Actualizar</button>
                 </div>
             </div>
@@ -88,7 +89,6 @@
 
         <script type="text/javascript">
             $(document).ready(function() {
-                console.log("cargado")
                 $('#enviar').on('click',function(){
 
                     let entregado="{{delivery.estado}}";
