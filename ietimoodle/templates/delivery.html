@@ -49,13 +49,24 @@
                         </tr>
                         <tr class="bg-[#e2daf0]">
                             <td><p class="font-bold">Comentario Profesor:</p></td>
-                            <td>
-                                <input type="text" value="{{delivery.comentario_profesor}}" id="comentarioProfesor" class="text-center">
-                            </td>
+                            {% if delivery.comentario_profesor and delivery.comentario_profesor != "None" %}
+                                <td>
+                                    <input type="text" value="{{delivery.comentario_profesor}}" id="comentarioProfesor" class="text-center">
+                                </td>
+                            {% else %}
+                                <td>
+                                    <input type="text" value="" id="comentarioProfesor" class="text-center">
+                                </td>
+                            {% endif %}
                         </tr>
                         <tr>
                             <td><p class="font-bold">Comentario Alumno:</p></td>
-                            <td><p>{{delivery.comentario_alumno}}</p></td>
+                            {% if delivery.comentario_alumno and delivery.comentario_alumno != "None" %}
+                                <td><p>{{delivery.comentario_alumno}}</p></td>
+                            {% else %}
+                                <td><p class="italic">Sin comentario</p></td>
+                            {% endif %}
+                            
                         </tr>
                     </table>
                     <button  name="" id="enviar" class="p-1 m-1">Actualizar</button>
