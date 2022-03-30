@@ -20,6 +20,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('archivos/<str:element>/<str:filename>', views.download, name='download'),
     path('grade/<int:cursoid>', views.grade, name='grade'),
+    path('qualifications/<int:cursoid>', views.qualifications, name='qualifications'),
     path('resource/<int:resourceid>', views.resource, name='resource'),
     path('exercise/<int:exerciseid>', views.exercise, name='exercise'),
     path('fc/<int:exerciseid>', views.fastcorrection, name='fastcorrection'),

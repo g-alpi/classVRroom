@@ -1,0 +1,64 @@
+<html>
+    {% include "header.html" with title="Qualifications" curso=grade %}
+        {% block content %}
+        <h2 class="pt-5 pl-20 text-4xl">{{grade.nombre}}</h2>
+        <div id="table" class="pl-20 pr-20 pt-5 ">
+            <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
+                <table id="fctable" style="border: 1px ; border-radius: 10px;" class="min-w-full">
+                    <tr class="text-center font-bold">
+                        <td>Ejercicio</td>
+                        <td>Ponderación</td>
+                        <td>Cualificación</td>
+                        <td>Fecha de Entrega</td>
+                        <td>Comentario Alumno</td>
+                        <td>Archivo</td>
+                        <td>Comentario Profesor</td>
+                    </tr>
+                    {% for e in exercises %}
+                        {% if e.visibilidad == True %}
+                            <tr class="text-center">
+                                <td>{{e.nombre}}</td>
+                                <td>{{e.ponderacion}}</td>
+                                {% if e.pk in deliveriesRealizadas %}
+                                    {% for d in deliveries %}
+                                        {% if d.ejercicio.pk == e.pk %}
+                                            {% if d.cualificacion %}
+                                                <td>{{d.cualificacion}}</td>
+                                            {% else %}
+                                                <td class="italic text-red-700">No cualificado</td>
+                                            {% endif %}
+                                            <td>{{d.fecha_entrega}}</td>
+                                            {% if d.comentario_alumno %}
+                                                <td>{{d.comentario_alumno}}</td>
+                                            {% else %}
+                                                <td class="italic">Sin comentario</td>
+                                            {% endif %}
+                                            {% if d.archivo %}
+                                                <td><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Descargar</a></td>
+                                            {% else %}
+                                                <td class="italic">Sin archivo</td>
+                                            {% endif %}
+                                            {% if d.comentario_profesor %}
+                                                <td>{{d.comentario_profesor}}</td>
+                                            {% else %}
+                                                <td class="italic">Sin comentario</td>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <td class="italic text-red-700">No cualificado</td>
+                                    <td class="italic text-red-700">No entregado</td>
+                                    <td class="italic text-red-700">Sin comentario</td>
+                                    <td class="italic text-red-700">No entregado</td>
+                                    <td class="italic text-red-700">Sin comentario</td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        {% endblock %}
+    </body>
+<html>

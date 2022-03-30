@@ -14,7 +14,12 @@
             </div>
         {% endfor %}
     </div>
-    <h2 class="pt-2 pl-20 text-4xl">Ejercicios de {{grade}}</h2>
+    <div id="tituloEjercicios" class="flex">
+        <h2 class="pt-2 pl-20 text-4xl">Ejercicios de {{grade}}</h2>
+        {% if role.tipo == "alumno" %}
+            <button class="p-1 mt-2 ml-10 font-bold"><a href="../qualifications/{{grade.pk}}">Cualificaciones de {{grade.nombre}}</a></button>
+        {% endif %}
+    </div>
     <div id="ejercicios" class="pl-20 pr-20 pt-5">
         {% if exercises %}
             {% for e in exercises %}
