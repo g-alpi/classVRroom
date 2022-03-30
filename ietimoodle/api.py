@@ -141,7 +141,7 @@ def get_course_details(request):
                 }
         if(status.HTTP_200_OK):
             _status = "OK"
-            _message = "BIEN"
+            _message = "OK"
         else:
             _status = "ERROR"
             _message = "failed request"
@@ -185,4 +185,78 @@ def pin_request(request):
     else:
         _status = "ERRROR" 
         _message = "invalid token"   
+
     return JsonResponse({"status":_status,"message":_message,"PIN":entrega.pin})
+
+@api_view(['GET'])
+def start_vr_exercise(request):
+    pin = (request.GET['pin'])
+    exer = False
+    for entrega in Entrega.objects.all():
+        if (pin==str(entrega.pin)):
+            exer = True
+            _username = (entrega.user.username)
+            _VRexerciseID = (entrega.ejercicio.id)
+            _minExerciseVersion = (entrega.ejercicio.minVersion)
+            if(status.HTTP_200_OK):
+                _status = "OK"
+                _message = "OK"
+            else:
+                exer = False
+                _status = "ERROR"
+                _message = "failed request"
+    if exer ==   False:
+        _status="OK"
+        _message = "invalid PIN"  
+        _username = "null"
+        _VRexerciseID = "null"
+        _minExerciseVersion = "null"
+    return JsonResponse({"status":_status,
+                        "message":_message,
+                        "username":_username,
+                        "VRexerciseID":_VRexerciseID,
+                        "minExerciseVersion":_minExerciseVersion})
+
+#Send values as request HEADER
+@api_view(['POST'])
+def finish_vr_exercise(request):
+    try :
+            pin = (request.headers['pin'])
+    except: 
+            pin = "null"
+    try:             
+        autograde = (request.headers['autograde'])
+    except:
+        autograde = "null"
+    try: 
+        vrexerciseid = (request.headers['exerciseID'])
+    except:
+        vrexerciseid = "null"
+    try:
+        exerciseversion = (request.headers['version'])
+    except:
+        exerciseversion = "null"
+    try:
+        performancedata = (request.headers['performance'])
+    except: 
+        performancedata = "null"
+    if(pin=="null"):
+        _message = "Missing pin"
+    elif(autograde == "null"):
+        _message = "Missing autograde"
+    elif(vrexerciseid == "null"):
+        _message = "Missing vrexerciseid"
+    elif(exerciseversion == "null"):
+        _message = "Missing exerciseversion"
+    elif(performancedata == "null"):
+        _message = "Missing performancedata"
+    else:
+        _message = "Exercise data succesfully stored"
+
+    if(status.HTTP_200_OK):
+        _status = "OK"
+    else:
+        _status = "ERROR"
+        _message = "failed request"
+    
+    return JsonResponse({"status": _status, "message":_message})
