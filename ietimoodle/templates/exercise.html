@@ -1,0 +1,80 @@
+<html>
+    {% include "header.html" with title="Exercise" exercise=exercise.nombre cursoid=curso.pk %}
+    <h2 class="pt-5 pl-20 text-4xl">{{curso.nombre}} / {{exercise.nombre}}</h2>
+    <div id="exercise" class="pl-20 pr-20 pt-5 ">
+        <div id="description" class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
+            <p class="font-bold">Ponderación: {{exercise.ponderacion}}</p>
+        </div>
+        <div id="attachedFiles">
+            <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
+                <table>
+                    <tr class="bg-[#e2daf0]">
+                        <td class="min-w-[200px]"><p class="font-bold">Estado de la entrega</p></td>
+                        <td class="min-w-full">
+                            {% if entrega.0 %}
+                            <p class="text-lime-600">Entregado</p>
+                            {% else %}
+                            <p class="text-red-700">No entregado</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p class="font-bold">Estado de la cualificación</p></td>
+                        <td>
+                            {% if entrega.0.cualificacion %}
+                            <p>{{entrega.0.cualificacion}}</p>
+                            {% else %}
+                            <p class="text-red-700">No cualificado</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr class="bg-[#e2daf0]">
+                        <td><p class="font-bold">Fecha de entrega</p></td>
+                        <td>
+                            {% if entrega.0.fecha_entrega %}
+                            <p>{{entrega.0.fecha_entrega}}</p>
+                            {% else %}
+                            <p class="text-red-700">No entregado</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p class="font-bold">Comentario del profesor</p></td>
+                        <td>
+                            {% if entrega.0.comentario_profesor %}
+                            <p>{{entrega.0.comentario_profesor}}</p>
+                            {% else %}
+                            <p>Ningún comentario</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+                {% if entrega.0 %}
+                <table>
+                    <tr class="bg-[#e2daf0]">
+                        <td class="min-w-[200px]"><p class="font-bold">Tu comentario</p></td>
+                        <td class="min-w-full">
+                            {% if entrega.0.comentario_alumno %}
+                            <p>{{entrega.0.comentario_alumno}}</p>
+                            {% else %}
+                            <p>Ningún comentario</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p class="font-bold">Archivo adjunto</p></td>
+                        <td>
+                            {% if entrega.0.archivo %}
+                            <a class="italic underline text-[#461f87]" href="../../{{entrega.0.archivo}}">Descargar archivo entregado</a>
+                            {% else %}
+                            <p>Ningún archivo adjunto</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    </body>
+</html>

@@ -18,7 +18,11 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('logout', views.logout_view, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('dashboard/curso/<int:cursoid>', views.curso, name='curso'),
+    path('archivos/<str:element>/<str:filename>', views.download, name='download'),
+    path('grade/<int:cursoid>', views.grade, name='grade'),
+    path('resource/<int:resourceid>', views.resource, name='resource'),
+    path('exercise/<int:exerciseid>', views.exercise, name='exercise'),
+    path('fc/<int:exerciseid>', views.fastcorrection, name='fastcorrection'),
     path('<int:exerciseid>/<int:alumnid>', views.delivery, name='delivery'),
     path('api/login',login),
     path('api/logout',logout),
@@ -27,7 +31,8 @@ urlpatterns = [
     path('api/pin_request',pin_request),
     path('api/start_vr_exercise',start_vr_exercise), 
     path('api/finish_vr_exercise',finish_vr_exercise) 
-
+    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>/<int:estadoEntrega>',views.actualizarEjercicioIndiviual, name="actualizar"),
+    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>/',views.actualizar, name="actualizar"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

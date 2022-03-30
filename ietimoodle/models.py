@@ -34,7 +34,6 @@ class NivelPrivacidad(models.Model):
     def __str__(self):
         return self.nombre
         
-        
 class User(AbstractUser):
   correo = models.EmailField(max_length=254, unique = True)
   centro = models.ForeignKey(Centro, on_delete=models.CASCADE, null=True, blank=True)
@@ -55,6 +54,7 @@ class Entrega(models.Model):
     comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
     comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
     pin = models.IntegerField(null=True, blank=True)
+
     def __str__(self):
         return self.ejercicio.nombre
 
