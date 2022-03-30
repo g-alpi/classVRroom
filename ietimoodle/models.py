@@ -35,13 +35,13 @@ class NivelPrivacidad(models.Model):
         return self.nombre
         
 class User(AbstractUser):
-  correo = models.EmailField(max_length=254, unique = True)
-  centro = models.ForeignKey(Centro, on_delete=models.CASCADE, null=True, blank=True)
-  privacidad = models.ForeignKey(NivelPrivacidad, on_delete=models.CASCADE, null=True, blank=True)
+    correo = models.EmailField(max_length=254, unique = True)
+    centro = models.ForeignKey(Centro, on_delete=models.CASCADE, null=True, blank=True)
+    privacidad = models.ForeignKey(NivelPrivacidad, on_delete=models.CASCADE, null=True, blank=True)
 
-  REQUIRED_FIELDS = ['first_name', 'last_name']
-  def __str__(self):
-      return "{}".format(self.username)
+    REQUIRED_FIELDS = ['first_name', 'last_name']
+    def __str__(self):
+        return "{}".format(self.username)
 
 class Entrega(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

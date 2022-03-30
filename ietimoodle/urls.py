@@ -12,7 +12,9 @@ from .models import *
 from .serializers import *
 from django.core import serializers
 import json 
-from .api import *
+from . import api
+
+app_name='moodle'   
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -25,15 +27,15 @@ urlpatterns = [
     path('exercise/<int:exerciseid>', views.exercise, name='exercise'),
     path('fc/<int:exerciseid>', views.fastcorrection, name='fastcorrection'),
     path('<int:exerciseid>/<int:alumnid>', views.delivery, name='delivery'),
-    path('api/login',login),
-    path('api/logout',logout),
-    path('api/get_courses',get_courses),
-    path('api/get_course_details',get_course_details),
-    path('api/pin_request',pin_request),
-    path('api/start_vr_exercise',start_vr_exercise), 
-    path('api/finish_vr_exercise',finish_vr_exercise) 
-    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>/<int:estadoEntrega>',views.actualizarEjercicioIndiviual, name="actualizar"),
-    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>/',views.actualizar, name="actualizar"),
+    path('api/login',api.login),
+    path('api/logout',api.logout),
+    path('api/get_courses',api.get_courses),
+    path('api/get_course_details',api.get_course_details),
+    path('api/pin_request',api.pin_request),
+    path('api/start_vr_exercise',api.start_vr_exercise), 
+    path('api/finish_vr_exercise',api.finish_vr_exercise),
+    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>/<int:estadoEntrega>',views.actualizarEjercicioIndiviual, name="actualizarEjercicio"),
+    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>',views.actualizar, name="actualizar"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

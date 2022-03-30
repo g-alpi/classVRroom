@@ -44,10 +44,10 @@ INSTALLED_APPS = [
     'rest_framework.authtoken'
 ]
 REST_FRAMEWORK = {
-   'DEFAULT_AUTHENTICATION_CLASSES': (
-       'rest_framework.authentication.TokenAuthentication',
+'DEFAULT_AUTHENTICATION_CLASSES': (
+    'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-   )
+)
 }
 AUTH_USER_MODEL = 'ietimoodle.User'
 MIDDLEWARE = [

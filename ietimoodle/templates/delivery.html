@@ -48,23 +48,23 @@
                             <td class=" px-[10%]"><p>{{delivery.fecha_entrega}}</p></td>
                         </tr>
                         <tr class="bg-[#e2daf0]">
-                            <td><p class="font-bold">Comentario Profesor:</p></td>
+                            <td class="flex"><p class="font-bold">Comentario Profesor:</p></td>
                             {% if delivery.comentario_profesor and delivery.comentario_profesor != "None" %}
-                                <td>
-                                    <input type="text" value="{{delivery.comentario_profesor}}" id="comentarioProfesor" class="text-center">
+                                <td class=" px-[10%]">
+                                    <textarea name="comentarioProfesor" id="comentarioProfesor" cols="40" rows="5">{{delivery.comentario_profesor}}</textarea>
                                 </td>
                             {% else %}
-                                <td>
-                                    <input type="text" value="" id="comentarioProfesor" class="text-center">
+                                <td class=" px-[10%]">
+                                    <textarea name="comentarioProfesor" id="comentarioProfesor" cols="40" rows="10"></textarea>
                                 </td>
                             {% endif %}
                         </tr>
                         <tr>
                             <td><p class="font-bold">Comentario Alumno:</p></td>
                             {% if delivery.comentario_alumno and delivery.comentario_alumno != "None" %}
-                                <td><p>{{delivery.comentario_alumno}}</p></td>
+                                <td class=" px-[10%]"><p>{{delivery.comentario_alumno}}</p></td>
                             {% else %}
-                                <td><p class="italic">Sin comentario</p></td>
+                                <td class=" px-[10%]"><p class="italic">Sin comentario</p></td>
                             {% endif %}                       
                         </tr>
                     </table>
@@ -100,7 +100,7 @@
                     let nota = $('#nota').val();
                     let comentarioProfesor = $('#comentarioProfesor').val();
                     let entrega = "{{ delivery.pk}}" ;
-                    console.log(window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor);
+                    console.log(window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor+"/"+banderaEntrega);
                     $.ajax({
                         url: window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor+"/"+banderaEntrega,
                         method : 'POST',
