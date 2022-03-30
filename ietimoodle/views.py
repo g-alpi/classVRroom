@@ -14,7 +14,12 @@ from django.utils.translation import gettext_lazy as _
 from django.http import JsonResponse
 
 from .models import *
+from .serializers import * 
+from rest_framework import viewsets
+from django.contrib.auth.models import Permission
+from rest_framework import permissions
 import os, mimetypes
+
 
 class MyAuthForm(AuthenticationForm):
 	error_messages = {

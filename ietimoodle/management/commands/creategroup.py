@@ -4,8 +4,8 @@ from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from ietimoodle.models import User
 
-GROUPS = ['AdministradorDeCentros']
-MODELS = ['user','curso']
+GROUPS = ['AdministradorDeCentros','Profesor']
+MODELS = ['user','curso','entrega','ejercicio']
 PERMISSIONS = ['view', 'add','delete','change' ]  # For now only view permission by default for all, others include add, delete, change
 
 class Command(BaseCommand):
