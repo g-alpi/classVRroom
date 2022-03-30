@@ -1,56 +1,129 @@
-
 <html>
-    {% include "header.html" with title="Delivery" %}
-        <h1>Este será el índice</h1>
-     
-        <a href="{{prevAlumn}}">Anterior alumno</a>
-        <a href="{{nextAlumn}}">Siguiente alumno</a>
+    {% include "header.html" with title="Delivery" exercise=exercise.nombre cursoid=curso.pk %}
         {% block content %}
-        <h2>{{exercise}} de {{alumn}}</h2>
-        <table style="border: 1px solid">
-            <tr>
-                <th>Alumno:</th>
-                <th>{{delivery.user}}</th>
-            </tr>
-            <tr>
-                <th>Ejercicio:</th>
-                <th>{{delivery.ejercicio}}</th>
-            </tr>
-            <tr>
-                <th>Estado:</th>
-                <th>
-                    {% if delivery.estado == True %}
-                        <input type="checkbox" checked>
-                    {% else %}
-                        <input type="checkbox">
-                    {% endif %}
-                </th>
-            </tr>
-            <tr>
-                <th>Cualificación:</th>
-                <th>
-                    <input type="number" placeholder="{{delivery.cualificacion}}">
-                </th>
-            </tr>
-            <tr>
-                <th>Archivo:</th>
-                <th>{{delivery.archivo}}</th>
-            </tr>
-            <tr>
-                <th>Fecha de Entrega:</th>
-                <th>{{delivery.fecha_entrega}}</th>
-            </tr>
-            <tr>
-                <th>Comentario Profesor:</th>
-                <th>
-                    <input type="text" placeholder="{{delivery.comentario_profesor}}">
-                </th>
-            </tr>
-            <tr>
-                <th>Comentario Alumno:</th>
-                <th>{{delivery.comentario_alumno}}</th>
-            </tr>
-        </table>
+        {% if delivery %}
+            <div class="pt-5 pl-20 pr-20 flex justify-between">
+                <div class="flex">
+                    <h2 class="text-4xl">{{exercise}} de {{alumn}}</h2>
+                    <button class="p-1 m-1 ml-10"><a href="../fc/{{exercise.pk}}">Cualificación rápida</a></button>
+                </div>
+                <div id="buttons flex align-center">
+                    <button class="p-1 m-1"><a href="{{prevAlumn}}">Anterior alumno</a></button>
+                    <button class="p-1 m-1" ><a href="{{nextAlumn}}">Siguiente alumno</a></button>
+                </div>
+            </div>
+            <div class="pl-20 pr-20 pt-5 ">
+                <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-[10%] mb-3 w-[80%] ">
+                    <table style="border: 1px ; border-radius: 10px;" class="w-[100%] text-xl">
+                        <tr class="bg-[#e2daf0]">
+                            <td class="min-w-[200px]"><p class="font-bold">Alumno:</p></td>
+                            <td class="min-w-full px-[10%]"><p>{{delivery.user}}</p></td>
+                        </tr>
+                        <tr>
+                            <td><p class="font-bold">Ejercicio:</p></td>
+                            <td class=" px-[10%]"><p>{{delivery.ejercicio}}</p></td>
+                        </tr>
+                        <tr class="bg-[#e2daf0]">
+                            <td><p class="font-bold">Estado cualificacion:</p></td>
+                            <td class=" px-[10%]">
+                                {% if delivery.estado == True %}
+                                    <input type="checkbox" checked>
+                                {% else %}
+                                    <input type="checkbox">
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><p class="font-bold">Cualificación:</p></td>
+                            <td class=" px-[10%]">
+                                <input type="number" value="{{delivery.cualificacion}}" id="nota" class="text-center">
+                            </td>
+                        </tr>
+                        <tr class="bg-[#e2daf0]">
+                            <td><p class="font-bold">Archivo:</p></td>
+                            <td class=" px-[10%]"><a href="../{{delivery.archivo}}" class="underline text-[#461f87] italic">Descargar archivo entregado</a></td>
+                        </tr>
+                        <tr>
+                            <td><p class="font-bold">Fecha de Entrega:</p></td>
+                            <td class=" px-[10%]"><p>{{delivery.fecha_entrega}}</p></td>
+                        </tr>
+                        <tr class="bg-[#e2daf0]">
+                            <td><p class="font-bold">Comentario Profesor:</p></td>
+                            {% if delivery.comentario_profesor and delivery.comentario_profesor != "None" %}
+                                <td>
+                                    <input type="text" value="{{delivery.comentario_profesor}}" id="comentarioProfesor" class="text-center">
+                                </td>
+                            {% else %}
+                                <td>
+                                    <input type="text" value="" id="comentarioProfesor" class="text-center">
+                                </td>
+                            {% endif %}
+                        </tr>
+                        <tr>
+                            <td><p class="font-bold">Comentario Alumno:</p></td>
+                            {% if delivery.comentario_alumno and delivery.comentario_alumno != "None" %}
+                                <td><p>{{delivery.comentario_alumno}}</p></td>
+                            {% else %}
+                                <td><p class="italic">Sin comentario</p></td>
+                            {% endif %}                       
+                        </tr>
+                    </table>
+                </div>
+                <div class="flex justify-end mr-[10%]">
+                    <button  name="" id="enviar" class="p-1 m-1">Actualizar</button>
+                </div>
+            </div>
+        {% else %}
+            <div class="pt-5 pl-20 pr-20">
+                <h2 class="text-4xl">{{exercise}}</h2>
+            </div>
+
+            <div class="pl-20 pr-20 pt-5 ">
+                <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3 flex">
+                    {% load static %}
+                    <img class="max-w-[30px] max-h-[30px] ml-3 mr-8" src="{% static 'warning.png' %}" alt="Warning"><p class="text-xl">No hay entregas realizadas en este ejercicio</p>
+                </div>
+            </div>
+        {% endif %}
+
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#enviar').on('click',function(){
+
+                    let entregado="{{delivery.estado}}";
+                    let banderaEntrega=1
+                    if ($('#entregado').is(':checked')!=true){
+                        banderaEntrega=2
+                    }
+                    
+                    let nota = $('#nota').val();
+                    let comentarioProfesor = $('#comentarioProfesor').val();
+                    let entrega = "{{ delivery.pk}}" ;
+                    console.log(window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor);
+                    $.ajax({
+                        url: window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor+"/"+banderaEntrega,
+                        method : 'POST',
+                    })
+
+                    if ($('#nota').val()=="{{delivery.cualificacion}}" && $('#comentarioProfesor').val()=="{{delivery.comentario_profesor}}" 
+                        && String($('#entregado').is(':checked'))==entregado.toLowerCase()) 
+                        {
+                        $("table").before('<div class="alert warning"> <span class="closebtn">&times;</span>No se ha actualizado la información, modifica los campos y vuelve a enviar</div>');
+                        
+                    }
+                    else{
+                        $("table").before('<div class="alert success"> <span class="closebtn">&times;</span>La información se ha actualizado correctamente</div>');
+                    }
+                    eliminarAlerta();
+                    setTimeout(function(){ location.reload()}, 1000);
+
+                    
+                })
+                
+            });
+            
+        </script>
         {% endblock %}
     </body>
 <html>
