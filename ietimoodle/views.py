@@ -75,7 +75,8 @@ def grade(request, cursoid):
 	ejercicios = Ejercicio.objects.filter(curso=cursoid)
 	role= Suscripcion.objects.filter(curso=cursoid, user=request.user.pk)[0]
 	suscripciones=Suscripcion.objects.filter(curso=cursoid)[0]
-	firstAlId=get_object_or_404(User, pk=suscripciones.user.pk)
+	alumnos= Suscripcion.objects.filter(curso=cursoid,tipo=alumno)[0]
+	firstAlId=get_object_or_404(User, pk=alumnos.user.pk)
 	content= {
 		'resources': recursos,
 		'exercises': ejercicios,
