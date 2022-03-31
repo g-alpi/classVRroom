@@ -55,7 +55,7 @@
                                 </td>
                             {% else %}
                                 <td class=" px-[10%]">
-                                    <textarea name="comentarioProfesor" id="comentarioProfesor" cols="40" rows="5"></textarea>
+                                    <textarea name="comentarioProfesor" id="comentarioProfesor" cols="40" rows="5">Sin comentario</textarea>
                                 </td>
                             {% endif %}
                         </tr>
@@ -99,6 +99,9 @@
                     
                     let nota = $('#nota').val();
                     let comentarioProfesor = $('#comentarioProfesor').val();
+                    if (comentarioProfesor=="") {
+                        comentarioProfesor="Sin comentarios"
+                    }
                     let entrega = "{{ delivery.pk}}" ;
                     console.log(window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor+"/"+banderaEntrega);
                     $.ajax({
