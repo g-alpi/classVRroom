@@ -19,7 +19,7 @@ class Curso(models.Model):
     def toJson(self):
         return json.dumps(self, default=lambda o: o.__dict__)
 
-class Ejercicio(models.Model):
+class Tarea(models.Model):
     nombre = models.CharField(max_length=200)
     ponderacion = models.IntegerField(default=0)
     visibilidad = models.BooleanField(default=False)
@@ -47,8 +47,6 @@ class Entrega(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
-    cualificado = models.BooleanField()
-    cualificacion = models.IntegerField(default=0)
     archivo = models.FileField(upload_to="./archivos/entregas/",blank=True)
     fecha_entrega = models.DateTimeField()
     comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
@@ -72,3 +70,11 @@ class Recurso(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)                                            
     def __str__(self):
         return self.titulo
+
+class Calificacion(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE)
+    nota = models.IntegerField(null=True)
+    fecha_entrega = models.DateTimeField()
+    def str(self):
+        return '{}{}'.format(self.nota, self.user)
