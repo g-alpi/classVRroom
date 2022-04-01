@@ -31,7 +31,7 @@ class Tarea(models.Model):
     visibilidad = models.BooleanField(default=False)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     minVersion = models.CharField(max_length=200, null=True, blank=True)
-    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
+    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE, blank=True)
     def __str__(self):
         return self.nombre
 
