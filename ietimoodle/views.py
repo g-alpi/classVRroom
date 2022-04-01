@@ -204,7 +204,7 @@ def actualizarEjercicioIndiviual(request, entrega, nota, comentarioProfesor,esta
 
 @csrf_exempt
 def actualizar(request, entrega, nota, comentarioProfesor):
-	delivery = get_object_or_404(Entrega, pk=entrega)
-	delivery.cualificacion = nota
+	delivery = get_object_or_404(Calificacion, pk=entrega)
+	delivery.nota = nota
 	delivery.comentario_profesor = comentarioProfesor
 	delivery.save()

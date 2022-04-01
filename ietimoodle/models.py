@@ -56,8 +56,6 @@ class Entrega(models.Model):
     tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE)
     archivo = models.FileField(upload_to="./archivos/entregas/",blank=True)
     fecha_entrega = models.DateTimeField()
-    comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
-    comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
     pin = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
@@ -83,6 +81,8 @@ class Calificacion(models.Model):
     tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE)
     nota = models.IntegerField(null=True)
     fecha_entrega = models.DateTimeField()
+    comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
+    comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
     def str(self):
         return '{}{}'.format(self.nota, self.user)
 

@@ -23,27 +23,27 @@
                                     <td>{{d.user.correo}}</td>
                                     {% for q in qualifications %}
                                         {% if q.tarea == d.tarea.pk %}
-                                            <td class="{{d.pk}}"><input type="number" value="{{q.nota}}" class="nota" class="text-center"></td>
+                                            <td class="{{q.pk}}"><input type="number" value="{{q.nota}}" class="nota" class="text-center"></td>
                                         {% endif %}
                                     {% empty %}
                                         {% load static %}
                                         <td class="flex justify-end items-center pt-1 {{d.pk}} h-[100]"><input type="number" value="0" class="nota" class="text-center"><img class="max-w-[18px] max-h-[18px] ml-3" src="{% static 'warning.png' %}" alt="Warning"></td>
-                                    {% endfor %}
-                                    <td>{{d.fecha_entrega}}</td>
-                                    {% if d.comentario_alumno %}
-                                        <td class="{{d.pk}}">{{d.comentario_alumno}}</td>
-                                    {% else %}
+                                        <td>{{d.fecha_entrega}}</td>
+                                        {% if d.comentario_alumno %}
+                                        <td class="{{q.pk}}">{{d.comentario_alumno}}</td>
+                                        {% else %}
                                         <td class="italic {{d.pk}}">Sin comentario</td>
-                                    {% endif %}
-                                    <td><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Descargar</a></td>
-                                    {% if d.comentario_profesor %}
-                                        <td class="{{d.pk}}"><textarea name="comentarioProfesor" id="" cols="30" rows="5" class="comentarioProfesor">{{d.comentario_profesor}}</textarea></td>
+                                        {% endif %}
+                                        <td><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Descargar</a></td>
+                                        {% if d.comentario_profesor %}
+                                        <td class="{{q.pk}}"><textarea name="comentarioProfesor" id="" cols="30" rows="5" class="comentarioProfesor">{{d.comentario_profesor}}</textarea></td>
                                         
-                                    {% else %}
-                                        <td class="{{d.pk}}"><textarea name="comentarioProfesor" id="" cols="30" rows="5" class="comentarioProfesor">Sin comentario</textarea></td>
-                                    {% endif %}
-                                    <td><button name="" id="{{d.pk}}" class="p-1 m-1 text-sm actualizar">Actualizar</button></td>
-                                </tr>
+                                        {% else %}
+                                        <td class="{{q.pk}}"><textarea name="comentarioProfesor" id="" cols="30" rows="5" class="comentarioProfesor">Sin comentario</textarea></td>
+                                        {% endif %}
+                                        <td><button name="" id="{{q.pk}}" class="p-1 m-1 text-sm actualizar">Actualizar</button></td>
+                                    </tr>
+                                    {% endfor %}
                     {% endfor %}
                     {% for a in alumnos %}
                         {% if a.pk in alumnosEntregado %}
