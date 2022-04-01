@@ -174,14 +174,21 @@ def pin_request(request):
                                 pinexiste = True
                         if (pinexiste == False):
                             break
-                    pin = newpin
+                    pin = str(newpin)
+                    total=0
+                    for num in pin:
+                        total+=1  
+                    if(total<4):
+                        pinfinal =''
+                        for i in range(total):
+                            pinfinal += '0' 
+                        pinfinal += pin
                     entrega.pin = newpin
                     entrega.save()
                 else:
-                    pin = entrega.pin
-        entrega = Entrega.objects.filter(id=task).first()
-        _status = "OK"
-        _message = "token va bien"
+                    entrega = Entrega.objects.filter(id=task).first()
+                    _status = "OK"
+                    _message = "token va bien"
     else:
         _status = "ERRROR" 
         _message = "invalid token"   
@@ -220,6 +227,7 @@ def start_vr_exercise(request):
 #Send values as request HEADER
 @api_view(['POST'])
 def finish_vr_exercise(request):
+    pincorrecto= False
     _status="ERROR"
     try :
             pin = (request.headers['pin'])
@@ -252,9 +260,19 @@ def finish_vr_exercise(request):
     elif(performancedata == "null"):
         _message = "Missing performancedata"
     else:
-        _status = "OK"
-        _message = "Exercise data succesfully stored"
-
+        for entrega in Entrega.objects.all():
+            if pin == entrega.pin:
+                pincorrecto = True
+                # entrega.autograde = autograde
+                # entrega.vrexerciseid = vrexerciseid
+                # entrega.version = version
+                # entrega.performance = performance
+                
+                _status = "OK"
+                _message = "Exercise data succesfully stored"
+        if not pincorrecto:
+            _status = "ERROR"
+            _message = "invalid PIN"
     if not (status.HTTP_200_OK):
         _status = "ERROR"
         _message = "failed request"
