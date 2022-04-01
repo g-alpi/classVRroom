@@ -31,28 +31,31 @@ class SuscripiconesInLine(admin.TabularInline):
     extra = 1
     
 
-class EjercicioInLine(admin.TabularInline):
-    model = Ejercicio
-    extra = 1
 class EntrgaInLine(admin.TabularInline):
     model = Entrega
     extra = 1
 class RecursoInLine(admin.TabularInline):
     model = Recurso
     extra = 1
-
+class TareaInLine(admin.TabularInline):
+    model = Tarea
+    extra = 1
 
 
 class CursoAdmin(admin.ModelAdmin):
     list_display = ('nombre','descripcion','centro')
     inlines =[
         SuscripiconesInLine,
-        EjercicioInLine,
+        TareaInLine,
         EntrgaInLine,
         RecursoInLine
         
     ]
-    
+
+
+
+
+
 
 
 
@@ -60,6 +63,7 @@ class CursoAdmin(admin.ModelAdmin):
 admin.site.register(Centro) 
 admin.site.register(Curso,CursoAdmin)
 admin.site.register(Ejercicio)
+admin.site.register(Tarea)
 admin.site.register(NivelPrivacidad) 
 admin.site.register(User, UserAdmin)
 admin.site.register(Entrega) 
