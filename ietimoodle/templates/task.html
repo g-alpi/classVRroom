@@ -1,17 +1,17 @@
 <html>
-    {% include "header.html" with title="Exercise" exercise=exercise.nombre cursoid=curso.pk %}
-    <h2 class="pt-5 pl-20 text-4xl">{{curso.nombre}} / {{exercise.nombre}}</h2>
-    <div id="exercise" class="pl-20 pr-20 pt-5 ">
+    {% include "header.html" with title="Task" task=task.nombre cursoid=curso.pk %}
+    <h2 class="pt-5 pl-20 text-4xl">{{curso.nombre}} / {{task.nombre}}</h2>
+    <div id="task" class="pl-20 pr-20 pt-5 ">
         <div class="flex">
-            <div id="previewExercises" class="min-w-[25%] max-w-[25%]">
+            <div id="previewTasks" class="min-w-[25%] max-w-[25%]">
                 <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
                     <ul>
-                        <li><p class="font-bold text-lg">Ejercicios de {{curso.nombre}}:</p>
+                        <li><p class="font-bold text-lg">Tareas de {{curso.nombre}}:</p>
                             <ul class="pl-8">
-                                {% for e in exercises %}
-                                    {% if e.visibilidad == True%}
+                                {% for t in tasks %}
+                                    {% if t.visibilidad == True%}
                                         <li>
-                                            • <a class="text-base underline text-[#461f87]" href="../exercise/{{e.pk}}">{{e}}</a>
+                                            • <a class="text-base underline text-[#461f87]" href="../task/{{t.pk}}">{{e}}</a>
                                         </li>
                                     {% endif %}
                                 {% endfor %}
@@ -20,9 +20,9 @@
                     </ul>
                 </div>
             </div>
-            <div id="exerciseData" class="min-w-[75%] max-w-[75%]">
+            <div id="taskData" class="min-w-[75%] max-w-[75%]">
                 <div id="ponderation" class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
-                    <p class="font-bold">Ponderación: {{exercise.ponderacion}}</p>
+                    <p class="font-bold">Ponderación: {{task.ponderacion}}</p>
                 </div>
                 <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
                     <table class="w-[100%]">
@@ -37,12 +37,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><p class="font-bold">Estado de la cualificación</p></td>
+                            <td><p class="font-bold">Calificación</p></td>
                             <td>
-                                {% if entrega.0.cualificacion %}
-                                <p>{{entrega.0.cualificacion}}</p>
+                                {% if qualification.nota %}
+                                <p>{{qualification.nota}}</p>
                                 {% else %}
-                                <p class="text-red-700">No cualificado</p>
+                                <p class="text-red-700">No calificado</p>
                                 {% endif %}
                             </td>
                         </tr>
