@@ -14,10 +14,10 @@
         <title>{{curso}}</title>
     {% elif title == "Resource" %}
         <title>{{resource}}</title>
-    {% elif title == "Exercise" %}
-        <title>{{exercise}}</title>
+    {% elif title == "Task" %}
+        <title>{{task}}</title>
     {% elif title == "Delivery" %}
-        <title>{{exercise}}</title>
+        <title>{{task}}</title>
     {% elif title == "Qualifications" %}
         <title>Cualificaciones de {{curso.nombre}}</title>
     {% else %}
@@ -55,7 +55,7 @@
         <a class="underline text-[#461f87]" href="..">Home</a> / 
         <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> /
         <a class="underline text-[#461f87]" href="../grade/{{cursoid}}">{{curso}}</a> / 
-        <a class="underline text-[#461f87]" href="">{{exercise}}</a>
+        <a class="underline text-[#461f87]" href="">{{task}}</a>
         {% elif title == "Curso" %}
         <a class="underline text-[#461f87]" href="../..">Home</a> / 
         <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> / 
@@ -65,11 +65,11 @@
         <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> / 
         <a class="underline text-[#461f87]" href="../grade/{{cursoid}}">{{curso}}</a> / 
         <a class="underline text-[#461f87]" href="">{{resource}}</a>
-        {% elif title == "Exercise" %}
+        {% elif title == "Task" %}
         <a class="underline text-[#461f87]" href="..">Home</a> / 
         <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> /
         <a class="underline text-[#461f87]" href="../grade/{{cursoid}}">{{curso}}</a> / 
-        <a class="underline text-[#461f87]" href="">{{exercise}}</a>
+        <a class="underline text-[#461f87]" href="">{{task}}</a>
         {% elif title == "Qualifications" %}
         <a class="underline text-[#461f87]" href="..">Home</a> / 
         <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> /

@@ -72,13 +72,13 @@ def dashboard(request):
 @login_required
 def grade(request, cursoid):
 	recursos = Recurso.objects.filter(curso=cursoid)
-	ejercicios = Ejercicio.objects.filter(curso=cursoid)
+	tareas = Tarea.objects.filter(curso=cursoid)
 	role= Suscripcion.objects.filter(curso=cursoid, user=request.user.pk)[0]
 	alumnos= Suscripcion.objects.filter(curso=cursoid,tipo='alumno')[0]
 	firstAlId=get_object_or_404(User, pk=alumnos.user.pk)
 	content= {
 		'resources': recursos,
-		'exercises': ejercicios,
+		'tasks': tareas,
 		'role': role,
 		'grade': get_object_or_404(Curso, pk=cursoid),
 		'firstal': firstAlId
@@ -88,16 +88,18 @@ def grade(request, cursoid):
 @login_required
 def qualifications(request, cursoid):
 	alumn=get_object_or_404(User, pk=request.user.pk)
-	ejercicios = Ejercicio.objects.filter(curso=cursoid)
+	tasks = Tarea.objects.filter(curso=cursoid)
 	deliveries=Entrega.objects.filter(user=alumn.pk, curso=cursoid)
+	qualifications=Calificacion.objects.filter(user=alumn.pk)
 	deliveriesRealizadas=[]
 	for d in deliveries:
-		deliveriesRealizadas.append(d.ejercicio.pk)
+		deliveriesRealizadas.append(d.tarea.pk)
 	content= {
 		'grade': get_object_or_404(Curso, pk=cursoid),
 		'alumn': alumn,
-		'exercises': ejercicios,
+		'tasks': tasks,
 		'deliveries': deliveries,
+		'qualifications': qualifications,
 		'deliveriesRealizadas': deliveriesRealizadas
 	}
 	return render(request, 'qualifications.html', content)
@@ -113,28 +115,31 @@ def resource(request, resourceid):
 	return render(request, 'resource.html', content)
 
 @login_required
-def exercise(request, exerciseid):
-	exercise=get_object_or_404(Ejercicio, pk=exerciseid)
-	curso=get_object_or_404(Curso, pk=exercise.curso.pk)
-	user=get_object_or_404(User, pk=request.user.pk)
-	exercises=Ejercicio.objects.filter(curso=curso.pk)
-	entrega=Entrega.objects.filter(ejercicio=exerciseid, user=user.pk)
+def task(request, taskid):
+	tarea=get_object_or_404(Tarea, pk=taskid)
+	curso=get_object_or_404(Curso, pk=tarea.curso.pk)
+	alumn=get_object_or_404(User, pk=request.user.pk)
+	qualification=get_object_or_404(Calificacion, user=alumn.pk, tarea=task.pk)
+	tasks=Tarea.objects.filter(curso=curso.pk)
+	entrega=Entrega.objects.filter(tarea=taskid, user=alumn.pk)
 	content= {
-		'exercise': exercise,
+		'task': tarea,
 		'curso': curso,
 		'entrega': entrega,
-		'exercises': exercises
+		'qualification': qualification,
+		'tasks': tasks
 	}
-	return render(request, 'exercise.html', content)
+	return render(request, 'task.html', content)
 
 @login_required
-def delivery(request, exerciseid, alumnid):
+def delivery(request, taskid, alumnid):
 	alumn= get_object_or_404(User, pk=alumnid)
-	exercise=get_object_or_404(Ejercicio, pk=exerciseid)
+	task=get_object_or_404(Tarea, pk=taskid)
 	try:
-		alumnos= Entrega.objects.filter(ejercicio=exercise)
-		curso=get_object_or_404(Curso, pk=exercise.curso.pk)
-		delivery=Entrega.objects.filter(ejercicio=exercise, user=alumn)[0]
+		alumnos= Entrega.objects.filter(tarea=task)
+		curso=get_object_or_404(Curso, pk=task.curso.pk)
+		delivery=Entrega.objects.filter(tarea=task, user=alumn)[0]
+		qualification=get_object_or_404(Calificacion, user=alumn.pk, tarea=task.pk)
 		alumnosID=[]
 		for i in alumnos :
 			alumnosID.append(i.user.pk)
@@ -153,31 +158,34 @@ def delivery(request, exerciseid, alumnid):
 	
 	content = {
 		'alumn': alumn,
-		'exercise': exercise,
+		'task': task,
 		'delivery': delivery,
 		'nextAlumn': nextAlumn,
 		'prevAlumn': prevAlumn,
+		'qualification': qualification,
 		'curso': curso
 	}
 	return render(request, 'delivery.html', content)
 
 
 @login_required
-def fastcorrection(request, exerciseid):
-	exercise=get_object_or_404(Ejercicio, pk=exerciseid)
-	curso=get_object_or_404(Curso, nombre=exercise.curso)
-	deliveries=Entrega.objects.filter(ejercicio=exercise)
+def fastcorrection(request, taskid):
+	task=get_object_or_404(Tarea, pk=taskid)
+	curso=get_object_or_404(Curso, nombre=task.curso)
+	deliveries=Entrega.objects.filter(task=task)
 	alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
-	curso=get_object_or_404(Curso, pk=exercise.curso.pk)
+	curso=get_object_or_404(Curso, pk=task.curso.pk)
+	qualifications=Calificacion.objects.filter(tarea=task.pk)
 	alumnosEntregado=[]
 	for d in deliveries:
 		alumnosEntregado.append(d.user.pk)
 	
 	content = {
 		'alumnos': alumnos,
-		'exercise': exercise,
+		'task': task,
 		'deliveries': deliveries,
 		'alumnosEntregado': alumnosEntregado,
+		'qualifications': qualifications,
 		'curso': curso
 	}
 	return render(request, 'fastcorrection.html', content)
