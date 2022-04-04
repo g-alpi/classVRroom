@@ -132,6 +132,21 @@ def task(request, taskid):
 	return render(request, 'task.html', content)
 
 @login_required
+def addDelivery(request, taskid):
+	task=get_object_or_404(Ejercicio, pk=taskid)
+	grade=get_object_or_404(Curso, pk=task.curso.pk)
+	user=get_object_or_404(User, pk=request.user.pk)
+	tasks=Ejercicio.objects.filter(curso=grade.pk)
+	delivery=Entrega.objects.filter(ejercicio=taskid, user=user.pk)
+	content= {
+		'task': task,
+		'grade': grade,
+		'delivery': delivery,
+		'tasks': tasks
+	}
+	return render(request, 'addDelivery.html', content)
+
+@login_required
 def delivery(request, taskid, alumnid):
 	alumn= get_object_or_404(User, pk=alumnid)
 	task=get_object_or_404(Tarea, pk=taskid)

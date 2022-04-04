@@ -25,6 +25,7 @@ urlpatterns = [
     path('qualifications/<int:cursoid>', views.qualifications, name='qualifications'),
     path('resource/<int:resourceid>', views.resource, name='resource'),
     path('task/<int:taskid>', views.task, name='task'),
+    path('ad/<int:taskid>', views.addDelivery, name='addDelivery'),
     path('fc/<int:taskid>', views.fastcorrection, name='fastcorrection'),
     path('<int:taskid>/<int:alumnid>', views.delivery, name='delivery'),
     path('api/login',api.login),
