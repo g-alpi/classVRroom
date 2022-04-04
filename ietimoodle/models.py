@@ -22,6 +22,7 @@ class Curso(models.Model):
 class Ejercicio(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=255)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     def __str__(self):
         return f'{self.pk} - {self.nombre}'
 
@@ -61,7 +62,7 @@ class Entrega(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, null=True, blank=True)
-    vrtarea = models.ForeignKey(VRTarea, on_delete=models.CASCADE, nul=True, blank=True)
+    vrtarea = models.ForeignKey(VRTarea, on_delete=models.CASCADE, null=True, blank=True)
     archivo = models.FileField(upload_to="./archivos/entregas/",blank=True)
     fecha_entrega = models.DateTimeField()
     pin = models.IntegerField(null=True, blank=True)

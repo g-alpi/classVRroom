@@ -17,8 +17,12 @@ def verifyToken(token):
     
 @api_view(['GET'])
 def login(request):
-    correo=(request.GET['email'])
-    password=(request.GET['password'])
+    try:
+        correo=(request.GET['email'])
+        password=(request.GET['password'])
+    except:
+        correo=""
+        password=""
     _correo=False
     if (correo==""):
         _message = "email is required"
@@ -51,8 +55,18 @@ def login(request):
 
 @api_view(['GET'])
 def logout(request):
-    token = (request.GET['token'])
+    try:
+        token = (request.GET['token'])
+    except:
+        token = "null"
     verifica = verifyToken(token)
+    if (verifica):
+        for _token in Token.objects.all():
+            print(_token)
+            if token == str(_token):
+                pepe = Token.objects.filter(key=token)
+                print("pepe")
+                print(pepe.delete())
     if (verifica):
         _status = "OK"
         _message = "Session succesfully closed."
@@ -65,7 +79,10 @@ def logout(request):
 
 
 def get_courses(request):
-    token = (request.GET['token'])
+    try:
+        token = (request.GET['token'])
+    except:
+        token = "null"
     verifica = verifyToken(token)
     if (verifica):
         _status = "OK"
@@ -113,7 +130,10 @@ def get_courses(request):
 
 @api_view(['GET'])
 def get_course_details(request):
-    token = (request.GET['token'])
+    try:
+        token = (request.GET['token'])
+    except:
+        print("adios")
     verifica = verifyToken(token)
     if (verifica):
         cursos = (Curso.objects.all())
@@ -197,7 +217,6 @@ def pin_request(request):
 
 @api_view(['GET'])
 def start_vr_exercise(request):
-    pin = (request.GET['pin'])
     exer = False
     for entrega in Entrega.objects.all():
         if (pin==str(entrega.pin)):
@@ -263,10 +282,10 @@ def finish_vr_exercise(request):
         for entrega in Entrega.objects.all():
             if pin == entrega.pin:
                 pincorrecto = True
-                # entrega.autograde = autograde
-                # entrega.vrexerciseid = vrexerciseid
-                # entrega.version = version
-                # entrega.performance = performance
+                entrega.vrtarea.autograde = autograde
+                entrega.vrtarea.vrexerciseid = vrexerciseid
+                entrega.vrtarea.version = version
+                entrega.vrtarea.performance = performance
                 
                 _status = "OK"
                 _message = "Exercise data succesfully stored"
