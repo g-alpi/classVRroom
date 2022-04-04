@@ -17,8 +17,12 @@ def verifyToken(token):
     
 @api_view(['GET'])
 def login(request):
-    correo=(request.GET['email'])
-    password=(request.GET['password'])
+    try: 
+        correo=(request.GET['email'])
+        password=(request.GET['password'])
+    except:
+        correo=""
+        password=""
     _correo=False
     if (correo==""):
         _message = "email is required"
@@ -51,7 +55,10 @@ def login(request):
 
 @api_view(['GET'])
 def logout(request):
-    token = (request.GET['token'])
+    try:
+        token = (request.GET['token'])
+    except:
+        token = "null"
     verifica = verifyToken(token)
     if (verifica):
         _status = "OK"
@@ -113,8 +120,13 @@ def get_courses(request):
 
 @api_view(['GET'])
 def get_course_details(request):
-    token = (request.GET['token'])
+    try:
+        token = (request.GET['token'])
+        print(token)
+    except:
+        print("esto que ess")
     verifica = verifyToken(token)
+    print(verifica)
     if (verifica):
         cursos = (Curso.objects.all())
         _curso = request.GET['courseID']
