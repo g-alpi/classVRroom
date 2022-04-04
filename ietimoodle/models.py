@@ -30,17 +30,21 @@ class Tarea(models.Model):
     ponderacion = models.IntegerField(default=0)
     visibilidad = models.BooleanField(default=False)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
-    minVersion = models.CharField(max_length=200, null=True, blank=True)
-    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE, blank=True)
     def __str__(self):
         return self.nombre
 
 class VRTarea(models.Model):
-    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=200)
+    exercise = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    ponderacion = models.IntegerField(default=0)
+    visibilidad = models.BooleanField(default=False)
     minversion = models.CharField(max_length=255, null=True, blank=True)
     autograde = models.CharField(max_length=255, null=True, blank=True)
     version = models.CharField(max_length=255, null=True, blank=True)
     performance_data = models.CharField(max_length=255, null=True, blank=True)
+    def __str__(self):
+        return self.nombre
  
 class NivelPrivacidad(models.Model):
     nombre = models.CharField(max_length=200)
@@ -61,13 +65,16 @@ class Entrega(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, null=True, blank=True)
-    vrtarea = models.ForeignKey(VRTarea, on_delete=models.CASCADE, nul=True, blank=True)
+    vrtarea = models.ForeignKey(VRTarea, on_delete=models.CASCADE, null=True, blank=True)
     archivo = models.FileField(upload_to="./archivos/entregas/",blank=True)
     fecha_entrega = models.DateTimeField()
     pin = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.tarea.nombre
+        try:
+            return self.tarea.nombre
+        except:
+            return self.vrtarea.nombre
 
 class Suscripcion(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -87,6 +94,16 @@ class Recurso(models.Model):
 class Calificacion(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE)
+    nota = models.IntegerField(null=True)
+    fecha_entrega = models.DateTimeField()
+    comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
+    comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
+    def str(self):
+        return '{}{}'.format(self.nota, self.user)
+
+class VRCalificacion(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    vrtarea = models.ForeignKey(VRTarea, on_delete=models.CASCADE)
     nota = models.IntegerField(null=True)
     fecha_entrega = models.DateTimeField()
     comentario_profesor = models.CharField(max_length=255, null=True, blank=True)

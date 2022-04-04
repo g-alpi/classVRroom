@@ -30,7 +30,6 @@ class SuscripiconesInLine(admin.TabularInline):
     model = Suscripcion
     extra = 1
     
-
 class EntrgaInLine(admin.TabularInline):
     model = Entrega
     extra = 1
@@ -40,6 +39,9 @@ class RecursoInLine(admin.TabularInline):
 class TareaInLine(admin.TabularInline):
     model = Tarea
     extra = 1
+class TareaVrInLine(admin.TabularInline):
+    model = VRTarea
+    extra = 1
 
 
 class CursoAdmin(admin.ModelAdmin):
@@ -48,8 +50,8 @@ class CursoAdmin(admin.ModelAdmin):
         SuscripiconesInLine,
         TareaInLine,
         EntrgaInLine,
-        RecursoInLine
-        
+        RecursoInLine,
+        TareaVrInLine,
     ]   
 
 
@@ -63,3 +65,4 @@ admin.site.register(Entrega)
 admin.site.register(Suscripcion)
 admin.site.register(Recurso)
 admin.site.register(Calificacion)
+admin.site.register(VRTarea)

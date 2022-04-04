@@ -15,6 +15,13 @@
                                         </li>
                                     {% endif %}
                                 {% endfor %}
+                                {% for t in vrtasks %}
+                                    {% if t.visibilidad == True%}
+                                        <li>
+                                            • <a class="text-base underline text-[#461f87]" href="../vrtask/{{t.pk}}">{{t}}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
                             </ul>
                         </li>
                     </ul>
