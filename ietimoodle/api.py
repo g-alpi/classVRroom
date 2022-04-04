@@ -23,6 +23,7 @@ def login(request):
     except:
         correo=""
         password=""
+        _token="null"
     _correo=False
     if (correo==""):
         _message = "email is required"
@@ -122,15 +123,13 @@ def get_courses(request):
 def get_course_details(request):
     try:
         token = (request.GET['token'])
-        print(token)
+        
     except:
-        print("esto que ess")
+        token = "null"
     verifica = verifyToken(token)
-    print(verifica)
     if (verifica):
         cursos = (Curso.objects.all())
         _curso = request.GET['courseID']
-        print(_curso)
         _recursos = []
         _ejercicios = []
         resp = False

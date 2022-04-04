@@ -61,12 +61,8 @@ class User(AbstractUser):
 class Entrega(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
-<<<<<<< HEAD
     tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, null=True, blank=True)
     vrtarea = models.ForeignKey(VRTarea, on_delete=models.CASCADE, null=True, blank=True)
-=======
-    tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE)
->>>>>>> a9abd340a40c39cfed6c0dc88e152a78f8292a47
     archivo = models.FileField(upload_to="./archivos/entregas/",blank=True)
     fecha_entrega = models.DateTimeField()
     pin = models.IntegerField(null=True, blank=True)
