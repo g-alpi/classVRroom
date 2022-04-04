@@ -38,6 +38,7 @@ class Tarea(models.Model):
 
 class VRTarea(models.Model):
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     minversion = models.CharField(max_length=255, null=True, blank=True)
     autograde = models.CharField(max_length=255, null=True, blank=True)
     version = models.CharField(max_length=255, null=True, blank=True)
