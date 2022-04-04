@@ -1,11 +1,11 @@
 <html>
-    {% include "header.html" with title="Delivery" exercise=exercise.nombre cursoid=curso.pk %}
+    {% include "header.html" with title="Delivery" task=task.nombre cursoid=curso.pk %}
         {% block content %}
         {% if delivery %}
             <div class="pt-5 pl-20 pr-20 flex justify-between">
                 <div class="flex">
-                    <h2 class="text-4xl">{{exercise}} de {{alumn}}</h2>
-                    <button class="p-1 m-1 ml-10"><a href="../fc/{{exercise.pk}}">Cualificación rápida</a></button>
+                    <h2 class="text-4xl">{{task}} de {{alumn}}</h2>
+                    <button class="p-1 m-1 ml-10"><a href="../fc/{{task.pk}}">Calificación rápida</a></button>
                 </div>
                 <div id="buttons flex align-center">
                     <button class="p-1 m-1"><a href="{{prevAlumn}}">Anterior alumno</a></button>
@@ -20,23 +20,13 @@
                             <td class="min-w-full px-[10%]"><p>{{delivery.user}}</p></td>
                         </tr>
                         <tr>
-                            <td><p class="font-bold">Ejercicio:</p></td>
-                            <td class=" px-[10%]"><p>{{delivery.ejercicio}}</p></td>
-                        </tr>
-                        <tr class="bg-[#e2daf0]">
-                            <td><p class="font-bold">Estado cualificacion:</p></td>
-                            <td class=" px-[10%]">
-                                {% if delivery.cualificado == True %}
-                                    <input type="checkbox" checked>
-                                {% else %}
-                                    <input type="checkbox">
-                                {% endif %}
-                            </td>
+                            <td><p class="font-bold">Tarea:</p></td>
+                            <td class=" px-[10%]"><p>{{delivery.tarea}}</p></td>
                         </tr>
                         <tr>
-                            <td><p class="font-bold">Cualificación:</p></td>
+                            <td><p class="font-bold">Calificación:</p></td>
                             <td class=" px-[10%]">
-                                <input type="number" value="{{delivery.cualificacion}}" id="nota" class="text-center">
+                                <input type="number" value="{{qualification.nota}}" id="nota" class="text-center">
                             </td>
                         </tr>
                         <tr class="bg-[#e2daf0]">
@@ -75,13 +65,13 @@
             </div>
         {% else %}
             <div class="pt-5 pl-20 pr-20">
-                <h2 class="text-4xl">{{exercise}}</h2>
+                <h2 class="text-4xl">{{task}}</h2>
             </div>
 
             <div class="pl-20 pr-20 pt-5 ">
                 <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3 flex">
                     {% load static %}
-                    <img class="max-w-[30px] max-h-[30px] ml-3 mr-8" src="{% static 'warning.png' %}" alt="Warning"><p class="text-xl">No hay entregas realizadas en este ejercicio</p>
+                    <img class="max-w-[30px] max-h-[30px] ml-3 mr-8" src="{% static 'warning.png' %}" alt="Warning"><p class="text-xl">No hay entregas realizadas en esta tarea</p>
                 </div>
             </div>
         {% endif %}
@@ -109,7 +99,7 @@
                         method : 'POST',
                     })
 
-                    if ($('#nota').val()=="{{delivery.cualificacion}}" && $('#comentarioProfesor').val()=="{{delivery.comentario_profesor}}" 
+                    if ($('#nota').val()=="{{qualification.nota}}" && $('#comentarioProfesor').val()=="{{delivery.comentario_profesor}}" 
                         && String($('#entregado').is(':checked'))==entregado.toLowerCase()) 
                         {
                         $("table").before('<div class="alert warning"> <span class="closebtn">&times;</span>No se ha actualizado la información, modifica los campos y vuelve a enviar</div>');

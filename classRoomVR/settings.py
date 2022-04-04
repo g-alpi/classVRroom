@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ietimoodle',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'corsheaders',
 ]
 REST_FRAMEWORK = {
 'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -58,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'classRoomVR.urls'
@@ -143,3 +146,4 @@ LOGIN_REDIRECT_URL = '/'
 AUTH_AUTHENTICATION_TYPE='email'
 AUTHENTICATION_BACKENDS = ['ietimoodle.backends.EmailBackend'] # new
 
+CORS_ALLOW_ALL_ORIGINS = True

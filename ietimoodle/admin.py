@@ -8,18 +8,18 @@ from django.utils.translation import ugettext_lazy as _
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     fieldsets = (
-      (None, {'fields': ('username','correo', 'password', )}),
-      (_('Información Personal'), {'fields': ('first_name', 'last_name')}),
-      (_('Permisos'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                     'groups', 'user_permissions')}),
-      (_('Datos Relevantes'), {'fields': ('last_login', 'date_joined')}),
+        (None, {'fields': ('username','correo', 'password', )}),
+        (_('Información Personal'), {'fields': ('first_name', 'last_name')}),
+        (_('Permisos'), {'fields': ('is_active', 'is_staff', 'is_superuser',
+                                        'groups', 'user_permissions')}),
+        (_('Datos Relevantes'), {'fields': ('last_login', 'date_joined')}),
         (_('Información Usuario'), {'fields': ('centro', 'privacidad')}),
     )
     add_fieldsets = (
-      (None, {
-          'classes': ('wide', ),
-          'fields': ('username','correo', 'password1', 'password2'),
-      }),
+        (None, {
+            'classes': ('wide', ),
+            'fields': ('username','correo', 'password1', 'password2'),
+        }),
     )
     list_display = ['username','correo', 'first_name', 'last_name', 'is_staff']
     search_fields = ('username','correo', 'first_name', 'last_name')
@@ -31,37 +31,35 @@ class SuscripiconesInLine(admin.TabularInline):
     extra = 1
     
 
-class EjercicioInLine(admin.TabularInline):
-    model = Ejercicio
-    extra = 1
 class EntrgaInLine(admin.TabularInline):
     model = Entrega
     extra = 1
 class RecursoInLine(admin.TabularInline):
     model = Recurso
     extra = 1
-
+class TareaInLine(admin.TabularInline):
+    model = Tarea
+    extra = 1
 
 
 class CursoAdmin(admin.ModelAdmin):
     list_display = ('nombre','descripcion','centro')
     inlines =[
         SuscripiconesInLine,
-        EjercicioInLine,
+        TareaInLine,
         EntrgaInLine,
         RecursoInLine
         
-    ]
-    
-
-
+    ]   
 
 
 admin.site.register(Centro) 
 admin.site.register(Curso,CursoAdmin)
 admin.site.register(Ejercicio)
+admin.site.register(Tarea)
 admin.site.register(NivelPrivacidad) 
 admin.site.register(User, UserAdmin)
 admin.site.register(Entrega) 
 admin.site.register(Suscripcion)
 admin.site.register(Recurso)
+admin.site.register(Calificacion)
