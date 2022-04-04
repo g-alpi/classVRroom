@@ -6,27 +6,29 @@
             <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
                 <table id="fctable" style="border: 1px ; border-radius: 10px;" class="min-w-full">
                     <tr class="text-center font-bold">
-                        <td>Ejercicio</td>
+                        <td>Tarea</td>
                         <td>Ponderación</td>
-                        <td>Cualificación</td>
+                        <td>Calificación</td>
                         <td>Fecha de Entrega</td>
                         <td>Comentario Alumno</td>
                         <td>Archivo</td>
                         <td>Comentario Profesor</td>
                     </tr>
-                    {% for e in exercises %}
-                        {% if e.visibilidad == True %}
+                    {% for t in tasks %}
+                        {% if t.visibilidad == True %}
                             <tr class="text-center">
-                                <td>{{e.nombre}}</td>
-                                <td>{{e.ponderacion}}</td>
-                                {% if e.pk in deliveriesRealizadas %}
+                                <td>{{t.nombre}}</td>
+                                <td>{{t.ponderacion}}</td>
+                                {% if t.pk in deliveriesRealizadas %}
                                     {% for d in deliveries %}
-                                        {% if d.ejercicio.pk == e.pk %}
-                                            {% if d.cualificacion %}
-                                                <td>{{d.cualificacion}}</td>
-                                            {% else %}
-                                                <td class="italic text-red-700">No cualificado</td>
-                                            {% endif %}
+                                        {% if d.tarea.pk == t.pk %}
+                                            {% for q in qualifications %}
+                                                {% if q.tarea == t.pk %}
+                                                    <td>{{q.nota}}</td>
+                                                {% endif %}
+                                            {% empty %}
+                                                <td class="italic text-red-700">No calificado</td>
+                                            {% endfor %}
                                             <td>{{d.fecha_entrega}}</td>
                                             {% if d.comentario_alumno %}
                                                 <td>{{d.comentario_alumno}}</td>
@@ -46,7 +48,7 @@
                                         {% endif %}
                                     {% endfor %}
                                 {% else %}
-                                    <td class="italic text-red-700">No cualificado</td>
+                                    <td class="italic text-red-700">No calificado</td>
                                     <td class="italic text-red-700">No entregado</td>
                                     <td class="italic text-red-700">Sin comentario</td>
                                     <td class="italic text-red-700">No entregado</td>

@@ -31,7 +31,7 @@ class Tarea(models.Model):
     visibilidad = models.BooleanField(default=False)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     minVersion = models.CharField(max_length=200, null=True, blank=True)
-    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
+    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE, blank=True)
     def __str__(self):
         return self.nombre
 
@@ -64,8 +64,6 @@ class Entrega(models.Model):
     vrtarea = models.ForeignKey(VRTarea, on_delete=models.CASCADE, nul=True, blank=True)
     archivo = models.FileField(upload_to="./archivos/entregas/",blank=True)
     fecha_entrega = models.DateTimeField()
-    comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
-    comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
     pin = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
@@ -91,6 +89,8 @@ class Calificacion(models.Model):
     tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE)
     nota = models.IntegerField(null=True)
     fecha_entrega = models.DateTimeField()
+    comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
+    comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
     def str(self):
         return '{}{}'.format(self.nota, self.user)
 

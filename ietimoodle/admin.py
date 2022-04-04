@@ -8,18 +8,18 @@ from django.utils.translation import ugettext_lazy as _
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     fieldsets = (
-      (None, {'fields': ('username','correo', 'password', )}),
-      (_('Información Personal'), {'fields': ('first_name', 'last_name')}),
-      (_('Permisos'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                     'groups', 'user_permissions')}),
-      (_('Datos Relevantes'), {'fields': ('last_login', 'date_joined')}),
+        (None, {'fields': ('username','correo', 'password', )}),
+        (_('Información Personal'), {'fields': ('first_name', 'last_name')}),
+        (_('Permisos'), {'fields': ('is_active', 'is_staff', 'is_superuser',
+                                        'groups', 'user_permissions')}),
+        (_('Datos Relevantes'), {'fields': ('last_login', 'date_joined')}),
         (_('Información Usuario'), {'fields': ('centro', 'privacidad')}),
     )
     add_fieldsets = (
-      (None, {
-          'classes': ('wide', ),
-          'fields': ('username','correo', 'password1', 'password2'),
-      }),
+        (None, {
+            'classes': ('wide', ),
+            'fields': ('username','correo', 'password1', 'password2'),
+        }),
     )
     list_display = ['username','correo', 'first_name', 'last_name', 'is_staff']
     search_fields = ('username','correo', 'first_name', 'last_name')
@@ -50,14 +50,7 @@ class CursoAdmin(admin.ModelAdmin):
         EntrgaInLine,
         RecursoInLine
         
-    ]
-
-
-
-
-
-
-
+    ]   
 
 
 admin.site.register(Centro) 
@@ -69,3 +62,4 @@ admin.site.register(User, UserAdmin)
 admin.site.register(Entrega) 
 admin.site.register(Suscripcion)
 admin.site.register(Recurso)
+admin.site.register(Calificacion)
