@@ -87,7 +87,13 @@
                                     {% endif %}
                                 </td>
                             </tr>
-
+                            <tr class="bg-[#e2daf0]">
+                                <td colspan="2"><button class="m-2 ml-[20%] font-bold rounded-lg p-1.5 bg-[#461f87] text-[#ededed]" onclick="location.href='../ad/{{exercise.pk}}'">Editar entrega</button></td>
+                            </tr>
+                        {% else %}
+                            <tr class="bg-[#e2daf0]">
+                                <td colspan="2"><button class="m-2 ml-[20%] font-bold rounded-lg p-1.5 bg-[#461f87] text-[#ededed]" onclick="location.href='../ad/{{exercise.pk}}'">Añadir entrega</button></td>
+                            </tr>
                         {% endif %}
                     </table>
                     

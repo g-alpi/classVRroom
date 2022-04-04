@@ -1,0 +1,40 @@
+<html>
+    {% include "header.html" with title="Exercise" task=task.nombre cursoid=grade.pk %}
+    <h2 class="pt-5 pl-20 text-4xl">{{grade.nombre}} / {{task.nombre}}</h2>
+    <div id="exercise" class="pl-20 pr-20 pt-5 ">
+        <div class="flex">
+            <div id="previewExercises" class="min-w-[25%] max-w-[25%]">
+                <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
+                    <ul>
+                        <li><p class="font-bold text-lg">Ejercicios de {{grade.nombre}}:</p>
+                            <ul class="pl-8">
+                                {% for t in tasks %}
+                                    {% if t.visibilidad == True%}
+                                        <li>
+                                            • <a class="text-base underline text-[#461f87]" href="../exercise/{{t.pk}}">{{t.nombre}}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="addFile" class="min-w-[75%] max-w-[75%]">
+                {% if delivery.0 %}
+                    <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
+                        {% for d in delivery %}
+                            {{forloop.counter}}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                        <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3 flex">
+                        {% load static %}
+                        <img class="max-w-[30px] max-h-[30px] ml-3 mr-8" src="{% static 'warning.png' %}" alt="Warning"><p class="text-xl">No hay entregas realizadas en esta tarea</p>
+                        </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

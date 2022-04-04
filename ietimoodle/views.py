@@ -128,6 +128,21 @@ def exercise(request, exerciseid):
 	return render(request, 'exercise.html', content)
 
 @login_required
+def addDelivery(request, taskid):
+	task=get_object_or_404(Ejercicio, pk=taskid)
+	grade=get_object_or_404(Curso, pk=task.curso.pk)
+	user=get_object_or_404(User, pk=request.user.pk)
+	tasks=Ejercicio.objects.filter(curso=grade.pk)
+	delivery=Entrega.objects.filter(ejercicio=taskid, user=user.pk)
+	content= {
+		'task': task,
+		'grade': grade,
+		'delivery': delivery,
+		'tasks': tasks
+	}
+	return render(request, 'addDelivery.html', content)
+
+@login_required
 def delivery(request, exerciseid, alumnid):
 	alumn= get_object_or_404(User, pk=alumnid)
 	exercise=get_object_or_404(Ejercicio, pk=exerciseid)
@@ -163,7 +178,7 @@ def delivery(request, exerciseid, alumnid):
 
 
 @login_required
-def fastcorrection(request, exerciseid):
+def fastCorrection(request, exerciseid):
 	exercise=get_object_or_404(Ejercicio, pk=exerciseid)
 	curso=get_object_or_404(Curso, nombre=exercise.curso)
 	deliveries=Entrega.objects.filter(ejercicio=exercise)
@@ -180,7 +195,7 @@ def fastcorrection(request, exerciseid):
 		'alumnosEntregado': alumnosEntregado,
 		'curso': curso
 	}
-	return render(request, 'fastcorrection.html', content)
+	return render(request, 'fastCorrection.html', content)
 
 @csrf_exempt
 def actualizarEjercicioIndiviual(request, entrega, nota, comentarioProfesor,estadoEntrega):
