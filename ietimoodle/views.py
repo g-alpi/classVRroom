@@ -284,15 +284,11 @@ def fastCorrection(request, taskid):
 	alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
 	curso=get_object_or_404(Curso, pk=task.curso.pk)
 	qualifications=Calificacion.objects.filter(tarea=task.pk)
-	alumnosEntregado=[]
-	for d in deliveries:
-		alumnosEntregado.append(d.user.pk)
 	
 	content = {
 		'alumnos': alumnos,
 		'task': task,
 		'deliveries': deliveries,
-		'alumnosEntregado': alumnosEntregado,
 		'qualifications': qualifications,
 		'curso': curso
 	}
