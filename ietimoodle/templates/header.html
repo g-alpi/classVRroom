@@ -20,6 +20,8 @@
         <title>{{task}}</title>
     {% elif title == "Qualifications" %}
         <title>Cualificaciones de {{curso.nombre}}</title>
+    {% elif title == "Deliver" %}
+        <title>Añadir entrega a {{task}}</title>
     {% else %}
         <title>{{title}}</title>
     {% endif %}
@@ -75,6 +77,16 @@
         <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> /
         <a class="underline text-[#461f87]" href="../grade/{{curso.pk}}">{{curso.nombre}}</a> / 
         <a class="underline text-[#461f87]" href="">Cualificaciones de {{curso.nombre}}</a>
+        {% elif title == "Deliver" %}
+        <a class="underline text-[#461f87]" href="..">Home</a> / 
+        <a class="underline text-[#461f87]" href="../dashboard">Cursos</a> /
+        <a class="underline text-[#461f87]" href="../grade/{{curso.pk}}">{{curso.nombre}}</a> / 
+        {% if vr %}
+            <a class="underline text-[#461f87]" href="../vrtask/{{taskid}}">{{task}}</a> /
+        {% else %}
+            <a class="underline text-[#461f87]" href="../task/{{taskid}}">{{task}}</a> /  
+        {% endif %}
+        <a class="underline text-[#461f87]" href="">Añadir entrega a {{task}}</a>
         {% endif %}
         </div>
         <div>

@@ -162,7 +162,7 @@ def vrtask(request, taskid):
 		'entrega': entrega,
 		'qualification': qualification,
 		'tasks': tasks,
-		'vrtasks': vrtasks
+		'vrtasks': vrtasks,
 	}
 	return render(request, 'vrtask.html', content)
 
@@ -180,7 +180,8 @@ def addDelivery(request, taskid):
 		'grade': grade,
 		'delivery': delivery,
 		'tasks': tasks,
-		'vrtasks': vrtasks
+		'vrtasks': vrtasks,
+		'vr': False
 	}
 	return render(request, 'addDelivery.html', content)
 
@@ -189,7 +190,7 @@ def addDeliveryVr(request, taskid):
 	task=get_object_or_404(VRTarea, pk=taskid)
 	grade=get_object_or_404(Curso, pk=task.curso.pk)
 	user=get_object_or_404(User, pk=request.user.pk)
-	tasks=VRTarea.objects.filter(curso=grade.pk)
+	tasks=Tarea.objects.filter(curso=grade.pk)
 	curso=get_object_or_404(Curso, pk=task.curso.pk)
 	vrtasks=VRTarea.objects.filter(curso=curso.pk)
 	delivery=Entrega.objects.filter(vrtarea=taskid, user=user.pk)
@@ -198,7 +199,8 @@ def addDeliveryVr(request, taskid):
 		'grade': grade,
 		'delivery': delivery,
 		'tasks': tasks,
-		'vrtasks': vrtasks
+		'vrtasks': vrtasks,
+		'vr': True
 	}
 	return render(request, 'addDelivery.html', content)
 
@@ -279,13 +281,31 @@ def vrdelivery(request, taskid, alumnid):
 	return render(request, 'delivery.html', content)
 
 @login_required
-def fastcorrection(request, taskid):
+def fastCorrection(request, taskid):
 	task=get_object_or_404(Tarea, pk=taskid)
 	curso=get_object_or_404(Curso, nombre=task.curso)
-	deliveries=Entrega.objects.filter(task=task)
+	deliveries=Entrega.objects.filter(tarea=task.pk)
 	alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
 	curso=get_object_or_404(Curso, pk=task.curso.pk)
 	qualifications=Calificacion.objects.filter(tarea=task.pk)
+	
+	content = {
+		'alumnos': alumnos,
+		'task': task,
+		'deliveries': deliveries,
+		'qualifications': qualifications,
+		'curso': curso
+	}
+	return render(request, 'fastCorrection.html', content)
+
+@login_required
+def fastCorrectionVr(request, taskid):
+	task=get_object_or_404(VRTarea, pk=taskid)
+	curso=get_object_or_404(Curso, nombre=task.curso)
+	deliveries=Entrega.objects.filter(vrtarea=task.pk)
+	alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
+	curso=get_object_or_404(Curso, pk=task.curso.pk)
+	qualifications=VRCalificacion.objects.filter(vrtarea=taskid)
 	alumnosEntregado=[]
 	for d in deliveries:
 		alumnosEntregado.append(d.user.pk)
@@ -298,7 +318,7 @@ def fastcorrection(request, taskid):
 		'qualifications': qualifications,
 		'curso': curso
 	}
-	return render(request, 'fastcorrection.html', content)
+	return render(request, 'fastCorrection.html', content)
 
 @csrf_exempt
 def actualizarEjercicioIndiviual(request, qualificationID, nota, comentarioProfesor):
