@@ -209,10 +209,10 @@ def delivery(request, taskid, alumnid):
 	alumn= get_object_or_404(User, pk=alumnid)
 	task=get_object_or_404(Tarea, pk=taskid)
 	try:
-		alumnos= Entrega.objects.filter(tarea=task)
+		alumnos= Entrega.objects.filter(tarea=taskid)
 		curso=get_object_or_404(Curso, pk=task.curso.pk)
 		qualification=Calificacion.objects.filter(user=alumn.pk, tarea=task.pk)
-		delivery=Entrega.objects.filter(tarea=task, user=alumn)[0]
+		delivery=Entrega.objects.filter(tarea=task.pk, user=alumn)[0]
 		alumnosID=[]
 		for i in alumnos :
 			alumnosID.append(i.user.pk)
@@ -284,11 +284,15 @@ def fastCorrection(request, taskid):
 	alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
 	curso=get_object_or_404(Curso, pk=task.curso.pk)
 	qualifications=Calificacion.objects.filter(tarea=task.pk)
+	alumnosEntregado=[]
+	for d in deliveries:
+		alumnosEntregado.append(d.user.pk)
 	
 	content = {
 		'alumnos': alumnos,
 		'task': task,
 		'deliveries': deliveries,
+		'alumnosEntregado': alumnosEntregado,
 		'qualifications': qualifications,
 		'curso': curso
 	}
