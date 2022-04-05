@@ -38,7 +38,8 @@ urlpatterns = [
     path('api/pin_request',api.pin_request),
     path('api/start_vr_exercise',api.start_vr_exercise), 
     path('api/finish_vr_exercise',api.finish_vr_exercise),
-    path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>/<int:estadoEntrega>',views.actualizarEjercicioIndiviual, name="actualizarEjercicio"),
+    path('actualizar/<int:qualificationID>/<int:nota>/<str:comentarioProfesor>',views.actualizarEjercicioIndiviual, name="actualizarEjercicio"),
+    path('actualizar/vr/<int:qualificationID>/<int:nota>/<str:comentarioProfesor>',views.actualizarEjercicioIndiviualVR, name="actualizarEjercicioVR"),
     path('actualizar/<int:entrega>/<int:nota>/<str:comentarioProfesor>',views.actualizar, name="actualizar"),
 
 ]

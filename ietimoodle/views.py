@@ -206,6 +206,7 @@ def addDeliveryVr(request, taskid):
 def delivery(request, taskid, alumnid):
 	alumn= get_object_or_404(User, pk=alumnid)
 	task=get_object_or_404(Tarea, pk=taskid)
+	vr = False
 	try:
 		alumnos= Entrega.objects.filter(tarea=task)
 		curso=get_object_or_404(Curso, pk=task.curso.pk)
@@ -234,7 +235,8 @@ def delivery(request, taskid, alumnid):
 		'nextAlumn': nextAlumn,
 		'prevAlumn': prevAlumn,
 		'qualification': qualification,
-		'curso': curso
+		'curso': curso,
+		'vr': vr,
 	}
 	return render(request, 'delivery.html', content)
 
@@ -242,11 +244,12 @@ def delivery(request, taskid, alumnid):
 def vrdelivery(request, taskid, alumnid):
 	alumn= get_object_or_404(User, pk=alumnid)
 	task=get_object_or_404(VRTarea, pk=taskid)
+	vr=True
 	try:
-		alumnos= Entrega.objects.filter(vrtarea=task)
+		alumnos= Entrega.objects.filter(vrtarea=task.pk)
 		curso=get_object_or_404(Curso, pk=task.curso.pk)
 		qualification=VRCalificacion.objects.filter(user=alumn.pk, vrtarea=task.pk)
-		delivery=Entrega.objects.filter(tarea=task, user=alumn)[0]
+		delivery=Entrega.objects.filter(vrtarea=task.pk, user=alumn)[0]
 		alumnosID=[]
 		for i in alumnos :
 			alumnosID.append(i.user.pk)
@@ -270,7 +273,8 @@ def vrdelivery(request, taskid, alumnid):
 		'nextAlumn': nextAlumn,
 		'prevAlumn': prevAlumn,
 		'qualification': qualification,
-		'curso': curso
+		'curso': curso,
+		'vr': vr,
 	}
 	return render(request, 'delivery.html', content)
 
@@ -297,16 +301,17 @@ def fastcorrection(request, taskid):
 	return render(request, 'fastcorrection.html', content)
 
 @csrf_exempt
-def actualizarEjercicioIndiviual(request, entrega, nota, comentarioProfesor,estadoEntrega):
-	if estadoEntrega==1:
-		estadoEntrega=True
-	else:
-		estadoEntrega=False
-	delivery = get_object_or_404(Entrega, pk=entrega)
-	delivery.cualificacion = nota
-	delivery.estado = estadoEntrega
-	delivery.comentario_profesor = comentarioProfesor
-	delivery.save()
+def actualizarEjercicioIndiviual(request, qualificationID, nota, comentarioProfesor):
+	qualification = get_object_or_404(Calificacion, pk=qualificationID)
+	qualification.nota = nota
+	qualification.comentario_profesor = comentarioProfesor
+	qualification.save()
+@csrf_exempt
+def actualizarEjercicioIndiviualVR(request, qualificationID, nota, comentarioProfesor):
+	qualification = get_object_or_404(VRCalificacion, pk=qualificationID)
+	qualification.nota = nota
+	qualification.comentario_profesor = comentarioProfesor
+	qualification.save()
 
 @csrf_exempt
 def actualizar(request, entrega, nota, comentarioProfesor):
