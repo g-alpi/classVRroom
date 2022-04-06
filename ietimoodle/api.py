@@ -180,9 +180,9 @@ def get_course_details(request):
                         completions.append(_entrega)
                     vrtasca = {
                         "ID":_vrtarea.id,
-                        "title":_vrtarea.ejercicio.nombre,
-                        "descripcion":_vrtarea.ejercicio.descripcion,
-                        "VRexId":_vrtarea.ejercicio.id,
+                        "title":_vrtarea.exercise.nombre,
+                        "descripcion":_vrtarea.exercise.descripcion,
+                        "VRexId":_vrtarea.exercise.id,
                         "versionID":_vrtarea.version,
                         "completions": completions
                     }
@@ -253,8 +253,8 @@ def start_vr_exercise(request):
         if (pin==str(entrega.pin)):
             exer = True
             _username = (entrega.user.username)
-            _VRexerciseID = (entrega.ejercicio.id)
-            _minExerciseVersion = (entrega.ejercicio.minVersion)
+            _VRexerciseID = (entrega.exercise.id)
+            _minExerciseVersion = (entrega.exercise.minVersion)
             if(status.HTTP_200_OK):
                 _status = "OK"
                 _message = "OK"
@@ -313,7 +313,7 @@ def finish_vr_exercise(request):
         newid = lastvr.id+1
         entrega =  Entrega.objects.filter(pin=pin)
         _ejercicio = Ejercicio.objects.filter(id = vrexerciseid)[0]
-        newvrtarea = VRTarea.objects.get_or_create(id=newid, nombre = pin, autograde = autograde, performance_data = performancedata, version = exerciseversion, ejercicio = _ejercicio, curso=_ejercicio.curso )
+        newvrtarea = VRTarea.objects.get_or_create(id=newid, nombre = pin, autograde = autograde, performance_data = performancedata, version = exerciseversion, exercise = _ejercicio, curso=_ejercicio.curso )
         
         _status = "OK"
         _message = "Exercise data succesfully stored"

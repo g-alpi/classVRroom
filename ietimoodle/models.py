@@ -31,18 +31,6 @@ class Tarea(models.Model):
     ponderacion = models.IntegerField(default=0)
     visibilidad = models.BooleanField(default=False)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
-    minVersion = models.CharField(max_length=200, null=True, blank=True)
-    def __str__(self):
-        return self.nombre
-
-class VRTarea(models.Model):
-    nombre = models.CharField(max_length=200)
-    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
-    minversion = models.CharField(max_length=255, null=True, blank=True)
-    autograde = models.CharField(max_length=255, null=True, blank=True)
-    version = models.CharField(max_length=255, null=True, blank=True)
-    performance_data = models.CharField(max_length=255, null=True, blank=True)
     def __str__(self):
         return self.nombre
 
