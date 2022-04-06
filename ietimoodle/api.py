@@ -182,7 +182,7 @@ def get_course_details(request):
                         "ID":_vrtarea.id,
                         "title":_vrtarea.exercise.nombre,
                         "descripcion":_vrtarea.exercise.descripcion,
-                        "VRexId":_vrtarea.exercise.id,
+                        "VRexId":"_vrtarea.exercise.id",
                         "versionID":_vrtarea.version,
                         "completions": completions
                     }
@@ -253,8 +253,8 @@ def start_vr_exercise(request):
         if (pin==str(entrega.pin)):
             exer = True
             _username = (entrega.user.username)
-            _VRexerciseID = (entrega.exercise.id)
-            _minExerciseVersion = (entrega.exercise.minVersion)
+            _VRexerciseID = (entrega.vrtarea.exercise.id)
+            _minExerciseVersion = (entrega.vrtarea.minversion)
             if(status.HTTP_200_OK):
                 _status = "OK"
                 _message = "OK"
