@@ -131,24 +131,70 @@ def get_course_details(request):
         cursos = (Curso.objects.all())
         _curso = request.GET['courseID']
         _recursos = []
-        _ejercicios = []
+        uploads = []
         resp = False
         for curso in cursos:
             if (_curso == str(curso.id)):
                 resp = True
                 recursos = Recurso.objects.filter(curso=curso.id)
-                ejercicios = Ejercicio.objects.filter(curso=curso.id)
                 for recurso in recursos:
                     _recursos.append(recurso.titulo)
-                for ejercicio in ejercicios:
-                    _ejercicios.append(ejercicio.nombre)
+                _entrega = {}
+                tascas = []
+                for _tarea in Tarea.objects.filter(curso = curso.id):
+                    uploads = []
+                    for entrega in Entrega.objects.filter(tarea=_tarea.id):
+                        pathfile = str(entrega.archivo)
+                        calificacion = Calificacion.objects.filter(tarea=_tarea.id).first()
+                        _entrega = {
+                            "studentID":entrega.user.id,
+                            "text":_tarea.nombre,
+                            "file":pathfile,
+                            "grade":calificacion.nota,
+                            "feedback":calificacion.comentario_profesor
+                        }
+                        uploads.append(_entrega)
+                    tasca = {
+                        "ID":_tarea.nombre,
+                        "type":"file",
+                        "descripcion":_tarea.nombre,
+                        "uploads":uploads
+                    }
+                    tascas.append(tasca)
+                _vrtasks = []
+                for _vrtarea in VRTarea.objects.filter(curso= curso.id):
+                                        
+                    completions= []
+                    
+                    for entrega in Entrega.objects.filter(id = _vrtarea.id):
+                        print(Calificacion.objects.filter(vrtarea= _vrtarea.id))
+                        calificacion = Calificacion.objects.filter(vrtarea = entrega.id).first()
+                        _entrega = {
+                            "studentID":entrega.user.id,
+                            "position_data":_vrtarea.performance_data,
+                            "autograde":_vrtarea.autograde,
+                            "grade": calificacion.nota,
+                            "feedback": calificacion.comentario_profesor
+                        }
+                        completions.append(_entrega)
+                    vrtasca = {
+                        "ID":_vrtarea.id,
+                        "title":_vrtarea.ejercicio.nombre,
+                        "descripcion":_vrtarea.ejercicio.descripcion,
+                        "VRexId":_vrtarea.ejercicio.id,
+                        "versionID":_vrtarea.version,
+                        "completions": completions
+                    }
+                    _vrtasks.append(vrtasca)
+
                 _course = {
                     "title": curso.nombre,
                     "description":curso.descripcion,
                     "courseID": curso.id,
                     "institutionID": curso.centro.id,
                     "elements": _recursos,
-                    "tasks": _ejercicios,
+                    "tasks": tascas, 
+                    "vrtasks":_vrtasks  
                 }
         if(status.HTTP_200_OK):
             _status = "OK"
@@ -177,7 +223,6 @@ def pin_request(request):
             if (task == str(entrega.id)):
                 if (entrega.pin==None):
                     while (pinexiste==True):
-                        print("girando")
                         pinexiste = False
                         newpin = random.randint(0,9999)
                         for entr in Entrega.objects.all():
@@ -337,7 +382,8 @@ def finish_vr_exercise(request):
 #             {"studentID": 3,
 #                 "position_data": {"data": "...to be decided..."},
 #                 "autograde": {"passed_items": 5,"failed_items": 3,"comments": "...to be decided..."},
-#                 "grade": 7,"feedback": "Mala postura lateral, riesgo de esguince"},
+#                 "grade": 7,
+#                 "feedback": "Mala postura lateral, riesgo de esguince"},
 #             {"studentID": 4,
 #                 "position_data": {"data": "...to be decided..."},
 #                 "autograde": {"passed_items": 6,"failed_items": 2,"comments": "...to be decided..."},

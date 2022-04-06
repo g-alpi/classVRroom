@@ -32,18 +32,20 @@ class Tarea(models.Model):
     visibilidad = models.BooleanField(default=False)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     minVersion = models.CharField(max_length=200, null=True, blank=True)
-    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE, blank=True)
     def __str__(self):
         return self.nombre
 
 class VRTarea(models.Model):
+    nombre = models.CharField(max_length=200)
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     minversion = models.CharField(max_length=255, null=True, blank=True)
     autograde = models.CharField(max_length=255, null=True, blank=True)
     version = models.CharField(max_length=255, null=True, blank=True)
     performance_data = models.CharField(max_length=255, null=True, blank=True)
- 
+    def __str__(self):
+        return self.nombre
+
 class NivelPrivacidad(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=255)
@@ -88,7 +90,8 @@ class Recurso(models.Model):
 
 class Calificacion(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE)
+    tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, null=True, blank=True)
+    vrtarea = models.ForeignKey(VRTarea, on_delete=models.CASCADE, null=True, blank=True)
     nota = models.IntegerField(null=True)
     fecha_entrega = models.DateTimeField()
     comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
