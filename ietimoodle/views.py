@@ -93,7 +93,18 @@ def qualifications(request, cursoid):
 	tasks = Tarea.objects.filter(curso=cursoid)
 	vrtasks = VRTarea.objects.filter(curso=cursoid)
 	deliveries=Entrega.objects.filter(user=alumn.pk, curso=cursoid)
-	qualifications=Calificacion.objects.filter(user=alumn.pk)
+	qualifications=[]
+	for t in tasks:
+		try:
+			qualifications.append(Calificacion.objects.filter(user=alumn.pk, tarea=t.pk))
+		except:
+			continue
+	vrqualifications=[]
+	for vrt in vrtasks:
+		try:
+			vrqualifications.append(VRCalificacion.objects.filter(user=alumn.pk, vrtarea=vrt.pk))
+		except:
+			continue
 	deliveriesRealizadas=[]
 	deliveriesVRRealizadas=[]
 	for d in deliveries:
@@ -113,8 +124,9 @@ def qualifications(request, cursoid):
 		'vrtasks': vrtasks,
 		'deliveries': deliveries,
 		'qualifications': qualifications,
+		'vrqualifications': vrqualifications,
 		'deliveriesRealizadas': deliveriesRealizadas,
-		'deliveriesVRRealizadas': deliveriesVRRealizadas
+		'deliveriesVRRealizadas': deliveriesVRRealizadas,
 	}
 	return render(request, 'qualifications.html', content)
 
@@ -228,7 +240,7 @@ def delivery(request, taskid, alumnid):
 		else:
 			prevAlumn=alumnosCurso[alumnosCurso.index(alumnid)-1]
 	except:
-		delivery=""
+		deliveries=""
 		prevAlumn=""
 		nextAlumn=""
 	
@@ -249,24 +261,25 @@ def delivery(request, taskid, alumnid):
 def vrdelivery(request, taskid, alumnid):
 	alumn= get_object_or_404(User, pk=alumnid)
 	task=get_object_or_404(VRTarea, pk=taskid)
-	vr=True
+	curso=get_object_or_404(Curso, nombre=task.curso)
 	try:
-		alumnos= Entrega.objects.filter(vrtarea=task.pk)
-		curso=get_object_or_404(Curso, pk=task.curso.pk)
-		qualification=VRCalificacion.objects.filter(user=alumn.pk, vrtarea=task.pk)
-		delivery=Entrega.objects.filter(vrtarea=task.pk, user=alumn)[0]
-		alumnosID=[]
-		for i in alumnos :
-			alumnosID.append(i.user.pk)
-
-		if alumnosID.index(alumnid) == len(alumnosID)-1:
-			nextAlumn = alumnosID[0]
+		deliveries=Entrega.objects.filter(vrtarea=taskid, user=alumnid)
+		alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
+		qualification=VRCalificacion.objects.filter(vrtarea=taskid, user=alumnid)
+		alumnosCurso = []
+		for a in alumnos:
+			alumnosCurso.append(a.user.pk)
+		if alumnosCurso.index(alumnid) == len(alumnosCurso)-1:
+			nextAlumn=alumnosCurso[0]
 		else:
-			nextAlumn = alumnosID[alumnosID.index(alumnid) + 1]
-
-		prevAlumn = alumnosID[alumnosID.index(alumnid) - 1]
+			nextAlumn=alumnosCurso[alumnosCurso.index(alumnid)+1]
+		
+		if alumnosCurso.index(alumnid) == 0:
+			prevAlumn=alumnosCurso[-1]
+		else:
+			prevAlumn=alumnosCurso[alumnosCurso.index(alumnid)-1]
 	except:
-		delivery=""
+		deliveries=""
 		prevAlumn=""
 		nextAlumn=""
 	
@@ -274,12 +287,11 @@ def vrdelivery(request, taskid, alumnid):
 	content = {
 		'alumn': alumn,
 		'task': task,
-		'delivery': delivery,
+		'deliveries': deliveries,
 		'nextAlumn': nextAlumn,
 		'prevAlumn': prevAlumn,
 		'qualification': qualification,
 		'curso': curso,
-		'vr': vr,
 	}
 	return render(request, 'delivery.html', content)
 

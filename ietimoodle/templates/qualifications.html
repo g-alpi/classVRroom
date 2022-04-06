@@ -9,50 +9,48 @@
                         <td>Tarea</td>
                         <td>Ponderación</td>
                         <td>Calificación</td>
-                        <td>Fecha de Entrega</td>
-                        <td>Comentario Alumno</td>
-                        <td>Archivo</td>
                         <td>Comentario Profesor</td>
+                        <td>Entregas</td>
                     </tr>
                     {% for t in tasks %}
                         {% if t.visibilidad == True %}
                             <tr class="text-center">
                                 <td>{{t.nombre}}</td>
                                 <td>{{t.ponderacion}}</td>
-                                {% if t.pk in deliveriesRealizadas or t.pk in deliveriesVRRealizadas%}
-                                    {% for d in deliveries %}
-                                        {% if d.tarea.pk == t.pk %}
-                                            {% for q in qualifications %}
-                                                {% if q.tarea == t.pk %}
-                                                    <td>{{q.nota}}</td>
-                                                {% endif %}
-                                            {% empty %}
-                                                <td class="italic text-red-700">No calificado</td>
-                                            {% endfor %}
-                                            <td>{{d.fecha_entrega}}</td>
-                                            {% if d.comentario_alumno %}
-                                                <td>{{d.comentario_alumno}}</td>
+                                <td>
+                                {% for q in qualifications %}
+                                    {% if q.0.tarea.pk == t.pk and q.0.user.pk == alumn.pk %}
+                                        {{q.0.nota}}
+                                    {% endif %}
+                                {% endfor %}
+                                </td>
+                                <td>
+                                    {% for q in qualifications %}
+                                        {% if q.0.tarea.pk == t.pk and q.0.user.pk == alumn.pk %}
+                                            {% if q.0.comentario_profesor %}
+                                                {{q.0.comentario_profesor}}
                                             {% else %}
-                                                <td class="italic">Sin comentario</td>
-                                            {% endif %}
-                                            {% if d.archivo %}
-                                                <td><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Descargar</a></td>
-                                            {% else %}
-                                                <td class="italic">Sin archivo</td>
-                                            {% endif %}
-                                            {% if d.comentario_profesor %}
-                                                <td>{{d.comentario_profesor}}</td>
-                                            {% else %}
-                                                <td class="italic">Sin comentario</td>
+                                                <p class="italic">Sin comentario</p>
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}
+                                </td>
+                                {% if t.pk in deliveriesRealizadas %}
+                                    <td>
+                                        <ol class="list-decimal">
+                                            {% for d in deliveries %}
+                                                {% if d.tarea.pk == t.pk %}
+                                                    {% if d.archivo %}
+                                                        <li><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Entrega {{forloop.counter}}</a></li>
+                                                    {% else %}
+                                                        <li><p class="italic">Sin archivo</p></li>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ol>
+                                    </td>
                                 {% else %}
-                                    <td class="italic text-red-700">No calificado</td>
-                                    <td class="italic text-red-700">No entregado</td>
-                                    <td class="italic text-red-700">Sin comentario</td>
-                                    <td class="italic text-red-700">No entregado</td>
-                                    <td class="italic text-red-700">Sin comentario</td>
+                                    <td class="italic text-red-700">No hay entregas</td>
                                 {% endif %}
                             </tr>
                         {% endif %}
@@ -62,40 +60,43 @@
                             <tr class="text-center">
                                 <td>{{t.nombre}}</td>
                                 <td>{{t.ponderacion}}</td>
-                                {% if t.pk in deliveriesRealizadas or t.pk in deliveriesVRRealizadas%}
-                                    {% for d in deliveries %}
-                                        {% if d.tarea.pk == t.pk %}
-                                            {% for q in qualifications %}
-                                                {% if q.tarea == t.pk %}
-                                                    <td>{{q.nota}}</td>
-                                                {% endif %}
-                                            {% empty %}
-                                                <td class="italic text-red-700">No calificado</td>
-                                            {% endfor %}
-                                            <td>{{d.fecha_entrega}}</td>
-                                            {% if d.comentario_alumno %}
-                                                <td>{{d.comentario_alumno}}</td>
+                                <td>
+                                {% for q in vrqualifications %}
+                                    {% if q.0.tarea.pk == t.pk and q.0.user.pk == alumn.pk %}
+                                        {{q.0.nota}}
+                                    {% endif %}
+                                {% endfor %}
+                                </td>
+                                <td>
+                                    {% for q in vrqualifications.0 %}
+                                        {% if q.0.tarea.pk == t.pk and q.0.user.pk == alumn.pk %}
+                                            {{ q.0.comentario_profesor}}
+                                            {% if q.0.comentario_profesor %}
+                                                {{q.0.comentario_profesor}}
                                             {% else %}
-                                                <td class="italic">Sin comentario</td>
-                                            {% endif %}
-                                            {% if d.archivo %}
-                                                <td><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Descargar</a></td>
-                                            {% else %}
-                                                <td class="italic">Sin archivo</td>
-                                            {% endif %}
-                                            {% if d.comentario_profesor %}
-                                                <td>{{d.comentario_profesor}}</td>
-                                            {% else %}
-                                                <td class="italic">Sin comentario</td>
+                                                <p class="italic">Sin comentario</p>
                                             {% endif %}
                                         {% endif %}
+                                    {% empty %}
+                                    <p class="italic">Sin comentario</p>
                                     {% endfor %}
+                                </td>
+                                {% if t.pk in deliveriesVRRealizadas %}
+                                    <td>
+                                        <ol class="list-decimal">
+                                            {% for d in deliveries %}
+                                                {% if d.vrtarea.pk == t.pk %}
+                                                    {% if d.archivo %}
+                                                        <li><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Entrega {{forloop.counter}}</a></li>
+                                                    {% else %}
+                                                        <li><p class="italic">Sin archivo</p></li>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ol>
+                                    </td>
                                 {% else %}
-                                    <td class="italic text-red-700">No calificado</td>
-                                    <td class="italic text-red-700">No entregado</td>
-                                    <td class="italic text-red-700">Sin comentario</td>
-                                    <td class="italic text-red-700">No entregado</td>
-                                    <td class="italic text-red-700">Sin comentario</td>
+                                    <td class="italic text-red-700">No hay entregas</td>
                                 {% endif %}
                             </tr>
                         {% endif %}

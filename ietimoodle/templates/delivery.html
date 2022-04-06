@@ -1,18 +1,18 @@
 <html>
     {% include "header.html" with title="Delivery" task=task.nombre cursoid=curso.pk %}
         {% block content %}
-        {% if deliveries %}
-            <div class="pt-5 pl-20 pr-20 flex justify-between">
-                <div class="flex">
-                    <h2 class="text-4xl">{{task}} de {{alumn}}</h2>
-                    <button class="p-1 m-1 ml-10"><a href="../fc/{{task.pk}}">Calificación rápida</a></button>
-                </div>
-                <div id="buttons flex align-center">
-                    <button class="p-1 m-1"><a href="{{prevAlumn}}">Anterior alumno</a></button>
-                    <button class="p-1 m-1" ><a href="{{nextAlumn}}">Siguiente alumno</a></button>
-                </div>
+        <div class="pt-5 pl-20 pr-20 flex justify-between">
+            <div class="flex">
+                <h2 class="text-4xl">{{task}} de {{alumn}}</h2>
+                <button class="p-1 m-1 ml-10"><a href="../fc/{{task.pk}}">Calificación rápida</a></button>
             </div>
-            <div class="pl-20 pr-20 pt-5 ">
+            <div id="buttons flex align-center">
+                <button class="p-1 m-1"><a href="{{prevAlumn}}">Anterior alumno</a></button>
+                <button class="p-1 m-1" ><a href="{{nextAlumn}}">Siguiente alumno</a></button>
+            </div>
+        </div>
+        <div class="pl-20 pr-20 pt-5 ">
+            {% if deliveries %}
                 <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-[10%] mb-3 w-[80%] ">
                     <table style="border: 1px ; border-radius: 10px;" class="w-[100%] text-xl">
                         <tr class="bg-[#e2daf0]">
@@ -31,11 +31,11 @@
                         </tr>
                         {% for d in deliveries %}
                             <tr class="bg-[#e2daf0]">
-                                <td><p class="font-bold">Archivo:</p></td>
-                                <td class=" px-[10%]"><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Descargar archivo entregado</a></td>
+                                <td><p class="font-bold">Entrega {{forloop.counter}}:</p></td>
+                                <td class=" px-[10%]"><a href="../../{{d.archivo}}" class="underline text-[#461f87] italic">Descargar archivo entregado</a></td>
                             </tr>
                             <tr>
-                                <td><p class="font-bold">Fecha de Entrega:</p></td>
+                                <td><p class="font-bold">Fecha de la Entrega {{forloop.counter}}:</p></td>
                                 <td class=" px-[10%]"><p>{{d.fecha_entrega}}</p></td>
                             </tr>
                         {% empty %}
@@ -48,15 +48,12 @@
                                 <td class=" px-[10%] italic text-red-700"><p>No entregado</p></td>
                             </tr>
                         {% endfor %}
+                        
                         <tr class="bg-[#e2daf0]">
                             <td class="flex"><p class="font-bold">Comentario Profesor:</p></td>
-
                             {% if qualification.0.comentario_profesor and qualification.0.comentario_profesor != "None" %}
                                 <td class=" px-[10%]">
                                     <textarea name="comentarioProfesor" id="comentarioProfesor" cols="40" rows="5">{{qualification.0.comentario_profesor}}</textarea>
-
-                            
-
                                 </td>
                             {% else %}
                                 <td class=" px-[10%]">
@@ -66,7 +63,7 @@
                         </tr>
                         <tr>
                             <td><p class="font-bold">Comentario Alumno:</p></td>
-                            {% if q.comentario_alumno and q.comentario_alumno != "None" %}
+                            {% if qualification.0.comentario_alumno and qualification.0.comentario_alumno != "None" %}
                                 <td class=" px-[10%]"><p>{{qualification.0.comentario_alumno}}</p></td>
                             {% else %}
                                 <td class=" px-[10%]"><p class="italic">Sin comentario</p></td>
@@ -77,19 +74,15 @@
                 <div class="flex justify-end mr-[10%]">
                     <button  name="" id="enviar" class="p-1 m-1">Actualizar</button>
                 </div>
-            </div>
-        {% else %}
-            <div class="pt-5 pl-20 pr-20">
-                <h2 class="text-4xl">{{task}}</h2>
-            </div>
-
-            <div class="pl-20 pr-20 pt-5 ">
-                <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3 flex">
-                    {% load static %}
-                    <img class="max-w-[30px] max-h-[30px] ml-3 mr-8" src="{% static 'warning.png' %}" alt="Warning"><p class="text-xl">No hay entregas realizadas en esta tarea</p>
+            {% else %}
+                <div class="pl-20 pr-20 pt-5 ">
+                    <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3 flex">
+                        {% load static %}
+                        <img class="max-w-[30px] max-h-[30px] ml-3 mr-8" src="{% static 'warning.png' %}" alt="Warning"><p class="text-xl">No hay entregas realizadas en esta tarea</p>
+                    </div>
                 </div>
-            </div>
-        {% endif %}
+         {% endif %}
+        </div>
 
 
         <script type="text/javascript">
