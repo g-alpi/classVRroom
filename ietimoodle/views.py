@@ -303,6 +303,7 @@ def fastCorrection(request, taskid):
 	alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
 	qualifications=Calificacion.objects.filter(tarea=task.pk)
 	alumnosEntregado=[]
+	vr=False
 	for d in deliveries:
 		alumnosEntregado.append(d.user.pk)
 	
@@ -312,7 +313,8 @@ def fastCorrection(request, taskid):
 		'deliveries': deliveries,
 		'alumnosEntregado': alumnosEntregado,
 		'qualifications': qualifications,
-		'curso': curso
+		'curso': curso,
+		'vr':vr,
 	}
 	return render(request, 'fastCorrection.html', content)
 
@@ -325,6 +327,7 @@ def fastCorrectionVr(request, taskid):
 	curso=get_object_or_404(Curso, pk=task.curso.pk)
 	qualifications=VRCalificacion.objects.filter(vrtarea=taskid)
 	alumnosEntregado=[]
+	vr=True
 	for d in deliveries:
 		alumnosEntregado.append(d.user.pk)
 	
@@ -334,7 +337,8 @@ def fastCorrectionVr(request, taskid):
 		'deliveries': deliveries,
 		'alumnosEntregado': alumnosEntregado,
 		'qualifications': qualifications,
-		'curso': curso
+		'curso': curso,
+		'vr':vr,
 	}
 	return render(request, 'fastCorrection.html', content)
 

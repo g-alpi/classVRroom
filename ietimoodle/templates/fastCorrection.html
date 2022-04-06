@@ -9,8 +9,8 @@
                     <tr class="font-bold text-center">
                         <td>Alumno</td>
                         <td>Correo</td>
-                        <td>Entregas</td>
                         <td>Calificación</td>
+                        <td>Entregas</td>
                         <td>Comentario Profesor</td>
                         <td>Actualizar</td>
                     </tr>
@@ -71,14 +71,14 @@
             $(document).ready(function() {
                 $('.actualizar').each(function() {
                     $(this).on('click', function () {
-
                         let nota = $("."+this.id+' .nota').val();
                         let comentarioProfesor = $("."+this.id+' .comentarioProfesor').val();
                         if (comentarioProfesor=="") {
                             comentarioProfesor="Sin comentarios"
                         }
-                        let entrega =  this.id;
-                        console.log(window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor);
+                        let qualification =  this.id;
+                        let vr="{{vr}}";
+                        console.log(window.location.origin+"/actualizar/"+qualification+"/"+nota+"/"+comentarioProfesor);
                         if (vr=='False'){
                             $.ajax({
                                 url: window.location.origin+"/actualizar/"+qualification+"/"+nota+"/"+comentarioProfesor ,
@@ -92,13 +92,7 @@
                             })
                         }
 
-                        if (nota=="gola" && comentarioProfesor=="cosa") {
-                            $("table").before('<div class="alert warning"> <span class="closebtn">&times;</span>No se ha actualizado la información, modifica los campos y vuelve a enviar</div>');
-                            
-                        }
-                        else{
-                            $("table").before('<div class="alert success"> <span class="closebtn">&times;</span>La información se ha actualizado correctamente</div>');
-                        }
+                        $("table").before('<div class="alert success"> <span class="closebtn">&times;</span>La información se ha actualizado correctamente</div>');
                         eliminarAlerta();
                         setTimeout(function(){ location.reload()}, 1000);
 

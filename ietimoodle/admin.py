@@ -86,3 +86,4 @@ admin.site.register(Recurso)
 admin.site.register(Calificacion)
 admin.site.register(VRCalificacion)
 admin.site.register(VRTarea)
+
