@@ -19,7 +19,7 @@
                         <tr class="text-center">
                             <td>{{a.user}}</td>
                             <td>{{a.user.correo}}</td>
-                            <td>
+                            <td class="flex item-center justify-center">
                                 <ol class="list-decimal">
                                     {% if a.user.pk in alumnosEntregado %}
                                         {% for d in deliveries %}
@@ -72,7 +72,6 @@
             $(document).ready(function() {
                 $('.actualizar').each(function() {
                     $(this).on('click', function () {
-                        console.log(this.id)
                         let nota = $("."+this.id+' .nota').val();
                         let comentarioProfesor = $("."+this.id+' .comentarioProfesor').val();
                         if (comentarioProfesor=="") {
@@ -80,7 +79,6 @@
                         }
                         let qualification =  $('#'+this.id).attr('name');
                         let vr="{{vr}}";
-                        console.log(window.location.origin+"/actualizar/"+qualification+"/"+nota+"/"+comentarioProfesor);
                         if (vr=='False'){
                             $.ajax({
                                 url: window.location.origin+"/actualizar/"+qualification+"/"+nota+"/"+comentarioProfesor ,
