@@ -71,7 +71,12 @@ class Entrega(models.Model):
     pin = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.tarea.nombre
+        
+        try:
+            resul = self.tarea.nombre
+        except: 
+            resul = self.pin    
+        return str(resul)
 
 class Suscripcion(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
