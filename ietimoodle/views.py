@@ -208,22 +208,25 @@ def addDeliveryVr(request, taskid):
 def delivery(request, taskid, alumnid):
 	alumn= get_object_or_404(User, pk=alumnid)
 	task=get_object_or_404(Tarea, pk=taskid)
+	curso=get_object_or_404(Curso, nombre=task.curso)
 	vr = False
+
 	try:
-		alumnos= Entrega.objects.filter(tarea=task)
-		curso=get_object_or_404(Curso, pk=task.curso.pk)
-		qualification=Calificacion.objects.filter(user=alumn.pk, tarea=task.pk)
-		delivery=Entrega.objects.filter(tarea=task, user=alumn)[0]
-		alumnosID=[]
-		for i in alumnos :
-			alumnosID.append(i.user.pk)
-
-		if alumnosID.index(alumnid) == len(alumnosID)-1:
-			nextAlumn = alumnosID[0]
+		deliveries=Entrega.objects.filter(tarea=taskid, user=alumnid)
+		alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
+		qualification=Calificacion.objects.filter(tarea=taskid, user=alumnid)
+		alumnosCurso = []
+		for a in alumnos:
+			alumnosCurso.append(a.user.pk)
+		if alumnosCurso.index(alumnid) == len(alumnosCurso)-1:
+			nextAlumn=alumnosCurso[0]
 		else:
-			nextAlumn = alumnosID[alumnosID.index(alumnid) + 1]
-
-		prevAlumn = alumnosID[alumnosID.index(alumnid) - 1]
+			nextAlumn=alumnosCurso[alumnosCurso.index(alumnid)+1]
+		
+		if alumnosCurso.index(alumnid) == 0:
+			prevAlumn=alumnosCurso[-1]
+		else:
+			prevAlumn=alumnosCurso[alumnosCurso.index(alumnid)-1]
 	except:
 		delivery=""
 		prevAlumn=""
@@ -233,7 +236,7 @@ def delivery(request, taskid, alumnid):
 	content = {
 		'alumn': alumn,
 		'task': task,
-		'delivery': delivery,
+		'deliveries': deliveries,
 		'nextAlumn': nextAlumn,
 		'prevAlumn': prevAlumn,
 		'qualification': qualification,
@@ -286,13 +289,16 @@ def fastCorrection(request, taskid):
 	curso=get_object_or_404(Curso, nombre=task.curso)
 	deliveries=Entrega.objects.filter(tarea=task.pk)
 	alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
-	curso=get_object_or_404(Curso, pk=task.curso.pk)
 	qualifications=Calificacion.objects.filter(tarea=task.pk)
+	alumnosEntregado=[]
+	for d in deliveries:
+		alumnosEntregado.append(d.user.pk)
 	
 	content = {
 		'alumnos': alumnos,
 		'task': task,
 		'deliveries': deliveries,
+		'alumnosEntregado': alumnosEntregado,
 		'qualifications': qualifications,
 		'curso': curso
 	}

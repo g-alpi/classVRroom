@@ -1,7 +1,7 @@
 <html>
     {% include "header.html" with title="Delivery" task=task.nombre cursoid=curso.pk %}
         {% block content %}
-        {% if delivery %}
+        {% if deliveries %}
             <div class="pt-5 pl-20 pr-20 flex justify-between">
                 <div class="flex">
                     <h2 class="text-4xl">{{task}} de {{alumn}}</h2>
@@ -17,7 +17,7 @@
                     <table style="border: 1px ; border-radius: 10px;" class="w-[100%] text-xl">
                         <tr class="bg-[#e2daf0]">
                             <td class="min-w-[200px]"><p class="font-bold">Alumno:</p></td>
-                            <td class="min-w-full px-[10%]"><p>{{delivery.user}}</p></td>
+                            <td class="min-w-full px-[10%]"><p>{{alumn.username}}</p></td>
                         </tr>
                         <tr>
                             <td><p class="font-bold">Tarea:</p></td>
@@ -29,19 +29,38 @@
                                 <input type="number" value="{{qualification.0.nota}}" id="nota" class="text-center">
                             </td>
                         </tr>
-                        <tr class="bg-[#e2daf0]">
-                            <td><p class="font-bold">Archivo:</p></td>
-                            <td class=" px-[10%]"><a href="../{{delivery.archivo}}" class="underline text-[#461f87] italic">Descargar archivo entregado</a></td>
-                        </tr>
-                        <tr>
-                            <td><p class="font-bold">Fecha de Entrega:</p></td>
-                            <td class=" px-[10%]"><p>{{delivery.fecha_entrega}}</p></td>
-                        </tr>
+                        {% for d in deliveries %}
+                            <tr class="bg-[#e2daf0]">
+                                <td><p class="font-bold">Archivo:</p></td>
+                                <td class=" px-[10%]"><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Descargar archivo entregado</a></td>
+                            </tr>
+                            <tr>
+                                <td><p class="font-bold">Fecha de Entrega:</p></td>
+                                <td class=" px-[10%]"><p>{{d.fecha_entrega}}</p></td>
+                            </tr>
+                        {% empty %}
+                            <tr class="bg-[#e2daf0]">
+                                <td><p class="font-bold">Archivo:</p></td>
+                                <td class=" px-[10%] italic text-red-700">No entregado</td>
+                            </tr>
+                            <tr>
+                                <td><p class="font-bold">Fecha de Entrega:</p></td>
+                                <td class=" px-[10%] italic text-red-700"><p>No entregado</p></td>
+                            </tr>
+                        {% endfor %}
                         <tr class="bg-[#e2daf0]">
                             <td class="flex"><p class="font-bold">Comentario Profesor:</p></td>
+
+                            {% if q.comentario_profesor and q.comentario_profesor != "None" %}
+                                <td class=" px-[10%]">
+                                    <textarea name="comentarioProfesor" id="comentarioProfesor" cols="40" rows="5">{{q.comentario_profesor}}</textarea>
+
+                          <!-- 
                             {% if qualification.0.comentario_profesor and qualification.0.comentario_profesor != "None" %}
                                 <td class=" px-[10%]">
                                     <textarea name="comentarioProfesor" id="comentarioProfesor" cols="40" rows="5">{{qualification.0.comentario_profesor}}</textarea>
+                            -->
+
                                 </td>
                             {% else %}
                                 <td class=" px-[10%]">
@@ -51,8 +70,8 @@
                         </tr>
                         <tr>
                             <td><p class="font-bold">Comentario Alumno:</p></td>
-                            {% if delivery.comentario_alumno and delivery.comentario_alumno != "None" %}
-                                <td class=" px-[10%]"><p>{{delivery.comentario_alumno}}</p></td>
+                            {% if q.comentario_alumno and q.comentario_alumno != "None" %}
+                                <td class=" px-[10%]"><p>{{q.comentario_alumno}}</p></td>
                             {% else %}
                                 <td class=" px-[10%]"><p class="italic">Sin comentario</p></td>
                             {% endif %}                       
