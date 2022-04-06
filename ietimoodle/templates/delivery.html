@@ -1,7 +1,7 @@
 <html>
     {% include "header.html" with title="Delivery" task=task.nombre cursoid=curso.pk %}
         {% block content %}
-        {% if delivery %}
+        {% if deliveries %}
             <div class="pt-5 pl-20 pr-20 flex justify-between">
                 <div class="flex">
                     <h2 class="text-4xl">{{task}} de {{alumn}}</h2>
@@ -17,31 +17,46 @@
                     <table style="border: 1px ; border-radius: 10px;" class="w-[100%] text-xl">
                         <tr class="bg-[#e2daf0]">
                             <td class="min-w-[200px]"><p class="font-bold">Alumno:</p></td>
-                            <td class="min-w-full px-[10%]"><p>{{delivery.user}}</p></td>
+                            <td class="min-w-full px-[10%]"><p>{{alumn.username}}</p></td>
                         </tr>
                         <tr>
                             <td><p class="font-bold">Tarea:</p></td>
-                            <td class=" px-[10%]"><p>{{delivery.tarea}}</p></td>
+                            <td class=" px-[10%]"><p>{{task.nombre}}</p></td>
                         </tr>
                         <tr>
                             <td><p class="font-bold">Calificación:</p></td>
                             <td class=" px-[10%]">
-                                <input type="number" value="{{qualification.nota}}" id="nota" class="text-center">
+                                <input type="number" value="{{qualification.0.nota}}" id="nota" class="text-center" min="0" max="10">
                             </td>
                         </tr>
-                        <tr class="bg-[#e2daf0]">
-                            <td><p class="font-bold">Archivo:</p></td>
-                            <td class=" px-[10%]"><a href="../{{delivery.archivo}}" class="underline text-[#461f87] italic">Descargar archivo entregado</a></td>
-                        </tr>
-                        <tr>
-                            <td><p class="font-bold">Fecha de Entrega:</p></td>
-                            <td class=" px-[10%]"><p>{{delivery.fecha_entrega}}</p></td>
-                        </tr>
+                        {% for d in deliveries %}
+                            <tr class="bg-[#e2daf0]">
+                                <td><p class="font-bold">Archivo:</p></td>
+                                <td class=" px-[10%]"><a href="../{{d.archivo}}" class="underline text-[#461f87] italic">Descargar archivo entregado</a></td>
+                            </tr>
+                            <tr>
+                                <td><p class="font-bold">Fecha de Entrega:</p></td>
+                                <td class=" px-[10%]"><p>{{d.fecha_entrega}}</p></td>
+                            </tr>
+                        {% empty %}
+                            <tr class="bg-[#e2daf0]">
+                                <td><p class="font-bold">Archivo:</p></td>
+                                <td class=" px-[10%] italic text-red-700">No entregado</td>
+                            </tr>
+                            <tr>
+                                <td><p class="font-bold">Fecha de Entrega:</p></td>
+                                <td class=" px-[10%] italic text-red-700"><p>No entregado</p></td>
+                            </tr>
+                        {% endfor %}
                         <tr class="bg-[#e2daf0]">
                             <td class="flex"><p class="font-bold">Comentario Profesor:</p></td>
-                            {% if delivery.comentario_profesor and delivery.comentario_profesor != "None" %}
+
+                            {% if qualification.0.comentario_profesor and qualification.0.comentario_profesor != "None" %}
                                 <td class=" px-[10%]">
-                                    <textarea name="comentarioProfesor" id="comentarioProfesor" cols="40" rows="5">{{delivery.comentario_profesor}}</textarea>
+                                    <textarea name="comentarioProfesor" id="comentarioProfesor" cols="40" rows="5">{{qualification.0.comentario_profesor}}</textarea>
+
+                            
+
                                 </td>
                             {% else %}
                                 <td class=" px-[10%]">
@@ -51,8 +66,8 @@
                         </tr>
                         <tr>
                             <td><p class="font-bold">Comentario Alumno:</p></td>
-                            {% if delivery.comentario_alumno and delivery.comentario_alumno != "None" %}
-                                <td class=" px-[10%]"><p>{{delivery.comentario_alumno}}</p></td>
+                            {% if q.comentario_alumno and q.comentario_alumno != "None" %}
+                                <td class=" px-[10%]"><p>{{qualification.0.comentario_alumno}}</p></td>
                             {% else %}
                                 <td class=" px-[10%]"><p class="italic">Sin comentario</p></td>
                             {% endif %}                       
@@ -80,24 +95,26 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 $('#enviar').on('click',function(){
-
-                    let entregado="{{delivery.estado}}";
-                    let banderaEntrega=1
-                    if ($('#entregado').is(':checked')!=true){
-                        banderaEntrega=2
-                    }
                     
                     let nota = $('#nota').val();
                     let comentarioProfesor = $('#comentarioProfesor').val();
                     if (comentarioProfesor=="") {
                         comentarioProfesor="Sin comentarios"
                     }
-                    let entrega = "{{ delivery.pk}}" ;
-                    console.log(window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor+"/"+banderaEntrega);
-                    $.ajax({
-                        url: window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor+"/"+banderaEntrega,
-                        method : 'POST',
-                    })
+                    let qualification = "{{qualification.0.pk}}";
+                    let vr="{{vr}}";
+                    if (vr=='False'){
+                        $.ajax({
+                            url: window.location.origin+"/actualizar/"+qualification+"/"+nota+"/"+comentarioProfesor ,
+                            method : 'POST',
+                        })
+                    }
+                    else{
+                        $.ajax({
+                            url: window.location.origin+"/actualizar/vr/"+qualification+"/"+nota+"/"+comentarioProfesor ,
+                            method : 'POST',
+                        })
+                    }
 
                     if ($('#nota').val()=="{{qualification.nota}}" && $('#comentarioProfesor').val()=="{{delivery.comentario_profesor}}" 
                         && String($('#entregado').is(':checked'))==entregado.toLowerCase()) 

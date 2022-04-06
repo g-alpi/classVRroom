@@ -73,12 +73,14 @@ def dashboard(request):
 def grade(request, cursoid):
 	recursos = Recurso.objects.filter(curso=cursoid)
 	tareas = Tarea.objects.filter(curso=cursoid)
+	vrtareas = VRTarea.objects.filter(curso=cursoid)
 	role= Suscripcion.objects.filter(curso=cursoid, user=request.user.pk)[0]
 	alumnos= Suscripcion.objects.filter(curso=cursoid,tipo='alumno')[0]
 	firstAlId=get_object_or_404(User, pk=alumnos.user.pk)
 	content= {
 		'resources': recursos,
 		'tasks': tareas,
+		'vrtasks': vrtareas,
 		'role': role,
 		'grade': get_object_or_404(Curso, pk=cursoid),
 		'firstal': firstAlId
@@ -89,18 +91,30 @@ def grade(request, cursoid):
 def qualifications(request, cursoid):
 	alumn=get_object_or_404(User, pk=request.user.pk)
 	tasks = Tarea.objects.filter(curso=cursoid)
+	vrtasks = VRTarea.objects.filter(curso=cursoid)
 	deliveries=Entrega.objects.filter(user=alumn.pk, curso=cursoid)
 	qualifications=Calificacion.objects.filter(user=alumn.pk)
 	deliveriesRealizadas=[]
+	deliveriesVRRealizadas=[]
 	for d in deliveries:
-		deliveriesRealizadas.append(d.tarea.pk)
+		try:
+			deliveriesRealizadas.append(d.tarea.pk)
+		except:
+			continue
+	for d in deliveries:
+		try:
+			deliveriesVRRealizadas.append(d.vrtarea.pk)
+		except:
+			continue
 	content= {
 		'grade': get_object_or_404(Curso, pk=cursoid),
 		'alumn': alumn,
 		'tasks': tasks,
+		'vrtasks': vrtasks,
 		'deliveries': deliveries,
 		'qualifications': qualifications,
-		'deliveriesRealizadas': deliveriesRealizadas
+		'deliveriesRealizadas': deliveriesRealizadas,
+		'deliveriesVRRealizadas': deliveriesVRRealizadas
 	}
 	return render(request, 'qualifications.html', content)
 
@@ -116,30 +130,131 @@ def resource(request, resourceid):
 
 @login_required
 def task(request, taskid):
-	tarea=get_object_or_404(Tarea, pk=taskid)
-	curso=get_object_or_404(Curso, pk=tarea.curso.pk)
+	task=get_object_or_404(Tarea, pk=taskid)
+	curso=get_object_or_404(Curso, pk=task.curso.pk)
 	alumn=get_object_or_404(User, pk=request.user.pk)
-	qualification=get_object_or_404(Calificacion, user=alumn.pk, tarea=task.pk)
+	qualification=Calificacion.objects.filter(user=alumn.pk, tarea=task.pk)
 	tasks=Tarea.objects.filter(curso=curso.pk)
+	vrtasks=VRTarea.objects.filter(curso=curso.pk)
 	entrega=Entrega.objects.filter(tarea=taskid, user=alumn.pk)
 	content= {
-		'task': tarea,
+		'task': task,
 		'curso': curso,
 		'entrega': entrega,
 		'qualification': qualification,
-		'tasks': tasks
+		'tasks': tasks,
+		'vrtasks': vrtasks
 	}
 	return render(request, 'task.html', content)
+
+@login_required
+def vrtask(request, taskid):
+	task=get_object_or_404(VRTarea, pk=taskid)
+	curso=get_object_or_404(Curso, pk=task.curso.pk)
+	alumn=get_object_or_404(User, pk=request.user.pk)
+	qualification=VRCalificacion.objects.filter(user=alumn.pk, vrtarea=task.pk)
+	tasks=Tarea.objects.filter(curso=curso.pk)
+	vrtasks=VRTarea.objects.filter(curso=curso.pk)
+	entrega=Entrega.objects.filter(vrtarea=taskid, user=alumn.pk)
+	content= {
+		'task': task,
+		'curso': curso,
+		'entrega': entrega,
+		'qualification': qualification,
+		'tasks': tasks,
+		'vrtasks': vrtasks,
+	}
+	return render(request, 'vrtask.html', content)
+
+@login_required
+def addDelivery(request, taskid):
+	task=get_object_or_404(Tarea, pk=taskid)
+	grade=get_object_or_404(Curso, pk=task.curso.pk)
+	user=get_object_or_404(User, pk=request.user.pk)
+	tasks=Tarea.objects.filter(curso=grade.pk)
+	curso=get_object_or_404(Curso, pk=task.curso.pk)
+	vrtasks=VRTarea.objects.filter(curso=curso.pk)
+	delivery=Entrega.objects.filter(tarea=taskid, user=user.pk)
+	content= {
+		'task': task,
+		'grade': grade,
+		'delivery': delivery,
+		'tasks': tasks,
+		'vrtasks': vrtasks,
+		'vr': False
+	}
+	return render(request, 'addDelivery.html', content)
+
+@login_required
+def addDeliveryVr(request, taskid):
+	task=get_object_or_404(VRTarea, pk=taskid)
+	grade=get_object_or_404(Curso, pk=task.curso.pk)
+	user=get_object_or_404(User, pk=request.user.pk)
+	tasks=Tarea.objects.filter(curso=grade.pk)
+	curso=get_object_or_404(Curso, pk=task.curso.pk)
+	vrtasks=VRTarea.objects.filter(curso=curso.pk)
+	delivery=Entrega.objects.filter(vrtarea=taskid, user=user.pk)
+	content= {
+		'task': task,
+		'grade': grade,
+		'delivery': delivery,
+		'tasks': tasks,
+		'vrtasks': vrtasks,
+		'vr': True
+	}
+	return render(request, 'addDelivery.html', content)
 
 @login_required
 def delivery(request, taskid, alumnid):
 	alumn= get_object_or_404(User, pk=alumnid)
 	task=get_object_or_404(Tarea, pk=taskid)
+	curso=get_object_or_404(Curso, nombre=task.curso)
+	vr = False
+
 	try:
-		alumnos= Entrega.objects.filter(tarea=task)
+		deliveries=Entrega.objects.filter(tarea=taskid, user=alumnid)
+		alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
+		qualification=Calificacion.objects.filter(tarea=taskid, user=alumnid)
+		alumnosCurso = []
+		for a in alumnos:
+			alumnosCurso.append(a.user.pk)
+		if alumnosCurso.index(alumnid) == len(alumnosCurso)-1:
+			nextAlumn=alumnosCurso[0]
+		else:
+			nextAlumn=alumnosCurso[alumnosCurso.index(alumnid)+1]
+		
+		if alumnosCurso.index(alumnid) == 0:
+			prevAlumn=alumnosCurso[-1]
+		else:
+			prevAlumn=alumnosCurso[alumnosCurso.index(alumnid)-1]
+	except:
+		delivery=""
+		prevAlumn=""
+		nextAlumn=""
+	
+	
+	content = {
+		'alumn': alumn,
+		'task': task,
+		'deliveries': deliveries,
+		'nextAlumn': nextAlumn,
+		'prevAlumn': prevAlumn,
+		'qualification': qualification,
+		'curso': curso,
+		'vr': vr,
+	}
+	return render(request, 'delivery.html', content)
+
+@login_required
+def vrdelivery(request, taskid, alumnid):
+	alumn= get_object_or_404(User, pk=alumnid)
+	task=get_object_or_404(VRTarea, pk=taskid)
+	vr=True
+	try:
+		alumnos= Entrega.objects.filter(vrtarea=task.pk)
 		curso=get_object_or_404(Curso, pk=task.curso.pk)
-		delivery=Entrega.objects.filter(tarea=task, user=alumn)[0]
-		qualification=get_object_or_404(Calificacion, user=alumn.pk, tarea=task.pk)
+		qualification=VRCalificacion.objects.filter(user=alumn.pk, vrtarea=task.pk)
+		delivery=Entrega.objects.filter(vrtarea=task.pk, user=alumn)[0]
 		alumnosID=[]
 		for i in alumnos :
 			alumnosID.append(i.user.pk)
@@ -163,20 +278,20 @@ def delivery(request, taskid, alumnid):
 		'nextAlumn': nextAlumn,
 		'prevAlumn': prevAlumn,
 		'qualification': qualification,
-		'curso': curso
+		'curso': curso,
+		'vr': vr,
 	}
 	return render(request, 'delivery.html', content)
 
-
 @login_required
-def fastcorrection(request, taskid):
+def fastCorrection(request, taskid):
 	task=get_object_or_404(Tarea, pk=taskid)
 	curso=get_object_or_404(Curso, nombre=task.curso)
-	deliveries=Entrega.objects.filter(task=task)
+	deliveries=Entrega.objects.filter(tarea=task.pk)
 	alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
-	curso=get_object_or_404(Curso, pk=task.curso.pk)
 	qualifications=Calificacion.objects.filter(tarea=task.pk)
 	alumnosEntregado=[]
+	vr=False
 	for d in deliveries:
 		alumnosEntregado.append(d.user.pk)
 	
@@ -186,21 +301,47 @@ def fastcorrection(request, taskid):
 		'deliveries': deliveries,
 		'alumnosEntregado': alumnosEntregado,
 		'qualifications': qualifications,
-		'curso': curso
+		'curso': curso,
+		'vr':vr,
 	}
-	return render(request, 'fastcorrection.html', content)
+	return render(request, 'fastCorrection.html', content)
+
+@login_required
+def fastCorrectionVr(request, taskid):
+	task=get_object_or_404(VRTarea, pk=taskid)
+	curso=get_object_or_404(Curso, nombre=task.curso)
+	deliveries=Entrega.objects.filter(vrtarea=task.pk)
+	alumnos= Suscripcion.objects.filter(curso=curso.pk, tipo="alumno")
+	curso=get_object_or_404(Curso, pk=task.curso.pk)
+	qualifications=VRCalificacion.objects.filter(vrtarea=taskid)
+	alumnosEntregado=[]
+	vr=True
+	for d in deliveries:
+		alumnosEntregado.append(d.user.pk)
+	
+	content = {
+		'alumnos': alumnos,
+		'task': task,
+		'deliveries': deliveries,
+		'alumnosEntregado': alumnosEntregado,
+		'qualifications': qualifications,
+		'curso': curso,
+		'vr':vr,
+	}
+	return render(request, 'fastCorrection.html', content)
 
 @csrf_exempt
-def actualizarEjercicioIndiviual(request, entrega, nota, comentarioProfesor,estadoEntrega):
-	if estadoEntrega==1:
-		estadoEntrega=True
-	else:
-		estadoEntrega=False
-	delivery = get_object_or_404(Entrega, pk=entrega)
-	delivery.cualificacion = nota
-	delivery.estado = estadoEntrega
-	delivery.comentario_profesor = comentarioProfesor
-	delivery.save()
+def actualizarEjercicioIndiviual(request, qualificationID, nota, comentarioProfesor):
+	qualification = get_object_or_404(Calificacion, pk=qualificationID)
+	qualification.nota = nota
+	qualification.comentario_profesor = comentarioProfesor
+	qualification.save()
+@csrf_exempt
+def actualizarEjercicioIndiviualVR(request, qualificationID, nota, comentarioProfesor):
+	qualification = get_object_or_404(VRCalificacion, pk=qualificationID)
+	qualification.nota = nota
+	qualification.comentario_profesor = comentarioProfesor
+	qualification.save()
 
 @csrf_exempt
 def actualizar(request, entrega, nota, comentarioProfesor):

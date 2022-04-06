@@ -22,7 +22,7 @@
     </div>
     <div id="tareas" class="pl-20 pr-20 pt-5">
         {% if tasks %}
-            {% for e in tasks %}
+            {% for t in tasks %}
                 {% if t.visibilidad == True or role.tipo == "profesor" %}
                     {% if role.tipo == "profesor"  and t.visibilidad == False %} 
                         {% load static %}
@@ -30,9 +30,27 @@
                     {% endif %}
                     <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
                         {% if role.tipo == "profesor" %}
-                            <a class="text-2xl underline text-[#461f87]" href="../{{t.pk}}/{{firstal.pk}}">{{e}}</a>
+                            <a class="text-2xl underline text-[#461f87]" href="../{{t.pk}}/{{firstal.pk}}">{{t}}</a>
                         {% else %}
-                            <a class="text-2xl underline text-[#461f87]" href="../task/{{t.pk}}">{{e}}</a>
+                            <a class="text-2xl underline text-[#461f87]" href="../task/{{t.pk}}">{{t}}</a>
+                        {% endif %}
+                        <p class="pl-10 italic">Ponderación: {{t.ponderacion}}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if vrtasks %}
+            {% for t in vrtasks %}
+                {% if t.visibilidad == True or role.tipo == "profesor" %}
+                    {% if role.tipo == "profesor"  and t.visibilidad == False %} 
+                        {% load static %}
+                        <p class="pl-10 italic flex"><img class="max-w-[18px] max-h-[18px]" src="{% static 'warning.png' %}" alt="Warning">Tarea oculto para el alumnado</p>
+                    {% endif %}
+                    <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
+                        {% if role.tipo == "profesor" %}
+                            <a class="text-2xl underline text-[#461f87]" href="../vr/{{t.pk}}/{{firstal.pk}}">{{t}}</a>
+                        {% else %}
+                            <a class="text-2xl underline text-[#461f87]" href="../vrtask/{{t.pk}}">{{t}}</a>
                         {% endif %}
                         <p class="pl-10 italic">Ponderación: {{t.ponderacion}}</p>
                     </div>

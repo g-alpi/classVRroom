@@ -88,7 +88,7 @@
                                 <td><p class="font-bold">Archivo adjunto</p></td>
                                 <td>
                                     {% if entrega.0.archivo %}
-                                    <a class="italic underline text-[#461f87]" href="../../{{entrega.0.archivo}}">Descargar archivo entregado</a>
+                                        <a class="italic underline text-[#461f87]" href="../../{{entrega.0.archivo}}">Descargar archivo entregado</a>
                                     {% else %}
                                     <p>Ningún archivo adjunto</p>
                                     {% endif %}
@@ -96,13 +96,13 @@
                             </tr>
                             <tr class="bg-[#e2daf0]">
                                 <td colspan="2">
-                                    <button class="ml-[25%] font-bold rounded-lg p-1.5 bg-[#461f87] text-[#ededed]" onclick="location.href='../ad/{{task.pk}}'">Añadir otra entrega</button>
+                                    <button class="ml-[25%] font-bold rounded-lg p-1.5 bg-[#461f87] text-[#ededed]" onclick="location.href='../advr/{{task.pk}}'">Añadir otra entrega</button>
                                 </td>
                             </tr>
                         {% else %}
                             <tr class="bg-[#e2daf0]">
                                 <td colspan="2">
-                                    <button class="ml-[25%] font-bold rounded-lg p-1.5 bg-[#461f87] text-[#ededed]" onclick="location.href='../ad/{{task.pk}}'">Añadir entrega</button>
+                                    <button class="ml-[25%] font-bold rounded-lg p-1.5 bg-[#461f87] text-[#ededed]" onclick="location.href='../advr/{{task.pk}}'">Añadir entrega</button>
                                 </td>
                             </tr>
                         {% endif %}

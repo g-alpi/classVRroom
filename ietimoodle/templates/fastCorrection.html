@@ -1,0 +1,114 @@
+<html>
+    {% include "header.html" with title="Fast Correction" task=task.nombre cursoid=curso.pk %}
+        {% block content %}
+        <h2 class="pt-5 pl-20 text-4xl">{{task.nombre}}</h2>
+
+        <div id="table" class="pl-20 pr-20 pt-5 ">
+            <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 mb-3">
+                <table id="fctable" style="border: 1px ; border-radius: 10px;" class="min-w-full">
+                    <tr class="font-bold text-center">
+                        <td>Alumno</td>
+                        <td>Correo</td>
+                        <td>Calificación</td>
+                        <td>Entregas</td>
+                        <td>Comentario Profesor</td>
+                        <td>Actualizar</td>
+                    </tr>
+                    {% if deliveries %}
+                    {% for a in alumnos %}
+                                <tr class="text-center">
+                                    <td>{{a.user}}</td>
+                                    <td>{{a.user.correo}}</td>
+                                    {% for q in qualifications %}
+                                        {% if q.tarea == task.pk %}
+                                            <td class="{{q.pk}}"><input type="number" value="{{q.nota}}" class="nota" class="text-center"></td>
+                                        {% endif %}
+                                        <td>
+                                            <ol>
+                                                {% for d in deliveries %}
+                                                    {% if d.tarea.pk == task.pk %}
+                                                        <li>
+                                                            <a class="italic underline text-[#461f87]" href="../../{{d.archivo}}">Descargar entrega</a>
+                                                        </li>
+                                                    {% endif %}
+                                                {% empty %}
+                                                        <li>N/A</li>
+                                                {% endfor %}
+                                            </ol>    
+                                        </td>
+                                        <td class="{{q.pk}}">
+                                            {% if q.comentario_profesor %}
+                                                <textarea name="comentarioProfesor" id="" cols="30" rows="2" class="comentarioProfesor">{{q.comentario_profesor}}</textarea> 
+                                            {% else %}
+                                                <textarea name="comentarioProfesor" id="" cols="30" rows="2" class="comentarioProfesor">Sin comentario</textarea>
+                                            {% endif %}
+                                        </td>
+                                        <td><button name="" id="{{q.pk}}" class="p-1 m-1 text-sm actualizar">Actualizar</button></td>
+                                    {% empty %}
+                                        {% load static %}
+                                        <td class="flex justify-end items-center pt-1 {{d.pk}} h-[100]"><input type="number" value="0" class="nota" class="text-center"><img class="max-w-[18px] max-h-[18px] ml-3" src="{% static 'warning.png' %}" alt="Warning"></td>
+                                        <td>
+                                            <ol>
+                                                {% for d in deliveries %}
+                                                    {% if d.tarea.pk == task.pk %}
+                                                        <li>
+                                                            <a class="italic underline text-[#461f87]" href="../../{{d.archivo}}">Descargar entrega</a>
+                                                        </li>
+                                                    {% endif %}
+                                                {% empty %}
+                                                        <li>N/A</li>
+                                                {% endfor %}
+                                            </ol>    
+                                        </td>
+                                        <td class="{{q.pk}}"><textarea name="comentarioProfesor" id="" cols="30" rows="2" class="comentarioProfesor">Sin comentario</textarea></td>
+                                        <td><button name="" id="{{q.pk}}" class="p-1 m-1 text-sm actualizar">Actualizar</button></td>
+                                    </tr>
+                                    {% endfor %}
+                    {% endfor %}
+                    {% else %}
+                    <tr><td>No hay entregas</td></tr>
+                    {% endif %}
+                </table>    
+                
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('.actualizar').each(function() {
+                    $(this).on('click', function () {
+                        let nota = $("."+this.id+' .nota').val();
+                        let comentarioProfesor = $("."+this.id+' .comentarioProfesor').val();
+                        if (comentarioProfesor=="") {
+                            comentarioProfesor="Sin comentarios"
+                        }
+                        let qualification =  this.id;
+                        let vr="{{vr}}";
+                        console.log(window.location.origin+"/actualizar/"+qualification+"/"+nota+"/"+comentarioProfesor);
+                        if (vr=='False'){
+                            $.ajax({
+                                url: window.location.origin+"/actualizar/"+qualification+"/"+nota+"/"+comentarioProfesor ,
+                                method : 'POST',
+                            })
+                        }
+                        else{
+                            $.ajax({
+                                url: window.location.origin+"/actualizar/vr/"+qualification+"/"+nota+"/"+comentarioProfesor ,
+                                method : 'POST',
+                            })
+                        }
+
+                        $("table").before('<div class="alert success"> <span class="closebtn">&times;</span>La información se ha actualizado correctamente</div>');
+                        eliminarAlerta();
+                        setTimeout(function(){ location.reload()}, 1000);
+
+                        
+                    })
+                    
+                });
+
+                    });
+            
+        </script>
+        {% endblock %}
+    </body>
+<html>

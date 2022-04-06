@@ -46,6 +46,19 @@ class VRTarea(models.Model):
     def __str__(self):
         return self.nombre
 
+class VRTarea(models.Model):
+    nombre = models.CharField(max_length=200)
+    exercise = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    ponderacion = models.IntegerField(default=0)
+    visibilidad = models.BooleanField(default=False)
+    minversion = models.CharField(max_length=255, null=True, blank=True)
+    autograde = models.CharField(max_length=255, null=True, blank=True)
+    version = models.CharField(max_length=255, null=True, blank=True)
+    performance_data = models.CharField(max_length=255, null=True, blank=True)
+    def __str__(self):
+        return self.nombre
+ 
 class NivelPrivacidad(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=255)
@@ -71,13 +84,12 @@ class Entrega(models.Model):
     pin = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        
         try:
             resul = self.tarea.nombre
         except: 
             resul = self.pin    
         return str(resul)
-
+      
 class Suscripcion(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
@@ -97,6 +109,16 @@ class Calificacion(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, null=True, blank=True)
     vrtarea = models.ForeignKey(VRTarea, on_delete=models.CASCADE, null=True, blank=True)
+    nota = models.IntegerField(null=True)
+    fecha_entrega = models.DateTimeField()
+    comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
+    comentario_alumno = models.CharField(max_length=255, null=True, blank=True)
+    def str(self):
+        return '{}{}'.format(self.nota, self.user)
+
+class VRCalificacion(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    vrtarea = models.ForeignKey(VRTarea, on_delete=models.CASCADE)
     nota = models.IntegerField(null=True)
     fecha_entrega = models.DateTimeField()
     comentario_profesor = models.CharField(max_length=255, null=True, blank=True)
