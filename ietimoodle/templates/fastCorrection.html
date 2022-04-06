@@ -79,10 +79,18 @@
                         }
                         let entrega =  this.id;
                         console.log(window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor);
-                        $.ajax({
-                            url: window.location.origin+"/actualizar/"+entrega+"/"+nota+"/"+comentarioProfesor,
-                            method : 'POST',
-                        })
+                        if (vr=='False'){
+                            $.ajax({
+                                url: window.location.origin+"/actualizar/"+qualification+"/"+nota+"/"+comentarioProfesor ,
+                                method : 'POST',
+                            })
+                        }
+                        else{
+                            $.ajax({
+                                url: window.location.origin+"/actualizar/vr/"+qualification+"/"+nota+"/"+comentarioProfesor ,
+                                method : 'POST',
+                            })
+                        }
 
                         if (nota=="gola" && comentarioProfesor=="cosa") {
                             $("table").before('<div class="alert warning"> <span class="closebtn">&times;</span>No se ha actualizado la información, modifica los campos y vuelve a enviar</div>');
