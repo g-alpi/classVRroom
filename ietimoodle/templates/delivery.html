@@ -26,7 +26,7 @@
                         <tr>
                             <td><p class="font-bold">Calificación:</p></td>
                             <td class=" px-[10%]">
-                                <input type="number" value="{{qualification.0.nota}}" id="nota" class="text-center">
+                                <input type="number" value="{{qualification.0.nota}}" id="nota" class="text-center" min="0" max="10">
                             </td>
                         </tr>
                         {% for d in deliveries %}
@@ -51,15 +51,11 @@
                         <tr class="bg-[#e2daf0]">
                             <td class="flex"><p class="font-bold">Comentario Profesor:</p></td>
 
-                            {% if q.comentario_profesor and q.comentario_profesor != "None" %}
-                                <td class=" px-[10%]">
-                                    <textarea name="comentarioProfesor" id="comentarioProfesor" cols="40" rows="5">{{q.comentario_profesor}}</textarea>
-
-                          <!-- 
                             {% if qualification.0.comentario_profesor and qualification.0.comentario_profesor != "None" %}
                                 <td class=" px-[10%]">
                                     <textarea name="comentarioProfesor" id="comentarioProfesor" cols="40" rows="5">{{qualification.0.comentario_profesor}}</textarea>
-                            -->
+
+                            
 
                                 </td>
                             {% else %}
@@ -71,7 +67,7 @@
                         <tr>
                             <td><p class="font-bold">Comentario Alumno:</p></td>
                             {% if q.comentario_alumno and q.comentario_alumno != "None" %}
-                                <td class=" px-[10%]"><p>{{q.comentario_alumno}}</p></td>
+                                <td class=" px-[10%]"><p>{{qualification.0.comentario_alumno}}</p></td>
                             {% else %}
                                 <td class=" px-[10%]"><p class="italic">Sin comentario</p></td>
                             {% endif %}                       
@@ -105,7 +101,6 @@
                     if (comentarioProfesor=="") {
                         comentarioProfesor="Sin comentarios"
                     }
-                    let entrega = "{{ delivery.pk}}" ;
                     let qualification = "{{qualification.0.pk}}";
                     let vr="{{vr}}";
                     if (vr=='False'){
