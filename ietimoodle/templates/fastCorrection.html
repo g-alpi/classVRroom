@@ -35,12 +35,12 @@
                                 </ol>    
                             </td>
                             <td class="{{q.pk}}">
-                                <input type="number" id="nota" value="0" class="nota" min="0" max="10">
+                                <input type="number" id="{{a.user}}" value="0" class="nota" min="0" max="10">
                                 {% for q in qualifications %}
                                     {% if q.user.pk == a.user.pk %}
                                         <script>
-                                            let valorNota = '{{q.nota}}'
-                                            $('#nota').val(valorNota)
+                                            var valorNota = '{{q.nota}}'
+                                            $('#{{a.user}}').val(valorNota)
                                         </script>
                                     {% endif %}
                                 {% endfor %}
