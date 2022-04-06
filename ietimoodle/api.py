@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.contrib.auth.hashers import check_password
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
 import random 
+import datetime
 
 def verifyToken(token):
     verifica = False
@@ -17,8 +18,13 @@ def verifyToken(token):
     
 @api_view(['GET'])
 def login(request):
-    correo=(request.GET['email'])
-    password=(request.GET['password'])
+    try: 
+        correo=(request.GET['email'])
+        password=(request.GET['password'])
+    except:
+        correo=""
+        password=""
+        _token="null"
     _correo=False
     if (correo==""):
         _message = "email is required"
@@ -51,7 +57,10 @@ def login(request):
 
 @api_view(['GET'])
 def logout(request):
-    token = (request.GET['token'])
+    try:
+        token = (request.GET['token'])
+    except:
+        token = "null"
     verifica = verifyToken(token)
     if (verifica):
         _status = "OK"
@@ -113,31 +122,80 @@ def get_courses(request):
 
 @api_view(['GET'])
 def get_course_details(request):
-    token = (request.GET['token'])
+    try:
+        token = (request.GET['token'])
+        
+    except:
+        token = "null"
     verifica = verifyToken(token)
     if (verifica):
         cursos = (Curso.objects.all())
         _curso = request.GET['courseID']
-        print(_curso)
         _recursos = []
-        _ejercicios = []
+        uploads = []
         resp = False
         for curso in cursos:
             if (_curso == str(curso.id)):
                 resp = True
                 recursos = Recurso.objects.filter(curso=curso.id)
-                ejercicios = Ejercicio.objects.filter(curso=curso.id)
                 for recurso in recursos:
                     _recursos.append(recurso.titulo)
-                for ejercicio in ejercicios:
-                    _ejercicios.append(ejercicio.nombre)
+                _entrega = {}
+                tascas = []
+                for _tarea in Tarea.objects.filter(curso = curso.id):
+                    uploads = []
+                    for entrega in Entrega.objects.filter(tarea=_tarea.id):
+                        pathfile = str(entrega.archivo)
+                        calificacion = Calificacion.objects.filter(tarea=_tarea.id).first()
+                        _entrega = {
+                            "studentID":entrega.user.id,
+                            "text":_tarea.nombre,
+                            "file":pathfile,
+                            "grade":calificacion.nota,
+                            "feedback":calificacion.comentario_profesor
+                        }
+                        uploads.append(_entrega)
+                    tasca = {
+                        "ID":_tarea.nombre,
+                        "type":"file",
+                        "descripcion":_tarea.nombre,
+                        "uploads":uploads
+                    }
+                    tascas.append(tasca)
+                _vrtasks = []
+                for _vrtarea in VRTarea.objects.filter(curso= curso.id):
+                                        
+                    completions= []
+                    
+                    for entrega in Entrega.objects.filter(id = _vrtarea.id):
+                        print(Calificacion.objects.filter(vrtarea= _vrtarea.id))
+                        calificacion = Calificacion.objects.filter(vrtarea = entrega.id).first()
+                        _entrega = {
+                            "studentID":entrega.user.id,
+                            "position_data":_vrtarea.performance_data,
+                            "autograde":_vrtarea.autograde,
+                            "grade": calificacion.nota,
+                            "feedback": calificacion.comentario_profesor
+                        }
+                        completions.append(_entrega)
+                    vrtasca = {
+                        "ID":_vrtarea.id,
+                        "title":_vrtarea.ejercicio.nombre,
+                        "descripcion":_vrtarea.ejercicio.descripcion,
+                        "VRexId":_vrtarea.ejercicio.id,
+                        "versionID":_vrtarea.version,
+                        "completions": completions
+                    }
+                    _vrtasks.append(vrtasca)
+
                 _course = {
                     "title": curso.nombre,
                     "description":curso.descripcion,
                     "courseID": curso.id,
                     "institutionID": curso.centro.id,
                     "elements": _recursos,
-                    "tasks": _ejercicios,
+                    "tasks": tascas, 
+                    "vrtasks":_vrtasks  
                 }
         if(status.HTTP_200_OK):
             _status = "OK"
@@ -166,7 +224,6 @@ def pin_request(request):
             if (task == str(entrega.id)):
                 if (entrega.pin==None):
                     while (pinexiste==True):
-                        print("girando")
                         pinexiste = False
                         newpin = random.randint(0,9999)
                         for entr in Entrega.objects.all():
@@ -252,6 +309,12 @@ def finish_vr_exercise(request):
     elif(performancedata == "null"):
         _message = "Missing performancedata"
     else:
+        lastvr =  VRTarea.objects.all().order_by('-id')[0]
+        newid = lastvr.id+1
+        entrega =  Entrega.objects.filter(pin=pin)
+        _ejercicio = Ejercicio.objects.filter(id = vrexerciseid)[0]
+        newvrtarea = VRTarea.objects.get_or_create(id=newid, nombre = pin, autograde = autograde, performance_data = performancedata, version = exerciseversion, ejercicio = _ejercicio, curso=_ejercicio.curso )
+        
         _status = "OK"
         _message = "Exercise data succesfully stored"
 
@@ -260,3 +323,5 @@ def finish_vr_exercise(request):
         _message = "failed request"
     
     return JsonResponse({"status": _status, "message":_message})
+
+            
