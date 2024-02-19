@@ -6,9 +6,9 @@
             <div class="border-solid rounded border-black bg-[#ededed] p-2 mx-8 ">
                 <a class="text-3xl underline text-[#461f87]" href="../grade/{{s.curso.pk}}">{{s.curso}}</a> 
                 {% for i in cursos %}
-                    {% ifequal i.nombre|stringformat:"s" s.curso|stringformat:"s" %}
+                    {% if i.nombre|stringformat:"s" == s.curso|stringformat:"s" %}
                     <p class="italic">{{ i.descripcion }}</p>
-                    {% endifequal %}
+                    {% endif %}
                 {% endfor %}
                 <p class="text-lg">Rol asignado: {{s.tipo}}</p>
             </div>
